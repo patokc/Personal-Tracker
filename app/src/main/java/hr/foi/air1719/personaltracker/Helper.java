@@ -5,9 +5,6 @@ import android.text.TextUtils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by Google on 28.10.2017..
- */
 
 public class Helper {
 

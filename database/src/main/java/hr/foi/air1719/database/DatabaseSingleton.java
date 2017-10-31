@@ -5,8 +5,6 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.Log;
 
-
-
 public class DatabaseSingleton {
 
     public static volatile DatabaseSingleton INSTANCE;

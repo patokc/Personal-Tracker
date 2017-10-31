@@ -8,10 +8,6 @@ import android.arch.persistence.room.Update;
 
 import hr.foi.air1719.database.entities.User;
 
-/**
- * Created by abenkovic on 10/28/17.
- */
-
 @Dao
 public interface UserDao {
 

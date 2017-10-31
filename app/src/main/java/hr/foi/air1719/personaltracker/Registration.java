@@ -32,18 +32,11 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         SharedPreferences settings = getSharedPreferences("Registration", 0);
         if(!settings.getString("UserName", "0").toString().equals("0")) {
             finish();
+            Intent intent = new Intent(this, LogIn.class);
+            startActivity(intent);
         }
 
         FullName=(EditText)findViewById(R.id.txtFullName);
