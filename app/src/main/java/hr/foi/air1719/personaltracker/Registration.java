@@ -57,6 +57,13 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
 
 
         try {
+
+            if(FullName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong name!",Toast.LENGTH_LONG).show(); return;}
+            if(UserName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong user name!",Toast.LENGTH_LONG).show(); return;}
+            if(Password.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong password!",Toast.LENGTH_LONG).show();  return;}
+            if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
+            if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
+
             JSONObject object = new JSONObject();
             object.put("fullname", FullName.getText().toString());
             object.put("username", UserName.getText().toString());
