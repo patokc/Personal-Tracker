@@ -10,9 +10,7 @@ import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
 
 
-/**
- * Created by abenkovic on 10/28/17.
- */
+
 @Database(entities = {User.class, Location.class}, version = 1)
 @TypeConverters({DateConverter.class})
 public abstract class TrackerDatabase extends RoomDatabase {

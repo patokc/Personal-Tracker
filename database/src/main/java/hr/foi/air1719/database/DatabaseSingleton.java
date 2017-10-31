@@ -5,9 +5,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.Log;
 
-/**
- * Created by abenkovic on 10/28/17.
- */
+
 
 public class DatabaseSingleton {
 
