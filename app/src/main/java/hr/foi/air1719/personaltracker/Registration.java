@@ -88,6 +88,23 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
     @Override
     public void processFinish(String output) {
         Toast.makeText(getBaseContext(),"Response from server:" + output,Toast.LENGTH_LONG).show();
+
+        if(output != null && output.indexOf(UserName.getText().toString())>-1 && output.indexOf(Helper.md5(Password.getText().toString()))>-1)
+        {
+            Toast.makeText(getBaseContext(),"Registration successfully.",Toast.LENGTH_LONG).show();
+
+            SharedPreferences settings = getSharedPreferences("Registration", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("FullName", FullName.getText().toString());
+            editor.putString("UserName", UserName.getText().toString());
+            editor.putString("Password", Helper.md5(Password.getText().toString()));
+            editor.putString("Email",    Email.getText().toString());
+            editor.commit();
+
+            finish();
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+        }
     }
 }
 
