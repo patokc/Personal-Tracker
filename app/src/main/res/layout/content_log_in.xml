@@ -27,7 +27,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
+            android:textSize="18dp"
             android:text="Username" />
 
         <EditText
@@ -49,7 +50,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtLogInUserName"
             android:layout_marginTop="14dp"
-            tools:text="Password" />
+            android:textSize="18dp"
+            android:text="Password" />
 
         <EditText
             android:id="@+id/txtLogInPassword"
@@ -60,7 +62,7 @@
             android:layout_below="@+id/textView3"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btnLogIn"
@@ -73,6 +75,21 @@
             android:textColor="@color/text"
             android:onClick="onClick_LogIn"
             android:text="Log in" />
+        <Button
+            android:id="@+id/btnCreateAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnLogIn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorButton"
+            android:textColor="@color/text"
+            android:textAlignment="center"
+            android:width="30dp"
+            android:onClick="onClick_Registration"
+            android:text="Create account" />
+
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

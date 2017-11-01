@@ -32,12 +32,6 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SharedPreferences settings = getSharedPreferences("Registration", 0);
-        if(!settings.getString("UserName", "0").toString().equals("0")) {
-            finish();
-            Intent intent = new Intent(this, LogIn.class);
-            startActivity(intent);
-        }
 
         FullName=(EditText)findViewById(R.id.txtFullName);
         UserName=(EditText)findViewById(R.id.txtUserName);
@@ -76,6 +70,8 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
 
     public void onClick_Cancel(View v) {
         finish();
+        Intent intent = new Intent(this, LogIn.class);
+        startActivity(intent);
     }
 
     @Override
@@ -95,7 +91,7 @@ public class Registration extends AppCompatActivity implements WebService.AsyncR
             editor.commit();
 
             finish();
-            Intent intent = new Intent(this, Main.class);
+            Intent intent = new Intent(this, LogIn.class);
             startActivity(intent);
         }
     }

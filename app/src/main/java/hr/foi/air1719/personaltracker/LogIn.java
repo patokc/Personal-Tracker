@@ -2,7 +2,6 @@ package hr.foi.air1719.personaltracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +33,12 @@ public class LogIn extends AppCompatActivity implements WebService.AsyncResponse
                 this);
 
         ws.execute();
+    }
+
+    public void onClick_Registration(View v) {
+        finish();
+        Intent intent = new Intent(this, Registration.class);
+        startActivity(intent);
     }
 
     @Override
