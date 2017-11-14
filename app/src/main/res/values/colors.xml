@@ -2,7 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAppBar">#1b5dc6</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorButton">#5298b2</color>
     <color name="text">#ffffff</color>
+    <color name="background">#ffffff</color>
+    <color name="textSplash">#1125cc</color>
 </resources>
