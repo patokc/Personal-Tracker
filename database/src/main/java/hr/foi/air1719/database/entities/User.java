@@ -26,13 +26,11 @@ public class User {
 
     public User(String username, String password, String fullname) {
         this.username = username;
-        this.password = passEncrypt(password);
+        this.password = password;
         this.fullname = fullname;
     }
 
-    private String passEncrypt(String plaintext){
-        return "implementiraj algoritam";
-    }
+
 
     public int getUserId() {
         return userId;
