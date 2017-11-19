@@ -1,9 +1,6 @@
 package hr.foi.air1719.personaltracker;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,13 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import hr.foi.air1719.location.IGPSActivity;
+import android.location.Location;
 import android.widget.Toast;
-import hr.foi.air1719.webservice.WebService;
-import hr.foi.webservice.*;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import hr.foi.air1719.location.MyLocation;
 
 
-public class Main extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , IGPSActivity, OnMapReadyCallback {
+
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +42,23 @@ public class Main extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);mapFragment.getMapAsync(this);
+
+        //ovo sluzi za dohvacanje lokacije. Ovo radi na principu daj mi zadnju poznatu lokaciju, ovo ne mora biti tocna lokacija, nego zadnja poznata
+        //tocna lokacija se bude prozivala na drugaciji nacin "myLocation.LocationStart(this)" i imala bude callback metodu
+        MyLocation myLocation = new MyLocation();
+        Location location = myLocation.GetLastKnownLocation(this);
+
+        if(location != null)
+        {
+            Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+        }
+        else
+            Toast.makeText(this, "Your GPS is off, please turn on your GPS.", Toast.LENGTH_LONG).show();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -78,6 +101,9 @@ public class Main extends AppCompatActivity
 
         } else if (id == R.id.drivingMode) {
 
+            //MyLocation myLocation = new MyLocation();
+            //myLocation.LocationStart(this);
+
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.exit) {
@@ -87,5 +113,33 @@ public class Main extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void locationChanged(Location location) {
+        Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void displayGPSSettingsDialog() {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        MyLocation myLocation = new MyLocation();
+        Location location = myLocation.GetLastKnownLocation(this);
+
+        if(location != null)
+        {
+            Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+        }
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .title("My location"));
     }
 }
