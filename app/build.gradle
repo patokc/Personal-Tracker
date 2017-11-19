@@ -28,4 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':webservice')
     implementation project(':database')
+    implementation project(':location')
+    implementation 'com.google.android.gms:play-services-maps:11.6.0'
 }

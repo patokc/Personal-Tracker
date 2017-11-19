@@ -40,7 +40,8 @@
             android:layout_below="@+id/textView2"
             android:ems="10"
             android:hint="Username"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:text="" />
 
         <TextView
             android:id="@+id/textView3"
@@ -62,7 +63,8 @@
             android:layout_below="@+id/textView3"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:text="" />
 
         <Button
             android:id="@+id/btnLogIn"

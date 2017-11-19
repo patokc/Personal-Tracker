@@ -23,7 +23,7 @@ public class MyLocation implements LocationListener {
     private LocationManager locationManager = null;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
-    IGPSActivity iGPS;
+    IGPSActivity iGPS = null;
     Activity activity;
 
 
@@ -79,8 +79,8 @@ public class MyLocation implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(android.location.Location location) {
-        Toast.makeText(activity, String.valueOf(location.getAccuracy()) + "\nLonditude:" + location.getLongitude() + "\nLatitude: " + location.getLatitude(), Toast.LENGTH_LONG).show();
+    public void onLocationChanged(Location location) {
+        iGPS.locationChanged(location);
     }
 
     @Override
