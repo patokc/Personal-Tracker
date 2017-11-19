@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 include ':app', ':webservice', ':database', ':location'
+=======
+include ':app', ':webservice', ':database', ':restservice'
+>>>>>>> master
