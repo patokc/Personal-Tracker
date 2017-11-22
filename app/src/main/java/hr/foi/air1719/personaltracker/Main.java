@@ -1,5 +1,7 @@
 package hr.foi.air1719.personaltracker;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import hr.foi.air1719.location.MyLocation;
 
 
-public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , IGPSActivity, OnMapReadyCallback {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , IGPSActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 2;
 
@@ -44,7 +46,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);mapFragment.getMapAsync(this);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new hr.foi.air1719.personaltracker.fragments.MapFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
 
         //ovo sluzi za dohvacanje lokacije. Ovo radi na principu daj mi zadnju poznatu lokaciju, ovo ne mora biti tocna lokacija, nego zadnja poznata
         //tocna lokacija se bude prozivala na drugaciji nacin "myLocation.LocationStart(this)" i imala bude callback metodu
@@ -115,6 +121,19 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    public void onMapReady(GoogleMap googleMap) {
+
+        MyLocation myLocation = new MyLocation();
+        Location location = myLocation.GetLastKnownLocation( this);
+
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .title("My location"));
+    }
+
     @Override
     public void locationChanged(Location location) {
         Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
@@ -125,21 +144,4 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-        MyLocation myLocation = new MyLocation();
-        Location location = myLocation.GetLastKnownLocation(this);
-
-        if(location != null)
-        {
-            Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
-        }
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                .title("My location"));
-    }
 }
