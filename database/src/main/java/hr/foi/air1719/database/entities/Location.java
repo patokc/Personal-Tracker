@@ -18,20 +18,33 @@ public class Location {
     @ColumnInfo(name = "userId")
     private int userId;
 
+    @ColumnInfo(name = "activityId")
+    private int activityId;
 
     @ColumnInfo(name = "longitude")
     private long longitude;
 
-
     @ColumnInfo(name = "latitude")
     private long latitude;
-
 
     @ColumnInfo(name = "gpsType")
     private int gpsType;
 
+    @ColumnInfo(name = "description")
+    private String description;
+
+    @ColumnInfo(name = "image")
+    private String image;
+
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
+
+    public Location(int userId, int activityId, long longitude, long latitude) {
+        this.userId = userId;
+        this.activityId = activityId;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 
     public int getLocationId() {
         return locationId;
@@ -47,6 +60,14 @@ public class Location {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
     }
 
     public long getLongitude() {
@@ -71,6 +92,22 @@ public class Location {
 
     public void setGpsType(int gpsType) {
         this.gpsType = gpsType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Date getTimestamp() {
