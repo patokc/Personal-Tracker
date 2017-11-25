@@ -14,6 +14,9 @@ public interface LocationDao {
     @Query("SELECT * FROM location WHERE userId =:userId AND timestamp BETWEEN :start AND :end")
     Location findByIdRange(int userId, int start, int end);
 
+    @Query("SELECT * FROM location WHERE activityId =:activityId")
+    Location findByActivity(int activityId);
+
     @Query("SELECT * FROM location WHERE timestamp BETWEEN :start AND :end")
     Location findByRange(int start, int end);
 

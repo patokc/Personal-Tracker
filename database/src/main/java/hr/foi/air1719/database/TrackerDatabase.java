@@ -4,8 +4,10 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.TypeConverters;
 
+import hr.foi.air1719.database.dao.ActivityDao;
 import hr.foi.air1719.database.dao.LocationDao;
 import hr.foi.air1719.database.dao.UserDao;
+import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
 
@@ -14,4 +16,5 @@ import hr.foi.air1719.database.entities.User;
 public abstract class TrackerDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract LocationDao locationDao();
+    public abstract ActivityDao activityDao();
 }
