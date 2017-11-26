@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
@@ -34,6 +35,8 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
         RestServiceCaller restServiceCaller = new RestServiceCaller(this);
         restServiceCaller.getUser(UserName.getText().toString());
+        Location location = new Location(1, 2, 1.23, 23.21);
+        restServiceCaller.saveLocation(location, UserName.getText().toString());
     }
 
     public void onClick_Registration(View v) {

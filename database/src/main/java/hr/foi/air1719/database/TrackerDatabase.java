@@ -4,15 +4,13 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.TypeConverters;
 
-import hr.foi.air1719.database.dao.ActivityDao;
-import hr.foi.air1719.database.dao.LocationDao;
-import hr.foi.air1719.database.dao.UserDao;
-import hr.foi.air1719.database.entities.Activity;
-import hr.foi.air1719.database.entities.Location;
-import hr.foi.air1719.database.entities.User;
+import hr.foi.air1719.database.converters.*;
+import hr.foi.air1719.database.dao.*;
+import hr.foi.air1719.database.entities.*;
 
-@Database(entities = {User.class, Location.class}, version = 1)
-@TypeConverters({DateConverter.class})
+
+@Database(entities = {User.class, Location.class, Activity.class}, version = 1)
+@TypeConverters({ActivityModeConverter.class, DateConverter.class})
 public abstract class TrackerDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract LocationDao locationDao();

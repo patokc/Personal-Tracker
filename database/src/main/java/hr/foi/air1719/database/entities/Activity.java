@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Entity
 public class Activity {
-
     @PrimaryKey(autoGenerate = true)
     private int activityId;
 

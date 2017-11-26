@@ -98,9 +98,9 @@ public class RestServiceCaller {
 
     }
 
-    public void saveLocation(Location location, User user){
+    public void saveLocation(Location location, String user){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.saveLocation(location, user.getUsername());
+        Call<Location> call = serviceCaller.saveLocation(location, user);
 
         if(call != null){
             call.enqueue(new Callback<Location>() {

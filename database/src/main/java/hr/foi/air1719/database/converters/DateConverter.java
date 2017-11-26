@@ -1,8 +1,9 @@
-package hr.foi.air1719.database;
+package hr.foi.air1719.database.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
 import java.util.Date;
+
 
 public class DateConverter {
 

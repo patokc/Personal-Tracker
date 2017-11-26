@@ -22,10 +22,10 @@ public class Location {
     private int activityId;
 
     @ColumnInfo(name = "longitude")
-    private long longitude;
+    private double longitude;
 
     @ColumnInfo(name = "latitude")
-    private long latitude;
+    private double latitude;
 
     @ColumnInfo(name = "gpsType")
     private int gpsType;
@@ -39,7 +39,7 @@ public class Location {
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    public Location(int userId, int activityId, long longitude, long latitude) {
+    public Location(int userId, int activityId, double longitude, double latitude) {
         this.userId = userId;
         this.activityId = activityId;
         this.longitude = longitude;
@@ -70,19 +70,19 @@ public class Location {
         this.activityId = activityId;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
