@@ -2,6 +2,7 @@ package hr.foi.air1719.restservice;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.responses.UserResponse;
 import retrofit.Call;
@@ -14,8 +15,8 @@ import retrofit.Retrofit;
  * Created by abenkovic
  */
 
-public class TrackerRestServiceCaller {
-    TrackerRestServiceHandler trsHandler;
+public class RestServiceCaller {
+    RestServiceHandler trsHandler;
 
     // retrofit object
     Retrofit retrofit;
@@ -23,7 +24,7 @@ public class TrackerRestServiceCaller {
     private final String baseUrl = "https://tracker-21f6d.firebaseio.com/";
 
     // constructor
-    public TrackerRestServiceCaller(TrackerRestServiceHandler trsHandler){
+    public RestServiceCaller(RestServiceHandler trsHandler){
         this.trsHandler = trsHandler;
 
         //To verify what's sending over the network, use Interceptors
@@ -38,7 +39,7 @@ public class TrackerRestServiceCaller {
     }
 
     public void getUser(String user){
-        TrackerRestService serviceCaller = retrofit.create(TrackerRestService.class);
+        RestService serviceCaller = retrofit.create(RestService.class);
         Call<UserResponse> call = serviceCaller.getUser(user);
 
         if(call != null){
@@ -68,7 +69,7 @@ public class TrackerRestServiceCaller {
     }
 
     public void createUser(User user){
-        TrackerRestService serviceCaller = retrofit.create(TrackerRestService.class);
+        RestService serviceCaller = retrofit.create(RestService.class);
         Call<User> call = serviceCaller.createUser(user, user.getUsername());
 
         if(call != null){
@@ -90,6 +91,36 @@ public class TrackerRestServiceCaller {
                 @Override
                 public void onFailure(Throwable t) {
                     System.out.println("User registration failed...");
+                    t.printStackTrace();
+                }
+            });
+        }
+
+    }
+
+    public void saveLocation(Location location, User user){
+        RestService serviceCaller = retrofit.create(RestService.class);
+        Call<Location> call = serviceCaller.saveLocation(location, user.getUsername());
+
+        if(call != null){
+            call.enqueue(new Callback<Location>() {
+                @Override
+                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                    try {
+                        if(response.isSuccess()){
+                            if(trsHandler != null){
+                                trsHandler.onDataArrived(response.body(), true);
+                            }
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    System.out.println("Saving location failed...");
                     t.printStackTrace();
                 }
             });

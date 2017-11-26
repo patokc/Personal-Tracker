@@ -10,11 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import hr.foi.air1719.database.entities.User;
-import hr.foi.air1719.restservice.TrackerRestServiceCaller;
-import hr.foi.air1719.restservice.TrackerRestServiceHandler;
+import hr.foi.air1719.restservice.RestServiceCaller;
+import hr.foi.air1719.restservice.RestServiceHandler;
 
 
-public class LogIn extends AppCompatActivity implements TrackerRestServiceHandler {
+public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
     private EditText UserName=null;
     private EditText Password= null;
@@ -32,7 +32,7 @@ public class LogIn extends AppCompatActivity implements TrackerRestServiceHandle
         UserName=(EditText)findViewById(R.id.txtLogInUserName);
         Password=(EditText)findViewById(R.id.txtLogInPassword);
 
-        TrackerRestServiceCaller restServiceCaller = new TrackerRestServiceCaller(this);
+        RestServiceCaller restServiceCaller = new RestServiceCaller(this);
         restServiceCaller.getUser(UserName.getText().toString());
     }
 
