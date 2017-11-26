@@ -29,8 +29,15 @@ public class Activity {
     @ColumnInfo(name = "distance")
     private float distance;
 
-    public Activity(ActivityMode mode) {
+    @ColumnInfo(name = "description")
+    private String description;
+
+    @ColumnInfo(name = "image")
+    private String image;
+
+    public Activity(ActivityMode mode, Date start) {
         this.mode = mode;
+        this.start = start;
     }
 
     public int getActivityId() {
@@ -79,5 +86,21 @@ public class Activity {
 
     public void setDistance(float distance) {
         this.distance = distance;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

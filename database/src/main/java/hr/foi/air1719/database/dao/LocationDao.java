@@ -11,8 +11,11 @@ import hr.foi.air1719.database.entities.Location;
 @Dao
 public interface LocationDao {
 
-    @Query("SELECT * FROM location WHERE userId =:userId AND timestamp BETWEEN :start AND :end")
-    Location findByIdRange(int userId, int start, int end);
+    @Query("SELECT * FROM location WHERE username =:username AND timestamp BETWEEN :start AND :end")
+    Location findByIdRange(String username, int start, int end);
+
+    @Query("SELECT * FROM location WHERE username =:username")
+    Location findByUser(String username);
 
     @Query("SELECT * FROM location WHERE activityId =:activityId")
     Location findByActivity(int activityId);

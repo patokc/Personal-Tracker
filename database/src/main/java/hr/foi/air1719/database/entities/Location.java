@@ -15,8 +15,8 @@ public class Location {
     @PrimaryKey(autoGenerate = true)
     private int locationId;
 
-    @ColumnInfo(name = "userId")
-    private int userId;
+    @ColumnInfo(name = "username")
+    private String username;
 
     @ColumnInfo(name = "activityId")
     private int activityId;
@@ -30,17 +30,11 @@ public class Location {
     @ColumnInfo(name = "gpsType")
     private int gpsType;
 
-    @ColumnInfo(name = "description")
-    private String description;
-
-    @ColumnInfo(name = "image")
-    private String image;
-
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    public Location(int userId, int activityId, double longitude, double latitude) {
-        this.userId = userId;
+    public Location(String username, int activityId, double longitude, double latitude) {
+        this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -54,12 +48,12 @@ public class Location {
         this.locationId = locationId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getActivityId() {
@@ -92,22 +86,6 @@ public class Location {
 
     public void setGpsType(int gpsType) {
         this.gpsType = gpsType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Date getTimestamp() {

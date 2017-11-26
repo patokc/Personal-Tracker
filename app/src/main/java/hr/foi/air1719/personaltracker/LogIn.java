@@ -1,6 +1,7 @@
 package hr.foi.air1719.personaltracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
+import hr.foi.air1719.core.adapter.DataAdapter;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
@@ -35,8 +37,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
         RestServiceCaller restServiceCaller = new RestServiceCaller(this);
         restServiceCaller.getUser(UserName.getText().toString());
-        Location location = new Location(1, 2, 1.23, 23.21);
-        restServiceCaller.saveLocation(location, UserName.getText().toString());
+
     }
 
     public void onClick_Registration(View v) {
@@ -56,6 +57,22 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 Toast.makeText(getBaseContext(), "Login is successful", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), Main.class);
                 startActivity(intent);
+
+                SharedPreferences settings = getSharedPreferences("user", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("username", UserName.getText().toString());
+                editor.commit();
+
+                Thread thread = new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        Location loc = new Location(UserName.getText().toString(), 1,2.5, 6.1);
+                        DataAdapter ad = new DataAdapter(getApplicationContext());
+                        ad.saveLocation(loc);
+                    }
+                });
+                thread.start();
+
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();
