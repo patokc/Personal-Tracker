@@ -30,4 +30,5 @@ dependencies {
     implementation project(':location')
     implementation 'com.google.android.gms:play-services-maps:11.6.0'
     implementation project(':restservice')
+    implementation project(':core')
 }

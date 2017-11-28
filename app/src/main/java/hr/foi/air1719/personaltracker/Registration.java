@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 
 import hr.foi.air1719.database.entities.User;
-import hr.foi.air1719.restservice.TrackerRestServiceCaller;
-import hr.foi.air1719.restservice.TrackerRestServiceHandler;
+import hr.foi.air1719.restservice.RestServiceCaller;
+import hr.foi.air1719.restservice.RestServiceHandler;
 
 
 public class Registration extends AppCompatActivity  {
@@ -51,7 +51,7 @@ public class Registration extends AppCompatActivity  {
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
             if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
 
-            TrackerRestServiceHandler regHandler = new TrackerRestServiceHandler() {
+            RestServiceHandler regHandler = new RestServiceHandler() {
                 @Override
                 public void onDataArrived(Object result, boolean ok) {
                     if(ok){
@@ -74,7 +74,7 @@ public class Registration extends AppCompatActivity  {
 
             User user = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString());
 
-            TrackerRestServiceCaller restServiceCaller = new TrackerRestServiceCaller(regHandler);
+            RestServiceCaller restServiceCaller = new RestServiceCaller(regHandler);
             restServiceCaller.createUser(user);
 
         } catch (Exception e) {
