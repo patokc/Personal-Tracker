@@ -2,6 +2,7 @@ package hr.foi.air1719.location;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -24,37 +25,89 @@ public class MyLocation implements LocationListener {
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
     IGPSActivity iGPS = null;
-    Activity activity;
+    Fragment fragment;
 
 
     public void LocationStart(IGPSActivity i_gps) {
+        try {
+            //TODO ovo treba staviti u postavke
+            long BrzinaOsvjezavanjaGps = 10;
+            float MinimalnaUdaljenostGps = 10;
+            long BrzinaOsvjezavanjaNetwork = 10;
+            float MinimalnaUdaljenostNetwork = 100;
+            Boolean isGpsEnabled = true;
 
+            this.iGPS = i_gps;
+            this.fragment = (Fragment)i_gps;
+
+            if(locationManager != null) return;
+
+            locationManager = (LocationManager) fragment.getActivity().getSystemService(Context.LOCATION_SERVICE);
+            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+
+            if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                    //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    // No explanation needed, we can request the permission.
+
+                    ActivityCompat.requestPermissions(fragment.getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+                    //Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+            if (gps_enabled) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, BrzinaOsvjezavanjaGps, MinimalnaUdaljenostGps, this);
+                Toast.makeText(fragment.getActivity(), "GpsPrecision", Toast.LENGTH_LONG).show();
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, BrzinaOsvjezavanjaNetwork, MinimalnaUdaljenostNetwork, this);
+
+                Toast.makeText(fragment.getActivity(), "NetworkPrecision", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public Location GetLastKnownLocation(IGPSActivity i_gps) {
 
         this.iGPS = i_gps;
-        this.activity = (Activity)i_gps;
+        this.fragment = (Fragment)i_gps;
 
-        LocationManager mLocationManager = (LocationManager)(activity.getSystemService(Context.LOCATION_SERVICE));
+        LocationManager mLocationManager = (LocationManager)(fragment.getActivity().getSystemService(Context.LOCATION_SERVICE));
 
-        if (ActivityCompat.checkSelfPermission((Activity) this.iGPS, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission((Activity) this.iGPS, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) this.iGPS,
+            if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                Toast.makeText(activity, "No PERMISSIONS", Toast.LENGTH_LONG).show();
+                //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
 
             } else {
 
-                ActivityCompat.requestPermissions((Activity) this.iGPS,
+                ActivityCompat.requestPermissions(fragment.getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_FINE_LOCATION);
 
-                Toast.makeText(((Activity) this.iGPS), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+               // Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
             }
         }
 

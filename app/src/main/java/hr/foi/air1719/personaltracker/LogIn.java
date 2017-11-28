@@ -1,9 +1,12 @@
 package hr.foi.air1719.personaltracker;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,6 +24,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
     private EditText UserName=null;
     private EditText Password= null;
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,26 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
         setContentView(R.layout.activity_log_in);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+                // Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+            }
+        }
 
     }
 
@@ -37,7 +61,6 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
         RestServiceCaller restServiceCaller = new RestServiceCaller(this);
         restServiceCaller.getUser(UserName.getText().toString());
-
     }
 
     public void onClick_Registration(View v) {

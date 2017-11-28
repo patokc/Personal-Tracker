@@ -31,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Patricija on 11/22/2017.
  */
 
-public class LocationManualFragment extends Fragment {
+public class LocationManualFragment extends Fragment implements IGPSActivity {
     Geocoder geocoder ;
     List<Address> lokacija;
     public static int RESULT_LOAD_IMAGE = 1;
@@ -53,7 +53,7 @@ public class LocationManualFragment extends Fragment {
         EditText note = (EditText) getView().findViewById(R.id.txt_note);
 
         MyLocation myLocation = new MyLocation();
-        Location location = myLocation.GetLastKnownLocation((IGPSActivity) getActivity());
+        Location location = myLocation.GetLastKnownLocation(this);
         try {
             lokacija = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
         } catch (IOException e) {
@@ -111,4 +111,13 @@ public class LocationManualFragment extends Fragment {
         }
     }
 
+    @Override
+    public void locationChanged(Location location) {
+
+    }
+
+    @Override
+    public void displayGPSSettingsDialog() {
+
+    }
 }
