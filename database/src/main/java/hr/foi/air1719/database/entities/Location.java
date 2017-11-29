@@ -15,23 +15,30 @@ public class Location {
     @PrimaryKey(autoGenerate = true)
     private int locationId;
 
-    @ColumnInfo(name = "userId")
-    private int userId;
+    @ColumnInfo(name = "username")
+    private String username;
 
+    @ColumnInfo(name = "activityId")
+    private int activityId;
 
     @ColumnInfo(name = "longitude")
-    private long longitude;
-
+    private double longitude;
 
     @ColumnInfo(name = "latitude")
-    private long latitude;
-
+    private double latitude;
 
     @ColumnInfo(name = "gpsType")
     private int gpsType;
 
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
+
+    public Location(String username, int activityId, double longitude, double latitude) {
+        this.username = username;
+        this.activityId = activityId;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 
     public int getLocationId() {
         return locationId;
@@ -41,27 +48,35 @@ public class Location {
         this.locationId = locationId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public long getLongitude() {
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
+
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
