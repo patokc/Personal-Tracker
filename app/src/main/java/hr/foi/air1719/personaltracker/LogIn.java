@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.database.entities.User;
-import hr.foi.air1719.core.adapter.DataAdapter;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
@@ -90,8 +90,8 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                     @Override
                     public void run(){
                         Location loc = new Location(UserName.getText().toString(), 1,2.5, 6.1);
-                        DataAdapter ad = new DataAdapter(getApplicationContext());
-                        ad.saveLocation(loc);
+                        DatabaseFacade dbfacade = new DatabaseFacade(getApplicationContext());
+                        dbfacade.saveLocation(loc);
                     }
                 });
                 thread.start();

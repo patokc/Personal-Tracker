@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -31,13 +33,14 @@ public class Location {
     private int gpsType;
 
     @ColumnInfo(name = "timestamp")
-    private Date timestamp;
+    private Timestamp timestamp;
 
     public Location(String username, int activityId, double longitude, double latitude) {
         this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.timestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
     }
 
     public int getLocationId() {
@@ -88,11 +91,11 @@ public class Location {
         this.gpsType = gpsType;
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 }
