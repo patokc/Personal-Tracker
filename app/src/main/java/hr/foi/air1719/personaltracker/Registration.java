@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.RestServiceCaller;
@@ -24,6 +24,10 @@ public class Registration extends AppCompatActivity  {
     private EditText Password= null;
     private TextView RepeatPassword= null;
     private TextView Email= null;
+
+
+    public static final Pattern letters_only_check =
+            Pattern.compile("^[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +49,9 @@ public class Registration extends AppCompatActivity  {
 
         try {
 
-            if(FullName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong name!",Toast.LENGTH_LONG).show(); return;}
+            if(FullName.getText().toString().equals("")|| !validate_letters(FullName.getText().toString())) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
             if(UserName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong user name!",Toast.LENGTH_LONG).show(); return;}
-            if(Password.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong password!",Toast.LENGTH_LONG).show();  return;}
+            if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
             if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
 
@@ -80,6 +84,11 @@ public class Registration extends AppCompatActivity  {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean validate_letters(String letters) {
+        Matcher matcher = letters_only_check.matcher(letters);
+        return matcher.find();
     }
 
     public void onClick_Cancel(View v) {
