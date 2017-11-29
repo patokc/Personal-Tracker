@@ -1,7 +1,11 @@
 package hr.foi.air1719.personaltracker;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.text.TextUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,6 +36,17 @@ public class Helper {
 
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+
+    public static boolean isInternetAvailable(Context context) {
+        try {
+            final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+            return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+        return false;
     }
 
 }

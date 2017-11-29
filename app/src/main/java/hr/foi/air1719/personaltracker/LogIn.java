@@ -34,30 +34,46 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
         setSupportActionBar(toolbar);
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        try {
+
+            if (!Helper.isInternetAvailable(this)) {
+                Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+            }
 
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
 
-            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+                    Toast.makeText(this, "Not allowed to use GPS location", Toast.LENGTH_LONG).show();
 
-                // Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+                } else {
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+                    Toast.makeText(this, "Allowed to use GPS location", Toast.LENGTH_LONG).show();
+                }
             }
         }
-
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 
     public void onClick_LogIn(View v) {
         UserName=(EditText)findViewById(R.id.txtLogInUserName);
         Password=(EditText)findViewById(R.id.txtLogInPassword);
+
+        if (!Helper.isInternetAvailable(this)) {
+            Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         RestServiceCaller restServiceCaller = new RestServiceCaller(this);
         restServiceCaller.getUser(UserName.getText().toString());
