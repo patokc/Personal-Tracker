@@ -1,0 +1,37 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hr.foi.air1719.personaltracker.fragments.DrivingModeFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnDrivingStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btnDrivingStart"
+            android:layout_alignBottom="@+id/btnDrivingStart"
+            android:layout_marginLeft="92dp"
+            android:layout_marginStart="92dp"
+            android:layout_toEndOf="@+id/btnDrivingStart"
+            android:layout_toRightOf="@+id/btnDrivingStart"
+            android:text="Stop" />
+
+        <Button
+            android:id="@+id/btnDrivingStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="63dp"
+            android:layout_marginStart="63dp"
+            android:layout_marginTop="65dp"
+            android:text="Start" />
+    </RelativeLayout>
+
+</FrameLayout>

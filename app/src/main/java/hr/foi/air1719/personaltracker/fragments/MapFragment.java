@@ -51,6 +51,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
         mapFragment.onCreate(null);
         mapFragment.onResume();
         mapFragment.getMapAsync((OnMapReadyCallback) this);
+
         FloatingActionButton floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

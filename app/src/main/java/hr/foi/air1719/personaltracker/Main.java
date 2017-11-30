@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
+import hr.foi.air1719.personaltracker.fragments.LocationManualFragment;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -83,6 +85,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         } else if (id == R.id.walkingMode) {
 
         } else if (id == R.id.drivingMode) {
+
+            DrivingModeFragment drivingModeFragment = new DrivingModeFragment();
+            FragmentManager mFragmentManager = getFragmentManager();
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, drivingModeFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
 
         } else if (id == R.id.settings) {
 
