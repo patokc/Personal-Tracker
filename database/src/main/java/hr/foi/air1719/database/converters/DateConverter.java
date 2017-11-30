@@ -24,8 +24,8 @@ public class DateConverter {
     }
 
     @TypeConverter
-    public static Timestamp StringToTimestamp(String timestamp) {
-        return timestamp == null ? null : new Timestamp(Long.getLong(timestamp));
+    public static Timestamp stringToTimestamp(String timestamp) {
+        return timestamp == null ? null : Timestamp.valueOf(timestamp);
     }
 
 }

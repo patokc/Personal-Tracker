@@ -92,6 +92,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                         Location loc = new Location(UserName.getText().toString(), 1,2.5, 6.1);
                         DatabaseFacade dbfacade = new DatabaseFacade(getApplicationContext());
                         dbfacade.saveLocation(loc);
+                        dbfacade.getLocation();
                     }
                 });
                 thread.start();

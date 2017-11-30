@@ -3,6 +3,8 @@ package hr.foi.air1719.core.facade;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.List;
+
 import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
@@ -11,7 +13,7 @@ import hr.foi.air1719.restservice.RestServiceHandler;
  * Created by abenkovic on 11/29/17.
  */
 
-public class RemoteDatabase extends Database implements RestServiceHandler {
+public class RemoteDatabase implements Database, RestServiceHandler {
     private Context context;
     private RestServiceCaller restServiceCaller;
     private SharedPreferences settings;
@@ -30,8 +32,8 @@ public class RemoteDatabase extends Database implements RestServiceHandler {
     }
 
     @Override
-    public void getLocation() {
-        super.getLocation();
+    public List<Location> getLocation() {
+        return null;
     }
 
     @Override

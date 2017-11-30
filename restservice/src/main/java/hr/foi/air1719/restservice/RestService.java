@@ -23,4 +23,7 @@ public interface RestService {
 
     @POST("location/{user}.json")
     Call<Location> saveLocation(@Body Location data, @Path("user") String user);
+
+    @GET("location/{user}.json")
+    Call<Location> getLocation(@Path("user") String user);
 }

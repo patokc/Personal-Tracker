@@ -128,4 +128,34 @@ public class RestServiceCaller {
 
     }
 
+    public void getLocation(String user){
+        RestService serviceCaller = retrofit.create(RestService.class);
+        Call<Location> call = serviceCaller.getLocation(user);
+
+        if(call != null){
+            call.enqueue(new Callback<Location>() {
+                @Override
+                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                    try {
+                        if(response.isSuccess()){
+                            if(trsHandler != null){
+                                trsHandler.onDataArrived(response.body(), true);
+                            }
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    System.out.println("Location fetch failed...");
+                    t.printStackTrace();
+                }
+            });
+        }
+
+    }
+
 }

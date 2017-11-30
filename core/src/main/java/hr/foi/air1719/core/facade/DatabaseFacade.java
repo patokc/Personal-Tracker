@@ -12,22 +12,24 @@ import hr.foi.air1719.database.entities.Location;
  */
 
 public class DatabaseFacade {
-    private final List<Database> databases;
+    private final Database local;
+    private final Database remote;
+
 
     public DatabaseFacade(Context context) {
-        databases = new ArrayList<>();
-        databases.add(new LocalDatabase(context));
-        databases.add(new RemoteDatabase(context));
+        local = new LocalDatabase(context);
+        remote = new RemoteDatabase(context);
     }
 
     public void saveLocation(Location location){
-        for(Database db: databases){
-            db.saveLocation(location);
-        }
-
+        local.saveLocation(location);
+        remote.saveLocation(location);
     }
 
-    public void getLocation(){
+    public List<Location> getLocation(){
+        List<Location> localData = local.getLocation();
+        List<Location> remoteData = remote.getLocation();
 
+        return localData;
     }
 }
