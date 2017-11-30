@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import java.util.List;
 
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.Location;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
@@ -38,6 +40,17 @@ public class RemoteDatabase implements Database, RestServiceHandler {
 
     @Override
     public void onDataArrived(Object result, boolean ok) {
+    }
 
+    @Override
+    public void saveActivity(Activity activity) {
+        activity.setUser(this.user);
+        this.restServiceCaller.saveActivity(activity);
+    }
+
+    @Override
+    public List<Activity> getAllActivities(ActivityMode mode) {
+        //this.restServiceCaller.getAllActivities(this.user, mode);
+        return null;
     }
 }

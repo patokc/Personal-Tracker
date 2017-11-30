@@ -5,6 +5,8 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.Location;
 
 /**
@@ -31,5 +33,21 @@ public class DatabaseFacade {
         List<Location> remoteData = remote.getLocation();
 
         return localData;
+    }
+
+    public void saveActivity(Activity activity){
+        local.saveActivity(activity);
+        remote.saveActivity(activity);
+    }
+
+    public void getAllActivities(ActivityMode mode){
+        List<Activity> localData = local.getAllActivities(mode);
+
+        for(Activity act: localData){
+            System.out.println(act.getActivityId());
+        }
+
+        //remote.getAllActivities(mode);
+
     }
 }

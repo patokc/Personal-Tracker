@@ -8,6 +8,8 @@ import java.util.List;
 
 import hr.foi.air1719.database.DatabaseSingleton;
 import hr.foi.air1719.database.TrackerDatabase;
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.Location;
 
 /**
@@ -35,8 +37,18 @@ public class LocalDatabase implements Database {
 
     @Override
     public List<Location> getLocation() {
-        return this.db.locationDao().findByUser(user);
+        //return this.db.locationDao().findByUser(user);
+        return null;
+    }
 
+    @Override
+    public void saveActivity(Activity activity) {
+        activity.setUser(this.user);
+        this.db.activityDao().create(activity);
+    }
 
+    @Override
+    public List<Activity> getAllActivities(ActivityMode mode) {
+        return this.db.activityDao().findByUserAndMode(this.user, mode);
     }
 }

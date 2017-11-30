@@ -17,11 +17,8 @@ public class Location {
     @PrimaryKey(autoGenerate = true)
     private int locationId;
 
-    @ColumnInfo(name = "username")
-    private String username;
-
     @ColumnInfo(name = "activityId")
-    private int activityId;
+    private String activityId;
 
     @ColumnInfo(name = "longitude")
     private double longitude;
@@ -35,8 +32,7 @@ public class Location {
     @ColumnInfo(name = "timestamp")
     private Timestamp timestamp;
 
-    public Location(String username, int activityId, double longitude, double latitude) {
-        this.username = username;
+    public Location(String activityId, double longitude, double latitude) {
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -51,19 +47,11 @@ public class Location {
         this.locationId = locationId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getActivityId() {
+    public String getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(int activityId) {
+    public void setActivityId(String activityId) {
         this.activityId = activityId;
     }
 

@@ -3,7 +3,10 @@ package hr.foi.air1719.database.entities;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by abenkovic on 11/25/17.
@@ -11,8 +14,12 @@ import java.util.Date;
 
 @Entity
 public class Activity {
-    @PrimaryKey(autoGenerate = true)
-    private int activityId;
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    private String activityId;
+
+    @ColumnInfo(name = "user")
+    private String user;
 
     @ColumnInfo(name = "mode")
     private ActivityMode mode;
@@ -35,17 +42,26 @@ public class Activity {
     @ColumnInfo(name = "image")
     private String image;
 
-    public Activity(ActivityMode mode, Date start) {
+    public Activity(ActivityMode mode) {
+        this.activityId = UUID.randomUUID().toString();
         this.mode = mode;
-        this.start = start;
+        this.start = new Date();
     }
 
-    public int getActivityId() {
+    public String getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(int activityId) {
+    public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public ActivityMode getMode() {
