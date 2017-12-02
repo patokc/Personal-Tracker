@@ -5,7 +5,7 @@ import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 
 /**
  * Created by abenkovic on 11/29/17.
@@ -19,9 +19,9 @@ public abstract class Database {
 
     public abstract Map<String, Activity> getAllActivities(ActivityMode mode);
 
-    public abstract void saveLocation(Location location);
+    public abstract void saveLocation(GpsLocation location);
 
-    public abstract List<Location> getLocation();
+    public abstract Map<String, GpsLocation> getLocations(String activityId);
 
 
 

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.responses.UserResponse;
 import retrofit.Call;
@@ -64,8 +64,9 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("User fetch failed...");
-                    t.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
                 }
             });
         }
@@ -94,22 +95,54 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("User registration failed...");
-                    t.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
                 }
             });
         }
 
     }
 
-    public void saveLocation(Location location, String user){
+    public void saveLocation(GpsLocation location, String user, String activityId){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.saveLocation(location, user, location.getActivityId());
+        Call<GpsLocation> call = serviceCaller.saveLocation(location, user, activityId, location.getLocationId());
 
         if(call != null){
-            call.enqueue(new Callback<Location>() {
+            call.enqueue(new Callback<GpsLocation>() {
                 @Override
-                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                public void onResponse(Response<GpsLocation> response, Retrofit retrofit) {
+                    try {
+                        if(response.isSuccess()){
+                            if(trsHandler != null){
+                                trsHandler.onDataArrived(null, true);
+                            }
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void getLocations(String user, String activityId){
+        RestService serviceCaller = retrofit.create(RestService.class);
+        Call<Map<String, GpsLocation>> call = serviceCaller.getLocations(user, activityId);
+
+        if(call != null){
+            call.enqueue(new Callback<Map<String, GpsLocation>>() {
+                @Override
+                public void onResponse(Response<Map<String, GpsLocation>> response, Retrofit retrofit) {
                     try {
                         if(response.isSuccess()){
                             if(trsHandler != null){
@@ -124,38 +157,9 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Saving location failed...");
-                    t.printStackTrace();
-                }
-            });
-        }
-
-    }
-
-    public void getLocation(String user, String activityId){
-        RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.getLocation(user, activityId);
-
-        if(call != null){
-            call.enqueue(new Callback<Location>() {
-                @Override
-                public void onResponse(Response<Location> response, Retrofit retrofit) {
-                    try {
-                        if(response.isSuccess()){
-                            if(trsHandler != null){
-                                trsHandler.onDataArrived(response.body(), true);
-                            }
-                        }
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
                     }
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    System.out.println("Location fetch failed...");
-                    t.printStackTrace();
                 }
             });
         }
@@ -215,8 +219,9 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Activity fetch failed...");
-                    t.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
                 }
             });
         }
@@ -245,8 +250,9 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Activities fetch failed...");
-                    t.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
                 }
             });
         }

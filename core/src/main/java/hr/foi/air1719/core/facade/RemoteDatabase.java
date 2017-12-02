@@ -8,7 +8,7 @@ import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
@@ -53,12 +53,13 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
     }
 
     @Override
-    public void saveLocation(Location location) {
-        this.restServiceCaller.saveLocation(location, this.user);
+    public void saveLocation(GpsLocation location) {
+        this.restServiceCaller.saveLocation(location, this.user, location.getActivityId());
     }
 
     @Override
-    public List<Location> getLocation() {
+    public Map<String, GpsLocation> getLocations(String activityId) {
+        this.restServiceCaller.getLocations(this.user, activityId);
         return null;
     }
 

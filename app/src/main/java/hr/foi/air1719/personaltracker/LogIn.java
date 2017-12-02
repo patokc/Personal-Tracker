@@ -20,7 +20,7 @@ import hr.foi.air1719.core.facade.DataHandler;
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
@@ -91,8 +91,6 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("username", UserName.getText().toString());
                 editor.commit();
-
-                
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();

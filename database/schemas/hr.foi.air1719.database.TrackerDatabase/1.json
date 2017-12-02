@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "85e1665b3810ae76fe79a28dc1c40533",
+    "identityHash": "1a037f6040e0e8a5ea79d16bebe551cb",
     "entities": [
       {
         "tableName": "User",
@@ -43,14 +43,20 @@
         "foreignKeys": []
       },
       {
-        "tableName": "Location",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`locationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `activityId` TEXT, `longitude` REAL NOT NULL, `latitude` REAL NOT NULL, `gpsType` INTEGER NOT NULL, `timestamp` TEXT)",
+        "tableName": "GpsLocation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`locationId` TEXT NOT NULL, `username` TEXT, `activityId` TEXT, `longitude` REAL NOT NULL, `latitude` REAL NOT NULL, `gpsType` INTEGER NOT NULL, `accuracy` REAL NOT NULL, `timestamp` INTEGER, PRIMARY KEY(`locationId`))",
         "fields": [
           {
             "fieldPath": "locationId",
             "columnName": "locationId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "activityId",
@@ -77,9 +83,15 @@
             "notNull": true
           },
           {
+            "fieldPath": "accuracy",
+            "columnName": "accuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
             "fieldPath": "timestamp",
             "columnName": "timestamp",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -87,7 +99,7 @@
           "columnNames": [
             "locationId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -163,7 +175,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"85e1665b3810ae76fe79a28dc1c40533\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1a037f6040e0e8a5ea79d16bebe551cb\")"
     ]
   }
 }

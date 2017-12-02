@@ -3,13 +3,11 @@ package hr.foi.air1719.core.facade;
 import android.content.Context;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 
 /**
  * Created by abenkovic on 11/29/17.
@@ -22,7 +20,8 @@ public class DatabaseFacade implements DataHandler {
     private DataHandler handler = null;
     private boolean isLocalOnly = false;
 
-    private Map<String, Activity> activities;
+    private Map<String, Activity> activities = null;
+    private Map<String, GpsLocation> gpsLocations = null;
 
 
     public DatabaseFacade(Context context) {
@@ -45,14 +44,21 @@ public class DatabaseFacade implements DataHandler {
             Map.Entry<String,Object> entry = remoteData.entrySet().iterator().next();
 
             if(entry.getValue() instanceof Activity){
-                combinedData.putAll(this.activities);
-                combinedData.putAll(remoteData);
-            } else if (entry.getValue() instanceof Location){
-                System.out.println("DOBIO LOKACIJE");
-            }
+                if(this.activities !=null){
+                    combinedData.putAll(this.activities);
+                    combinedData.putAll(remoteData);
+                }
 
+            } else if (entry.getValue() instanceof GpsLocation){
+                if(this.gpsLocations !=null){
+                    combinedData.putAll(this.gpsLocations);
+                    combinedData.putAll(remoteData);
+                }
+
+            }
             this.handler.onDataArrived(combinedData, ok);
-        } else if(result instanceof Activity || result instanceof Location){
+
+        } else if(result instanceof Activity || result instanceof GpsLocation){
             this.handler.onDataArrived(result, ok);
         }
     }
@@ -81,22 +87,30 @@ public class DatabaseFacade implements DataHandler {
 
     }
 
-    public void saveLocation(Location location){
+    public void saveLocation(GpsLocation location){
         local.saveLocation(location);
-        remote.saveLocation(location);
+        if(!this.isLocalOnly){
+            remote.saveLocation(location);
+        }
+
     }
 
-    public List<Location> getLocation(){
-        List<Location> localData = local.getLocation();
-        List<Location> remoteData = remote.getLocation();
+    public Map<String, GpsLocation> getLocations(String activityId){
+        this.gpsLocations = local.getLocations(activityId);
+        if(!this.isLocalOnly){
+            remote.getLocations(activityId);
+        }
 
-        return localData;
+        return this.gpsLocations;
     }
 
 
 
     public void setLocalOnly(boolean localOnly) {
-        isLocalOnly = localOnly;
+        // ako ne postoji netko tko ce handlati async task, nemoj dozvoliti upite na remote bazu
+        if(this.handler != null){
+            isLocalOnly = localOnly;
+        }
     }
 
 

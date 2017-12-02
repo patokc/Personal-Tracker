@@ -2,20 +2,26 @@ package hr.foi.air1719.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by abenkovic on 10/28/17.
  */
 
 @Entity
-public class Location {
-    @PrimaryKey(autoGenerate = true)
-    private int locationId;
+public class GpsLocation {
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    private String locationId;
+
+    @ColumnInfo(name = "username")
+    private String username;
 
     @ColumnInfo(name = "activityId")
     private String activityId;
@@ -29,22 +35,46 @@ public class Location {
     @ColumnInfo(name = "gpsType")
     private int gpsType;
 
-    @ColumnInfo(name = "timestamp")
-    private Timestamp timestamp;
+    @ColumnInfo(name = "accuracy")
+    private float accuracy;
 
-    public Location(String activityId, double longitude, double latitude) {
+    @ColumnInfo(name = "timestamp")
+    private Date timestamp;
+
+    public GpsLocation(String username, String activityId, double longitude, double latitude, float accuracy, int gpsType) {
+        this.locationId = UUID.randomUUID().toString();
+        this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.timestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        this.timestamp = new Date();
+        this.accuracy = accuracy;
+        this.gpsType=gpsType;
     }
 
-    public int getLocationId() {
+    @Ignore
+    public GpsLocation(@NonNull String activityId, double longitude, double latitude) {
+        this.locationId = UUID.randomUUID().toString();
+        this.activityId = activityId;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+    }
+
+    public String getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(int locationId) {
+    public void setLocationId(String locationId) {
         this.locationId = locationId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getActivityId() {
@@ -79,11 +109,15 @@ public class Location {
         this.gpsType = gpsType;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public float getAccuracy() { return accuracy; }
+
+    public void setAccuracy(float accuracy) { this.accuracy = accuracy; }
 }

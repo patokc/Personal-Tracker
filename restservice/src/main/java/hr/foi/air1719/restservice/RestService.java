@@ -4,7 +4,7 @@ import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.responses.UserResponse;
 import retrofit.Call;
@@ -33,11 +33,11 @@ public interface RestService {
     @GET("activities/{user}/{mode}.json")
     Call<Map<String, Activity>> getAllActivities(@Path("user") String user, @Path("mode") ActivityMode mode);
 
-    @PUT("{user}/{activityId}.json")
-    Call<Location> saveLocation(@Body Location data, @Path("user") String user, @Path("activityId") String activityId);
+    @PUT("gpsLocations/{user}/{activityId}/{gpsLocationId}.json")
+    Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user, @Path("activityId") String activityId, @Path("gpsLocationId") String gpsLocationId);
 
-    @GET("{user}/{activityId}.json")
-    Call<Location> getLocation(@Path("user") String user, @Path("activityId") String activityId);
+    @GET("gpsLocations/{user}/{activityId}.json")
+    Call<Map<String, GpsLocation>> getLocations(@Path("user") String user, @Path("activityId") String activityId);
 
 
 
