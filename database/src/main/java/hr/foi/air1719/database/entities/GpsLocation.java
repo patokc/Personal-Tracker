@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @Entity
 public class GpsLocation {
+
     @PrimaryKey(autoGenerate = false)
     @NonNull
     private String locationId;
@@ -41,8 +42,10 @@ public class GpsLocation {
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
+
     public GpsLocation(String username, String activityId, double longitude, double latitude, float accuracy, int gpsType) {
         this.locationId = UUID.randomUUID().toString();
+
         this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
@@ -50,15 +53,18 @@ public class GpsLocation {
         this.timestamp = new Date();
         this.accuracy = accuracy;
         this.gpsType=gpsType;
+
     }
 
     @Ignore
-    public GpsLocation(@NonNull String activityId, double longitude, double latitude) {
+    public GpsLocation(@NonNull String activityId, double longitude, double latitude, float accuracy) {
         this.locationId = UUID.randomUUID().toString();
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.accuracy = accuracy;
         this.timestamp = new Timestamp(System.currentTimeMillis());
+
     }
 
     public String getLocationId() {
@@ -121,3 +127,6 @@ public class GpsLocation {
 
     public void setAccuracy(float accuracy) { this.accuracy = accuracy; }
 }
+
+
+

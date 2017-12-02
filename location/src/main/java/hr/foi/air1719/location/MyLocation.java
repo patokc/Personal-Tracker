@@ -1,6 +1,7 @@
 package hr.foi.air1719.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -54,7 +55,7 @@ public class MyLocation implements LocationListener {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                    //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getActivity(), "Not allowed to use GPS location", Toast.LENGTH_LONG).show();
 
                 } else {
 
@@ -64,19 +65,17 @@ public class MyLocation implements LocationListener {
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_FINE_LOCATION);
 
-                    //Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getActivity(), "Allowed to use GPS location", Toast.LENGTH_LONG).show();
                 }
             }
 
 
             if (gps_enabled) {
-
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, BrzinaOsvjezavanjaGps, MinimalnaUdaljenostGps, this);
-                Toast.makeText(fragment.getActivity(), "GpsPrecision", Toast.LENGTH_LONG).show();
+                //Toast.makeText(fragment.getActivity(), "GpsPrecision", Toast.LENGTH_LONG).show();
             } else {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, BrzinaOsvjezavanjaNetwork, MinimalnaUdaljenostNetwork, this);
-
-                Toast.makeText(fragment.getActivity(), "NetworkPrecision", Toast.LENGTH_LONG).show();
+                //Toast.makeText(fragment.getActivity(), "NetworkPrecision", Toast.LENGTH_LONG).show();
             }
 
         } catch (Exception e) {
@@ -84,51 +83,69 @@ public class MyLocation implements LocationListener {
         }
     }
 
+    public void LocationListenerStop() {
+        try
+        {
+            locationManager.removeUpdates(this);
+            locationManager = null;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Location GetLastKnownLocation(IGPSActivity i_gps) {
 
-        this.iGPS = i_gps;
-        this.fragment = (Fragment)i_gps;
+        try
+        {
+            this.iGPS = i_gps;
+            this.fragment = (Fragment)i_gps;
 
-        LocationManager mLocationManager = (LocationManager)(fragment.getActivity().getSystemService(Context.LOCATION_SERVICE));
+            LocationManager mLocationManager = (LocationManager)(fragment.getActivity().getSystemService(Context.LOCATION_SERVICE));
 
-        if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                //Toast.makeText(fragment.getActivity(), "No PERMISSIONS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getActivity(), "Not allowed to use GPS location", Toast.LENGTH_LONG).show();
 
-            } else {
+                } else {
 
-                ActivityCompat.requestPermissions(fragment.getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+                    ActivityCompat.requestPermissions(fragment.getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_FINE_LOCATION);
 
-               // Toast.makeText(fragment.getActivity(), "Yes PERMISSIONS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(fragment.getActivity(), "Allowed to use GPS location", Toast.LENGTH_LONG).show();
+                }
             }
-        }
 
 
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            android.location.Location l = mLocationManager.getLastKnownLocation(provider);
-            if (l == null) {
-                continue;
+            List<String> providers = mLocationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                android.location.Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    bestLocation = l;
+                }
             }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                bestLocation = l;
-            }
-        }
 
-        if(bestLocation != null) {
-            return bestLocation;
-        }
-        else
+            if(bestLocation != null) {
+                return bestLocation;
+            }
+            else
+                return null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
+        }
     }
 
     @Override

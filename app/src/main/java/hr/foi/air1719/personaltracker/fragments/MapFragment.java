@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.R;
 
 /**
@@ -50,6 +51,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
         mapFragment.onCreate(null);
         mapFragment.onResume();
         mapFragment.getMapAsync((OnMapReadyCallback) this);
+
         FloatingActionButton floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,42 +69,55 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        this.googleMap=googleMap;
-        Location location = myLocation.GetLastKnownLocation(this);
+        try {
+            if (!Helper.isInternetAvailable(this.getActivity())) {
+                Toast.makeText(this.getActivity(), "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        if (location == null) {
-            Toast.makeText(getActivity(),"Your GPS is off, please turn on your GPS.",Toast.LENGTH_LONG).show();
-            return;
-        } else {
-            Toast.makeText(getActivity(), "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
-        }
+            this.googleMap = googleMap;
+            Location location = myLocation.GetLastKnownLocation(this);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+            if (location == null) {
+                Toast.makeText(getActivity(), "Your GPS is off, please turn on your GPS.", Toast.LENGTH_LONG).show();
+                return;
+            } /*else {
+                Toast.makeText(getActivity(), "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+            }*/
 
-        mMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                .title("My location"));
-    }
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 
-    @Override
-    public void locationChanged(Location location) {
-        if(mMarker != null)
-        {
-            mMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(mMarker.getPosition()));
-        }
-        else
-        {
             mMarker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(location.getLatitude(), location.getLongitude()))
                     .title("My location"));
         }
-
-        //Toast.makeText(this, "Location changed: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 
     @Override
-    public void displayGPSSettingsDialog() {
+    public void locationChanged(Location location) {
+        try {
 
+            if (!Helper.isInternetAvailable(this.getActivity())) {
+                Toast.makeText(this.getActivity(), "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (mMarker != null) {
+                mMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(mMarker.getPosition()));
+            } else {
+                mMarker = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .title("My location"));
+            }
+            //Toast.makeText(this, "Location changed: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+        }catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 }
