@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7b3edb5d0fc9b0cf7c49dc49c2d28473",
+    "identityHash": "1a037f6040e0e8a5ea79d16bebe551cb",
     "entities": [
       {
         "tableName": "User",
@@ -44,12 +44,12 @@
       },
       {
         "tableName": "GpsLocation",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`locationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `activityId` INTEGER NOT NULL, `longitude` REAL NOT NULL, `latitude` REAL NOT NULL, `gpsType` INTEGER NOT NULL, `accuracy` REAL NOT NULL, `timestamp` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`locationId` TEXT NOT NULL, `username` TEXT, `activityId` TEXT, `longitude` REAL NOT NULL, `latitude` REAL NOT NULL, `gpsType` INTEGER NOT NULL, `accuracy` REAL NOT NULL, `timestamp` INTEGER, PRIMARY KEY(`locationId`))",
         "fields": [
           {
             "fieldPath": "locationId",
             "columnName": "locationId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -61,8 +61,8 @@
           {
             "fieldPath": "activityId",
             "columnName": "activityId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "longitude",
@@ -99,20 +99,26 @@
           "columnNames": [
             "locationId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "Activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mode` TEXT, `start` INTEGER, `finish` INTEGER, `averageSpeed` REAL NOT NULL, `distance` REAL NOT NULL, `description` TEXT, `image` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` TEXT NOT NULL, `user` TEXT, `mode` TEXT, `start` TEXT, `finish` TEXT, `averageSpeed` REAL NOT NULL, `distance` REAL NOT NULL, `description` TEXT, `image` TEXT, PRIMARY KEY(`activityId`))",
         "fields": [
           {
             "fieldPath": "activityId",
             "columnName": "activityId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "user",
+            "columnName": "user",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "mode",
@@ -123,13 +129,13 @@
           {
             "fieldPath": "start",
             "columnName": "start",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "finish",
             "columnName": "finish",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -161,7 +167,7 @@
           "columnNames": [
             "activityId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -169,7 +175,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7b3edb5d0fc9b0cf7c49dc49c2d28473\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1a037f6040e0e8a5ea79d16bebe551cb\")"
     ]
   }
 }

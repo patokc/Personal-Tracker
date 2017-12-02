@@ -13,6 +13,6 @@ import hr.foi.air1719.database.entities.*;
 @TypeConverters({ActivityModeConverter.class, DateConverter.class})
 public abstract class TrackerDatabase extends RoomDatabase {
     public abstract UserDao userDao();
-    public abstract LocationDao locationDao();
+    public abstract GpsLocationDao gpsLocationDao();
     public abstract ActivityDao activityDao();
 }

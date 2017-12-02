@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
-import hr.foi.air1719.core.adapter.DataAdapter;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
@@ -101,18 +100,6 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("username", UserName.getText().toString());
                 editor.commit();
-
-                /* ???? Dali je to ovdje greškom ????
-                //zašto se sprema lokacija na nakon prijave?
-                Thread thread = new Thread(new Runnable(){
-                    @Override
-                    public void run(){
-                        Location loc = new Location(UserName.getText().toString(), 1,2.5, 6.1);
-                        DataAdapter ad = new DataAdapter(getApplicationContext());
-                        ad.saveLocation(loc);
-                    }
-                });
-                thread.start();*/
 
 
             } else {

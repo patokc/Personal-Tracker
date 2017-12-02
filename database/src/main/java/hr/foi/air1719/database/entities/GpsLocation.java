@@ -2,9 +2,13 @@ package hr.foi.air1719.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by abenkovic on 10/28/17.
@@ -12,14 +16,16 @@ import java.util.Date;
 
 @Entity
 public class GpsLocation {
-    @PrimaryKey(autoGenerate = true)
-    private int locationId;
+
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    private String locationId;
 
     @ColumnInfo(name = "username")
     private String username;
 
     @ColumnInfo(name = "activityId")
-    private int activityId;
+    private String activityId;
 
     @ColumnInfo(name = "longitude")
     private double longitude;
@@ -36,7 +42,10 @@ public class GpsLocation {
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    public GpsLocation(String username, int activityId, double longitude, double latitude, float accuracy, int gpsType) {
+
+    public GpsLocation(String username, String activityId, double longitude, double latitude, float accuracy, int gpsType) {
+        this.locationId = UUID.randomUUID().toString();
+
         this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
@@ -44,13 +53,25 @@ public class GpsLocation {
         this.timestamp = new Date();
         this.accuracy = accuracy;
         this.gpsType=gpsType;
+
     }
 
-    public int getLocationId() {
+    @Ignore
+    public GpsLocation(@NonNull String activityId, double longitude, double latitude, float accuracy) {
+        this.locationId = UUID.randomUUID().toString();
+        this.activityId = activityId;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.accuracy = accuracy;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+
+    }
+
+    public String getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(int locationId) {
+    public void setLocationId(String locationId) {
         this.locationId = locationId;
     }
 
@@ -62,11 +83,11 @@ public class GpsLocation {
         this.username = username;
     }
 
-    public int getActivityId() {
+    public String getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(int activityId) {
+    public void setActivityId(String activityId) {
         this.activityId = activityId;
     }
 
@@ -106,3 +127,6 @@ public class GpsLocation {
 
     public void setAccuracy(float accuracy) { this.accuracy = accuracy; }
 }
+
+
+

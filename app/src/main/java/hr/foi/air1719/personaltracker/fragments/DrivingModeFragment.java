@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import hr.foi.air1719.core.adapter.DataAdapter;
+import hr.foi.air1719.core.facade.DatabaseFacade;
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
@@ -109,11 +111,11 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
             txtSpeed.setText(speed + " km/h");
             txtTotalKm.setText("0 km");
+            
 
-            //TODO  check user, and activity ID, and GpsType
-            GpsLocation locDB = new GpsLocation("TODO", 1, location.getLongitude(), location.getLatitude(), location.getAccuracy(), 1);
-            DataAdapter ad = new DataAdapter(getView().getContext());
-            ad.saveLocation(locDB);
+            DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+            Activity activity = new Activity(ActivityMode.DRIVING);
+            dbfacade.saveLocation(new GpsLocation(activity.getActivityId(), location.getLongitude(), location.getLatitude(), location.getAccuracy()));
 
         }catch (Exception E)
         {
