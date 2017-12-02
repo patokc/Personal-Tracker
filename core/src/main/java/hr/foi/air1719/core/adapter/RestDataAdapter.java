@@ -4,7 +4,7 @@ package hr.foi.air1719.core.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
@@ -28,7 +28,7 @@ public class RestDataAdapter implements IDataAdapter, RestServiceHandler {
     }
 
     @Override
-    public void saveLocation(Location location) {
+    public void saveLocation(GpsLocation location) {
         this.restServiceCaller.saveLocation(location, this.username);
     }
 

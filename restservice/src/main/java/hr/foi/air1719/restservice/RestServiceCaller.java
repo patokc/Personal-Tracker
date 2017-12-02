@@ -2,7 +2,7 @@ package hr.foi.air1719.restservice;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.responses.UserResponse;
 import retrofit.Call;
@@ -98,14 +98,14 @@ public class RestServiceCaller {
 
     }
 
-    public void saveLocation(Location location, String user){
+    public void saveLocation(GpsLocation location, String user){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.saveLocation(location, user);
+        Call<GpsLocation> call = serviceCaller.saveLocation(location, user);
 
         if(call != null){
-            call.enqueue(new Callback<Location>() {
+            call.enqueue(new Callback<GpsLocation>() {
                 @Override
-                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                public void onResponse(Response<GpsLocation> response, Retrofit retrofit) {
                     try {
                         if(response.isSuccess()){
                             if(trsHandler != null){

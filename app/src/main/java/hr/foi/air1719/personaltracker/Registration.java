@@ -138,6 +138,5 @@ public class Registration extends AppCompatActivity  {
         Intent intent = new Intent(this, LogIn.class);
         startActivity(intent);
     }
-
 }
 

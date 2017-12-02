@@ -1,6 +1,6 @@
 package hr.foi.air1719.restservice;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.responses.UserResponse;
 import retrofit.Call;
@@ -21,5 +21,5 @@ public interface RestService {
     Call<User> createUser(@Body User data, @Path("user") String user);
 
     @PUT("location/{user}.json")
-    Call<Location> saveLocation(@Body Location data, @Path("user") String user);
+    Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user);
 }

@@ -115,9 +115,4 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     public void locationChanged(Location location) {
 
     }
-
-    @Override
-    public void displayGPSSettingsDialog() {
-
-    }
 }

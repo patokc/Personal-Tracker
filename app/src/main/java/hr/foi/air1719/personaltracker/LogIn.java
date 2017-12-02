@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.core.adapter.DataAdapter;
 import hr.foi.air1719.restservice.RestServiceCaller;
@@ -102,6 +102,8 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 editor.putString("username", UserName.getText().toString());
                 editor.commit();
 
+                /* ???? Dali je to ovdje greškom ????
+                //zašto se sprema lokacija na nakon prijave?
                 Thread thread = new Thread(new Runnable(){
                     @Override
                     public void run(){
@@ -110,13 +112,12 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                         ad.saveLocation(loc);
                     }
                 });
-                thread.start();
+                thread.start();*/
 
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();
             }
-
         }
     }
 }

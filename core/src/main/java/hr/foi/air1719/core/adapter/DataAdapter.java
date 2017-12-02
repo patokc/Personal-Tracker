@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 
 /**
  * Created by abenkovic on 11/26/17.
@@ -13,7 +13,7 @@ import hr.foi.air1719.database.entities.Location;
 public class DataAdapter implements IDataAdapter {
     private Context context;
 
-    public ArrayList<Location> locations;
+    public ArrayList<GpsLocation> locations;
 
     protected DataLoadedListener listener;
 
@@ -31,7 +31,7 @@ public class DataAdapter implements IDataAdapter {
     }
 
     @Override
-    public void saveLocation(Location location) {
+    public void saveLocation(GpsLocation location) {
         this.localDataAdapter.saveLocation(location);
         this.restDataAdapter.saveLocation(location);
     }

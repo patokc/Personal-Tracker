@@ -6,29 +6,29 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 
 @Dao
 public interface LocationDao {
 
-    @Query("SELECT * FROM location WHERE username =:username AND timestamp BETWEEN :start AND :end")
-    Location findByIdRange(String username, int start, int end);
+    @Query("SELECT * FROM gpsLocation WHERE username =:username AND timestamp BETWEEN :start AND :end")
+    GpsLocation findByIdRange(String username, int start, int end);
 
-    @Query("SELECT * FROM location WHERE username =:username")
-    Location findByUser(String username);
+    @Query("SELECT * FROM gpsLocation WHERE username =:username")
+    GpsLocation findByUser(String username);
 
-    @Query("SELECT * FROM location WHERE activityId =:activityId")
-    Location findByActivity(int activityId);
+    @Query("SELECT * FROM gpsLocation WHERE activityId =:activityId")
+    GpsLocation findByActivity(int activityId);
 
-    @Query("SELECT * FROM location WHERE timestamp BETWEEN :start AND :end")
-    Location findByRange(int start, int end);
+    @Query("SELECT * FROM gpsLocation WHERE timestamp BETWEEN :start AND :end")
+    GpsLocation findByRange(int start, int end);
 
     @Insert
-    void save(Location location);
+    void save(GpsLocation location);
 
     @Update
-    void update(Location location);
+    void update(GpsLocation location);
 
     @Delete
-    void delete(Location location);
+    void delete(GpsLocation location);
 }

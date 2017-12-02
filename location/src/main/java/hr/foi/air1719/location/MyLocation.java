@@ -83,6 +83,17 @@ public class MyLocation implements LocationListener {
         }
     }
 
+    public void LocationListenerStop() {
+        try
+        {
+            locationManager.removeUpdates(this);
+            locationManager = null;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Location GetLastKnownLocation(IGPSActivity i_gps) {
 

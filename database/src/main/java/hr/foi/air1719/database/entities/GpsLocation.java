@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Location {
+public class GpsLocation {
     @PrimaryKey(autoGenerate = true)
     private int locationId;
 
@@ -30,14 +30,20 @@ public class Location {
     @ColumnInfo(name = "gpsType")
     private int gpsType;
 
+    @ColumnInfo(name = "accuracy")
+    private float accuracy;
+
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    public Location(String username, int activityId, double longitude, double latitude) {
+    public GpsLocation(String username, int activityId, double longitude, double latitude, float accuracy, int gpsType) {
         this.username = username;
         this.activityId = activityId;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.timestamp = new Date();
+        this.accuracy = accuracy;
+        this.gpsType=gpsType;
     }
 
     public int getLocationId() {
@@ -95,4 +101,8 @@ public class Location {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public float getAccuracy() { return accuracy; }
+
+    public void setAccuracy(float accuracy) { this.accuracy = accuracy; }
 }

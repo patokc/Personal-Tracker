@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import hr.foi.air1719.database.DatabaseSingleton;
 import hr.foi.air1719.database.TrackerDatabase;
-import hr.foi.air1719.database.entities.Location;
+import hr.foi.air1719.database.entities.GpsLocation;
 
 /**
  * Created by abenkovic on 11/26/17.
@@ -27,7 +27,7 @@ public class LocalDataAdapter implements IDataAdapter {
     }
 
     @Override
-    public void saveLocation(Location location) {
+    public void saveLocation(GpsLocation location) {
         this.db.locationDao().save(location);
     }
 }

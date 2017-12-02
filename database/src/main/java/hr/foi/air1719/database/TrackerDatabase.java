@@ -9,7 +9,7 @@ import hr.foi.air1719.database.dao.*;
 import hr.foi.air1719.database.entities.*;
 
 
-@Database(entities = {User.class, Location.class, Activity.class}, version = 1)
+@Database(entities = {User.class, GpsLocation.class, Activity.class}, version = 1)
 @TypeConverters({ActivityModeConverter.class, DateConverter.class})
 public abstract class TrackerDatabase extends RoomDatabase {
     public abstract UserDao userDao();
