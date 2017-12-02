@@ -2,9 +2,12 @@ package hr.foi.air1719.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,10 +28,10 @@ public class Activity {
     private ActivityMode mode;
 
     @ColumnInfo(name = "start")
-    private Date start;
+    private Timestamp start;
 
     @ColumnInfo(name = "finish")
-    private Date finish;
+    private Timestamp finish;
 
     @ColumnInfo(name = "averageSpeed")
     private float averageSpeed;
@@ -45,7 +48,20 @@ public class Activity {
     public Activity(ActivityMode mode) {
         this.activityId = UUID.randomUUID().toString();
         this.mode = mode;
-        this.start = new Date();
+        this.start = new Timestamp(System.currentTimeMillis());
+    }
+
+    @Ignore
+    public Activity(@NonNull String activityId, String user, ActivityMode mode, Timestamp start, Timestamp finish, float averageSpeed, float distance, String description, String image) {
+        this.activityId = activityId;
+        this.user = user;
+        this.mode = mode;
+        this.start = start;
+        this.finish = finish;
+        this.averageSpeed = averageSpeed;
+        this.distance = distance;
+        this.description = description;
+        this.image = image;
     }
 
     public String getActivityId() {
@@ -72,19 +88,19 @@ public class Activity {
         this.mode = mode;
     }
 
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public Date getFinish() {
+    public Timestamp getFinish() {
         return finish;
     }
 
-    public void setFinish(Date finish) {
+    public void setFinish(Timestamp finish) {
         this.finish = finish;
     }
 

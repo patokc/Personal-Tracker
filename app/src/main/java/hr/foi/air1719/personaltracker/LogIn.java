@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.Map;
+
+import hr.foi.air1719.core.facade.DataHandler;
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
@@ -88,20 +92,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 editor.putString("username", UserName.getText().toString());
                 editor.commit();
 
-                Thread thread = new Thread(new Runnable(){
-                    @Override
-                    public void run(){
-                        Activity act = new Activity(ActivityMode.DRIVING);
-                        Location loc = new Location(act.getActivityId(),12.3243243,21.556345);
-                        DatabaseFacade dbfacade = new DatabaseFacade(getApplicationContext());
-                        dbfacade.saveActivity(act);
-                        dbfacade.getAllActivities(ActivityMode.DRIVING);
-                        //dbfacade.saveLocation(loc);
-                        //dbfacade.getLocation();
-                    }
-                });
-                thread.start();
-
+                
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();

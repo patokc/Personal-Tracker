@@ -2,6 +2,8 @@ package hr.foi.air1719.restservice;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.Map;
+
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.Location;
@@ -171,7 +173,7 @@ public class RestServiceCaller {
                     try {
                         if(response.isSuccess()){
                             if(trsHandler != null){
-                                trsHandler.onDataArrived(response.body(), true);
+                                trsHandler.onDataArrived(null, true); // ne zanima me response.body()
                             }
                         }
 
@@ -182,22 +184,23 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Saving activity failed...");
-                    t.printStackTrace();
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
                 }
             });
         }
 
     }
 
-    public void getActivity(String user, String activityId){
+    public void getActivity(String user,ActivityMode mode, String activityId){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.getLocation(user, activityId);
+        Call<Activity> call = serviceCaller.getActivity(user, mode, activityId);
 
         if(call != null){
-            call.enqueue(new Callback<Location>() {
+            call.enqueue(new Callback<Activity>() {
                 @Override
-                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                public void onResponse(Response<Activity> response, Retrofit retrofit) {
                     try {
                         if(response.isSuccess()){
                             if(trsHandler != null){
@@ -212,7 +215,7 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Location fetch failed...");
+                    System.out.println("Activity fetch failed...");
                     t.printStackTrace();
                 }
             });
@@ -222,12 +225,12 @@ public class RestServiceCaller {
 
     public void getAllActivities(String user, ActivityMode mode){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Location> call = serviceCaller.getLocation(user, mode.toString());
+        Call<Map<String, Activity>> call = serviceCaller.getAllActivities(user, mode);
 
         if(call != null){
-            call.enqueue(new Callback<Location>() {
+            call.enqueue(new Callback<Map<String, Activity>>() {
                 @Override
-                public void onResponse(Response<Location> response, Retrofit retrofit) {
+                public void onResponse(Response<Map<String, Activity>> response, Retrofit retrofit) {
                     try {
                         if(response.isSuccess()){
                             if(trsHandler != null){
@@ -242,7 +245,7 @@ public class RestServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("Location fetch failed...");
+                    System.out.println("Activities fetch failed...");
                     t.printStackTrace();
                 }
             });

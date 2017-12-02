@@ -18,7 +18,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 @Dao
 public interface ActivityDao {
     @Query("SELECT * FROM activity WHERE activityId = :activityId ")
-    Activity findById(int activityId);
+    Activity findById(String activityId);
 
     @Query("SELECT * FROM activity WHERE user = :user")
     Activity findByUser(String user);

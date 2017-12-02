@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6e7ddbda2c0315c4f24e3d01f1b074af",
+    "identityHash": "85e1665b3810ae76fe79a28dc1c40533",
     "entities": [
       {
         "tableName": "User",
@@ -94,7 +94,7 @@
       },
       {
         "tableName": "Activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` TEXT NOT NULL, `user` TEXT, `mode` TEXT, `start` INTEGER, `finish` INTEGER, `averageSpeed` REAL NOT NULL, `distance` REAL NOT NULL, `description` TEXT, `image` TEXT, PRIMARY KEY(`activityId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` TEXT NOT NULL, `user` TEXT, `mode` TEXT, `start` TEXT, `finish` TEXT, `averageSpeed` REAL NOT NULL, `distance` REAL NOT NULL, `description` TEXT, `image` TEXT, PRIMARY KEY(`activityId`))",
         "fields": [
           {
             "fieldPath": "activityId",
@@ -117,13 +117,13 @@
           {
             "fieldPath": "start",
             "columnName": "start",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "finish",
             "columnName": "finish",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -163,7 +163,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6e7ddbda2c0315c4f24e3d01f1b074af\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"85e1665b3810ae76fe79a28dc1c40533\")"
     ]
   }
 }
