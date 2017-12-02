@@ -120,9 +120,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
             E.printStackTrace();
         }
     }
-
-    @Override
-    public void displayGPSSettingsDialog() {
-
-    }
 }

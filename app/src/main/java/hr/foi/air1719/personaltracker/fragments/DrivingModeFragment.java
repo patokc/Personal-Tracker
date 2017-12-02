@@ -16,11 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import hr.foi.air1719.core.adapter.DataAdapter;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
 import hr.foi.air1719.personaltracker.R;
@@ -33,6 +36,11 @@ import static android.app.Activity.RESULT_OK;
 
 public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
+    MyLocation myLocation = null;
+    TextView txtSpeed=null;
+    TextView txtTotalKm=null;
+    Button btnDrivingStart = null;
+    Button btnShowTrip = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +49,51 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        txtSpeed = (TextView) getView().findViewById(R.id.txtSpeedInfo);
+        txtTotalKm = (TextView) getView().findViewById(R.id.txtTotalKm);
+
+        btnDrivingStart = (Button) getView().findViewById(R.id.btnDrivingStart);
+        btnDrivingStart.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_Start(v);
+            }
+        });
+
+        btnShowTrip = (Button) getView().findViewById(R.id.btnShowTrip);
+        btnShowTrip.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_ShowTrip(v);
+            }
+        });
+
+        btnShowTrip.setVisibility(View.INVISIBLE);
     }
 
+
+    public void onClick_Start(View v) {
+
+        if(myLocation ==null)
+        {
+            Toast.makeText(this.getActivity(), "Start driving mode", Toast.LENGTH_SHORT).show();
+            myLocation = new MyLocation();
+            myLocation.LocationStart(this);
+            btnDrivingStart.setText("Stop");
+            btnShowTrip.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            Toast.makeText(this.getActivity(), "Stop driving mode", Toast.LENGTH_SHORT).show();
+            myLocation.LocationListenerStop();
+            myLocation = null;
+            btnDrivingStart.setText("Start");
+            btnShowTrip.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onClick_ShowTrip(View v) {
+        Toast.makeText(this.getActivity(), "TODO", Toast.LENGTH_SHORT).show();
+    }
 
 
 
@@ -54,10 +105,19 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     @Override
     public void locationChanged(Location location) {
 
-    }
+        try {
+            int speed = (int) ((location.getSpeed() * 3600) / 1000);
+            txtSpeed.setText(speed + " km/h");
+            txtTotalKm.setText("0 km");
 
-    @Override
-    public void displayGPSSettingsDialog() {
+            //TODO  check user, and activity ID, and GpsType
+            GpsLocation locDB = new GpsLocation("TODO", 1, location.getLongitude(), location.getLatitude(), location.getAccuracy(), 1);
+            DataAdapter ad = new DataAdapter(getView().getContext());
+            ad.saveLocation(locDB);
 
+        }catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 }
