@@ -3,6 +3,7 @@ package hr.foi.air1719.core.facade;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -42,13 +43,28 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
 
     @Override
     public Activity getActivity(ActivityMode mode, String activityId) {
-        this.restServiceCaller.getActivity(this.user, mode, activityId);
+        this.restServiceCaller.getActivity(this.user, activityId);
         return null;
     }
 
     @Override
-    public Map<String, Activity> getAllActivities(ActivityMode mode) {
-        this.restServiceCaller.getAllActivities(this.user, mode);
+    public List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date) {
+        return null;
+    }
+
+    @Override
+    public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
+        return null;
+    }
+
+    @Override
+    public List<Activity> getActivityByMode(ActivityMode mode) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Activity> getAllActivities() {
+        this.restServiceCaller.getAllActivities(this.user);
         return null;
     }
 

@@ -24,14 +24,14 @@ public interface RestService {
     @PUT("users/{user}.json")
     Call<User> createUser(@Body User data, @Path("user") String user);
 
-    @PUT("activities/{user}/{mode}/{activityId}.json")
-    Call<Activity> saveActivity(@Body Activity data, @Path("user") String user, @Path("activityId") String activityId, @Path("mode") ActivityMode mode);
+    @PUT("activities/{user}/{activityId}.json")
+    Call<Activity> saveActivity(@Body Activity data, @Path("user") String user, @Path("activityId") String activityId);
 
-    @GET("activities/{user}/{mode}/{activityId}.json")
-    Call<Activity> getActivity(@Path("user") String user, @Path("mode") ActivityMode mode, @Path("activityId") String activityId);
+    @GET("activities/{user}/{activityId}.json")
+    Call<Activity> getActivity(@Path("user") String user, @Path("activityId") String activityId);
 
-    @GET("activities/{user}/{mode}.json")
-    Call<Map<String, Activity>> getAllActivities(@Path("user") String user, @Path("mode") ActivityMode mode);
+    @GET("activities/{user}.json")
+    Call<Map<String, Activity>> getAllActivities(@Path("user") String user);
 
     @PUT("gpsLocations/{user}/{activityId}/{gpsLocationId}.json")
     Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user, @Path("activityId") String activityId, @Path("gpsLocationId") String gpsLocationId);

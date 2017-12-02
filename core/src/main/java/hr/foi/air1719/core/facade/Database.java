@@ -1,5 +1,6 @@
 package hr.foi.air1719.core.facade;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,13 @@ public abstract class Database {
 
     public abstract Activity getActivity(ActivityMode mode, String activityId);
 
-    public abstract Map<String, Activity> getAllActivities(ActivityMode mode);
+    public abstract List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date);
+
+    public abstract List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end);
+
+    public abstract List<Activity> getActivityByMode(ActivityMode mode);
+
+    public abstract Map<String, Activity> getAllActivities();
 
     public abstract void saveLocation(GpsLocation location);
 

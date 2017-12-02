@@ -3,6 +3,7 @@ package hr.foi.air1719.core.facade;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +41,25 @@ public class LocalDatabase extends Database {
     }
 
     @Override
-    public Map<String, Activity> getAllActivities(ActivityMode mode) {
-        Map<String,Activity> map = new HashMap<>();
-        for(Activity a : this.db.activityDao().findByUserAndMode(this.user, mode)){
-            map.put(a.getActivityId(), a);
+    public List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date) {
+        return null;
+    }
+
+    @Override
+    public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
+        return this.db.activityDao().findByDateRangeAndMode(start, end, mode);
+    }
+
+    @Override
+    public List<Activity> getActivityByMode(ActivityMode mode) {
+        return this.db.activityDao().findByMode(mode);
+    }
+
+    @Override
+    public Map<String, Activity> getAllActivities() {
+        Map<String, Activity> map = new HashMap<>();
+        for(Activity activity: this.db.activityDao().findAll()){
+            map.put(activity.getActivityId(), activity);
         }
 
         return map;
@@ -58,11 +74,15 @@ public class LocalDatabase extends Database {
     @Override
     public Map<String, GpsLocation> getLocations(String activityId) {
         Map<String, GpsLocation> map = new HashMap<>();
-        for(GpsLocation gps: this.db.gpsLocationDao().getGpsLocations(activityId, this.user)){
+        for(GpsLocation gps: this.db.gpsLocationDao().getGpsLocations(activityId)){
             System.out.println("L " + gps.getLocationId());
             map.put(gps.getLocationId(), gps);
         }
 
         return map;
     }
+
+
+
+
 }

@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import hr.foi.air1719.core.facade.DatabaseFacade;
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.RestServiceCaller;

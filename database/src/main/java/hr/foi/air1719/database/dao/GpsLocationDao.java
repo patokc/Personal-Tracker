@@ -19,8 +19,8 @@ public interface GpsLocationDao {
     @Query("SELECT * FROM location WHERE username =:username")
     List<Location> findByUser(String username);*/
 
-    @Query("SELECT * FROM gpslocation WHERE activityId =:activityId AND username =:user")
-    List<GpsLocation> getGpsLocations(String activityId, String user);
+    @Query("SELECT * FROM gpslocation WHERE activityId =:activityId")
+    List<GpsLocation> getGpsLocations(String activityId);
 
     @Query("SELECT * FROM gpslocation WHERE timestamp BETWEEN :start AND :end")
     List<GpsLocation> findByRange(int start, int end);

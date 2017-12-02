@@ -168,7 +168,7 @@ public class RestServiceCaller {
 
     public void saveActivity(Activity activity){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Activity> call = serviceCaller.saveActivity(activity, activity.getUser(), activity.getActivityId(), activity.getMode());
+        Call<Activity> call = serviceCaller.saveActivity(activity, activity.getUser(), activity.getActivityId());
 
         if(call != null){
             call.enqueue(new Callback<Activity>() {
@@ -197,9 +197,9 @@ public class RestServiceCaller {
 
     }
 
-    public void getActivity(String user,ActivityMode mode, String activityId){
+    public void getActivity(String user, String activityId){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Activity> call = serviceCaller.getActivity(user, mode, activityId);
+        Call<Activity> call = serviceCaller.getActivity(user, activityId);
 
         if(call != null){
             call.enqueue(new Callback<Activity>() {
@@ -228,9 +228,9 @@ public class RestServiceCaller {
 
     }
 
-    public void getAllActivities(String user, ActivityMode mode){
+    public void getAllActivities(String user){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<Map<String, Activity>> call = serviceCaller.getAllActivities(user, mode);
+        Call<Map<String, Activity>> call = serviceCaller.getAllActivities(user);
 
         if(call != null){
             call.enqueue(new Callback<Map<String, Activity>>() {
