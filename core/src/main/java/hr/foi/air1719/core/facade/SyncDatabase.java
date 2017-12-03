@@ -23,19 +23,33 @@ public class SyncDatabase implements Runnable {
 
     @Override
     public void run() {
-        this.syncLocal();
+        this.syncData();
     }
 
-    public void syncLocal(){
-        if(type.equals("activity")){
-            for(Activity activity: (Collection<Activity>) remoteData){
-                this.db.saveActivity(activity);
-            }
-        } else{
-            for(GpsLocation location: (Collection<GpsLocation>) remoteData){
-                this.db.saveLocation(location);
+    private void syncData(){
+        try{
+            if(type.equals("activity")){
+                for(Activity activity: (Collection<Activity>) remoteData){
+                    try {
+                        this.db.saveActivity(activity);
+                    } catch (Exception e){
+                        System.out.println("Greska prilikom zapisa u bazu: " + e.toString());
+                    }
+                }
+            } else{
+                for(GpsLocation location: (Collection<GpsLocation>) remoteData){
+                    try {
+                        this.db.saveLocation(location);
+                    } catch (Exception e){
+                        System.out.println("Greska prilikom zapisa u bazu: " + e.toString());
+                    }
+                }
+
             }
 
+        }catch(Exception e){
+            System.out.println("Greska prilikom sinkronizacije\n" + e.toString());
         }
+
     }
 }

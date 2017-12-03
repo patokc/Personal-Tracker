@@ -22,7 +22,8 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     private DataHandler handler = null;
     private boolean isLocalOnly = true;
-    private boolean isSyncOn = false;
+    private boolean syncActivities = false;
+    private boolean syncLocations = false;
 
     private Map<String, Activity> activities = null;
     private Map<String, GpsLocation> gpsLocations = null;
@@ -43,64 +44,77 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public void onDataArrived(Object result, boolean ok) {
+        if(ok){
+            if(result instanceof Map){
+                Map<String, Object> combinedData = new HashMap();
+                Map<String, Object> remoteData = (Map) result;
+                Map.Entry<String,Object> entry = remoteData.entrySet().iterator().next();
 
-        if(result instanceof Map){
-            Map<String, Object> combinedData = new HashMap();
-            Map<String, Object> remoteData = (Map) result;
-            Map.Entry<String,Object> entry = remoteData.entrySet().iterator().next();
+                if(entry.getValue() instanceof Activity){
+                    if(this.activities !=null){
+                        combinedData.putAll(this.activities);
+                        combinedData.putAll(remoteData);
 
-            if(entry.getValue() instanceof Activity){
-                if(this.activities !=null){
-                    combinedData.putAll(this.activities);
-                    combinedData.putAll(remoteData);
+                        if(syncActivities){
+                            Runnable syncLocalActivities = new SyncDatabase(this.mapDifference(remoteData, this.activities).values(), "activity", this.local);
+                            new Thread(syncLocalActivities).start();
 
-
-
-                    if(isSyncOn){
-                        // iz zajednickih podataka uklanjam one koji postoje i u lokalnoj bazi
-                        combinedData.entrySet().removeAll(this.activities.entrySet());
-                        Runnable syncDb = new SyncDatabase(combinedData.values(), "activity", this.local);
-                        new Thread(syncDb).start();
-                        this.isSyncOn = false;
+                            Runnable syncRemoteActivities = new SyncDatabase(this.mapDifference(this.activities, remoteData).values(), "activity", this.remote);
+                            new Thread(syncRemoteActivities).start();
+                            this.syncActivities = false;
+                        }
                     }
+
+                } else if (entry.getValue() instanceof GpsLocation){
+                    if(this.gpsLocations !=null){
+                        combinedData.putAll(this.gpsLocations);
+                        combinedData.putAll(remoteData);
+
+                        if(syncLocations){
+
+                            Runnable syncLocalLocations = new SyncDatabase(this.mapDifference(remoteData, this.gpsLocations).values(), "gpsLocation", this.local);
+                            new Thread(syncLocalLocations).start();
+
+                            Runnable syncRemoteLocations = new SyncDatabase(this.mapDifference(this.gpsLocations, remoteData).values(), "gpsLocation", this.remote);
+                            new Thread(syncRemoteLocations).start();
+                            this.syncLocations = false;
+                        }
+                    }
+
+                }
+                if(!this.syncLocations && syncActivities &&!this.isLocalOnly){
+                    this.handler.onDataArrived(combinedData, ok);
                 }
 
-            } else if (entry.getValue() instanceof GpsLocation){
-                if(this.gpsLocations !=null){
-                    combinedData.putAll(this.gpsLocations);
-                    combinedData.putAll(remoteData);
 
-                    if(isSyncOn){
-                        combinedData.entrySet().removeAll(this.gpsLocations.entrySet());
-                        Runnable syncDb = new SyncDatabase(combinedData.values(), "gpsLocation", this.local);
-                        new Thread(syncDb).start();
-                        this.isSyncOn = false;
-                    }
-                }
-
-            }
-            if(!this.isSyncOn && !this.isLocalOnly){
-                this.handler.onDataArrived(combinedData, ok);
+            } else if(result instanceof Activity || result instanceof GpsLocation){
+                this.handler.onDataArrived(result, ok);
             }
 
-
-        } else if(result instanceof Activity || result instanceof GpsLocation){
-            this.handler.onDataArrived(result, ok);
         }
+
+
+    }
+
+    private <K, V> Map<K, V> mapDifference(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+        Map<K, V> difference = new HashMap<>();
+        difference.putAll(left);
+        difference.putAll(right);
+        difference.entrySet().removeAll(right.entrySet());
+        return difference;
     }
 
     @Override
     public void saveActivity(Activity activity){
         local.saveActivity(activity);
-        if(!this.isLocalOnly){
-            remote.saveActivity(activity);
-        }
-
+        remote.saveActivity(activity);
     }
 
     @Override
     public Activity getActivity(ActivityMode mode, String activityId){
-        this.remote.getActivity(mode, activityId);
+        if(!this.isLocalOnly){
+            this.remote.getActivity(mode, activityId);
+        }
         return this.local.getActivity(mode, activityId);
     }
 
@@ -133,10 +147,7 @@ public class DatabaseFacade extends Database implements DataHandler {
     @Override
     public void saveLocation(GpsLocation location){
         local.saveLocation(location);
-        if(!this.isLocalOnly){
-            remote.saveLocation(location);
-        }
-
+        remote.saveLocation(location);
     }
 
     @Override
@@ -149,10 +160,22 @@ public class DatabaseFacade extends Database implements DataHandler {
         return this.gpsLocations;
     }
 
+    @Override
+    public Map<String, GpsLocation> getAllLocations() {
+        if(!this.isLocalOnly){
+            this.remote.getAllLocations();
+        }
+        return this.local.getAllLocations();
+    }
+
     public void syncData(){
-        this.isSyncOn = true;
+        this.syncActivities = true;
+        this.syncLocations = true;
         this.activities = this.local.getAllActivities();
+        this.gpsLocations = this.local.getAllLocations();
+
         this.remote.getAllActivities();
+        this.remote.getAllLocations();
     }
 
 
@@ -162,6 +185,8 @@ public class DatabaseFacade extends Database implements DataHandler {
             isLocalOnly = localOnly;
         }
     }
+
+
 
 
 }

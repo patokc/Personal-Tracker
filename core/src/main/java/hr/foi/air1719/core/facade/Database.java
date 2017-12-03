@@ -30,7 +30,7 @@ public abstract class Database {
 
     public abstract Map<String, GpsLocation> getLocations(String activityId);
 
-
+    public abstract Map<String, GpsLocation> getAllLocations();
 
 
 }

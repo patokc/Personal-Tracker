@@ -75,14 +75,18 @@ public class LocalDatabase extends Database {
     public Map<String, GpsLocation> getLocations(String activityId) {
         Map<String, GpsLocation> map = new HashMap<>();
         for(GpsLocation gps: this.db.gpsLocationDao().getGpsLocations(activityId)){
-            System.out.println("L " + gps.getLocationId());
             map.put(gps.getLocationId(), gps);
         }
 
         return map;
     }
 
-
-
-
+    @Override
+    public Map<String, GpsLocation> getAllLocations() {
+        Map<String, GpsLocation> map = new HashMap<>();
+        for(GpsLocation gps: this.db.gpsLocationDao().findByUser(this.user)){
+            map.put(gps.getLocationId(), gps);
+        }
+        return map;
+    }
 }

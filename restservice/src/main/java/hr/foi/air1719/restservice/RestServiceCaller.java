@@ -106,7 +106,7 @@ public class RestServiceCaller {
 
     public void saveLocation(GpsLocation location, String user, String activityId){
         RestService serviceCaller = retrofit.create(RestService.class);
-        Call<GpsLocation> call = serviceCaller.saveLocation(location, user, activityId, location.getLocationId());
+        Call<GpsLocation> call = serviceCaller.saveLocation(location, user, location.getLocationId());
 
         if(call != null){
             call.enqueue(new Callback<GpsLocation>() {
@@ -166,7 +166,38 @@ public class RestServiceCaller {
 
     }
 
-    public void saveActivity(Activity activity){
+    public void getAllLocations(String user){
+        RestService serviceCaller = retrofit.create(RestService.class);
+        Call<Map<String, GpsLocation>> call = serviceCaller.getAllLocations(user);
+
+        if(call != null){
+            call.enqueue(new Callback<Map<String, GpsLocation>>() {
+                @Override
+                public void onResponse(Response<Map<String, GpsLocation>> response, Retrofit retrofit) {
+                    try {
+                        if(response.isSuccess()){
+                            if(trsHandler != null){
+                                trsHandler.onDataArrived(response.body(), true);
+                            }
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    if(trsHandler != null){
+                        trsHandler.onDataArrived(null, false);
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void saveActivity(final Activity activity){
         RestService serviceCaller = retrofit.create(RestService.class);
         Call<Activity> call = serviceCaller.saveActivity(activity, activity.getUser(), activity.getActivityId());
 
@@ -189,7 +220,7 @@ public class RestServiceCaller {
                 @Override
                 public void onFailure(Throwable t) {
                     if(trsHandler != null){
-                        trsHandler.onDataArrived(null, false);
+                        trsHandler.onDataArrived(activity, false);
                     }
                 }
             });

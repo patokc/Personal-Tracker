@@ -79,5 +79,9 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
         return null;
     }
 
-
+    @Override
+    public Map<String, GpsLocation> getAllLocations() {
+        this.restServiceCaller.getAllLocations(this.user);
+        return null;
+    }
 }

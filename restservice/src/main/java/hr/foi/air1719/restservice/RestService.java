@@ -33,12 +33,14 @@ public interface RestService {
     @GET("activities/{user}.json")
     Call<Map<String, Activity>> getAllActivities(@Path("user") String user);
 
-    @PUT("gpsLocations/{user}/{activityId}/{gpsLocationId}.json")
-    Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user, @Path("activityId") String activityId, @Path("gpsLocationId") String gpsLocationId);
+    @PUT("gpsLocations/{user}/{gpsLocationId}.json")
+    Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user, @Path("gpsLocationId") String gpsLocationId);
 
-    @GET("gpsLocations/{user}/{activityId}.json")
+    @GET("gpsLocations/{user}.json?orderBy=\"activityId\"&equalTo=\"{activityId}.json\"")
     Call<Map<String, GpsLocation>> getLocations(@Path("user") String user, @Path("activityId") String activityId);
 
+    @GET("gpsLocations/{user}.json")
+    Call<Map<String, GpsLocation>> getAllLocations(@Path("user") String user);
 
 
 
