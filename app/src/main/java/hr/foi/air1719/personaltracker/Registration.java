@@ -15,12 +15,13 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
 
 
-public class Registration extends AppCompatActivity  {
+public class Registration extends AppCompatActivity implements RestServiceHandler  {
 
     private EditText FullName=null;
     private EditText UserName=null;
@@ -86,16 +87,51 @@ public class Registration extends AppCompatActivity  {
 
         try {
 
-            if (!Helper.isInternetAvailable(this)) {
-                Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
-                return;
-            }
-
             if(FullName.getText().toString().equals("")|| !validate_letters(FullName.getText().toString())) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
             if(UserName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong user name!",Toast.LENGTH_LONG).show(); return;}
             if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
             if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
+
+
+            if (!Helper.isInternetAvailable(this)) {
+                Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            RestServiceCaller restServiceCaller = new RestServiceCaller(this);
+            restServiceCaller.getUser(UserName.getText().toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean validate_letters(String letters) {
+        Matcher matcher = letters_only_check.matcher(letters);
+        return matcher.find();
+    }
+
+    public void onClick_Cancel(View v) {
+        finish();
+        Intent intent = new Intent(this, LogIn.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDataArrived(Object data, boolean ok) {
+
+        if (!ok) { return; }
+
+
+        if (data != null) {
+            Toast.makeText(getBaseContext(), "Username already exists please choose another!", Toast.LENGTH_LONG).show();
+        } else {
+
+            if (!Helper.isInternetAvailable(this)) {
+                Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             RestServiceHandler regHandler = new RestServiceHandler() {
                 @Override
@@ -118,25 +154,13 @@ public class Registration extends AppCompatActivity  {
                 }
             };
 
-            User user = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString());
+            User u = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString());
 
             RestServiceCaller restServiceCaller = new RestServiceCaller(regHandler);
-            restServiceCaller.createUser(user);
+            restServiceCaller.createUser(u);
 
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
-
-    public static boolean validate_letters(String letters) {
-        Matcher matcher = letters_only_check.matcher(letters);
-        return matcher.find();
-    }
-
-    public void onClick_Cancel(View v) {
-        finish();
-        Intent intent = new Intent(this, LogIn.class);
-        startActivity(intent);
-    }
 }
+
 
