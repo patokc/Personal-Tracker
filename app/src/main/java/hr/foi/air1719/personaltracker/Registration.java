@@ -22,6 +22,7 @@ import hr.foi.air1719.restservice.RestServiceHandler;
 
 public class Registration extends AppCompatActivity  {
 
+
     private EditText FullName=null;
     private EditText UserName=null;
     private EditText Password= null;
@@ -83,7 +84,6 @@ public class Registration extends AppCompatActivity  {
 
     public void onClick_Registration(View v) {
 
-
         try {
 
             if (!Helper.isInternetAvailable(this)) {
@@ -96,6 +96,7 @@ public class Registration extends AppCompatActivity  {
             if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
             if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
+
 
             RestServiceHandler regHandler = new RestServiceHandler() {
                 @Override
@@ -115,6 +116,7 @@ public class Registration extends AppCompatActivity  {
                         Intent intent = new Intent(getApplicationContext(), LogIn.class);
                         startActivity(intent);
                     }
+
                 }
             };
 

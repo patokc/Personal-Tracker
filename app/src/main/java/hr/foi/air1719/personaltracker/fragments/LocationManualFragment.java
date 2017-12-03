@@ -12,6 +12,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     Bitmap outputBitmap;
     EditText description;
     Location location;
+    Editable note;
 
     private FragmentManager mFragmentManager;
 
@@ -64,6 +67,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
 
         TextView address = (TextView) getView().findViewById(R.id.txt_address);
         description = (EditText) getView().findViewById(R.id.txt_note);
+        note = description.getText();
 
         MyLocation myLocation = new MyLocation();
         location = myLocation.GetLastKnownLocation(this);
@@ -75,51 +79,59 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
         String addressLine= lokacija.get(0).getAddressLine(0);
         String county = lokacija.get(0).getAdminArea();
         String finalAddress = addressLine+", "+county;
-
         address.setText(finalAddress);
 
-        outputImage = (ImageButton) getView().findViewById(R.id.img_location_photo);
-        outputImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddImage();
-            }
-        });
+        AddImage();
         Button buttonSave = (Button) getView().findViewById(R.id.btn_save_location_data);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable(){
-                    @Override
-                    public void run(){
-                        Save();
-                    }
-                });
-                thread.start();
-                mFragmentManager = getFragmentManager();
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new hr.foi.air1719.personaltracker.fragments.MapFragment())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
+                try {
+                    Save();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
     private void AddImage()
     {
-        Intent intentGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intentGallery.setType("image/*");
-        startActivityForResult(intentGallery, RESULT_LOAD_IMAGE);
+        outputImage = (ImageButton) getView().findViewById(R.id.img_location_photo);
+        outputImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
+            }
+        });
+
     }
 
     private void Save () {
-        Activity ac = new Activity(ActivityMode.WALKING);
-        DatabaseFacade db = new DatabaseFacade(getView().getContext());
-        ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
-        ac.setDescription(description.toString());
-
-        db.saveActivity(ac);
-        db.saveLocation(new GpsLocation(ac.getActivityId(),
-                location.getLongitude(), location.getLatitude(), location.getAccuracy()));
+        if(outputBitmap !=null && note.length() !=0) {
+            Thread thread = new Thread(new Runnable(){
+                @Override
+                public void run(){
+                    Activity ac = new Activity(ActivityMode.WALKING);
+                    DatabaseFacade db = new DatabaseFacade(getView().getContext());
+                    ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
+                    ac.setDescription(note.toString());
+                    db.saveActivity(ac);
+                    db.saveLocation(new GpsLocation(ac.getActivityId(),
+                            location.getLongitude(), location.getLatitude(), location.getAccuracy()));
+                }
+            });
+            thread.start();
+            MapFragment mapFragment = new MapFragment();
+            mFragmentManager = getFragmentManager();
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, mapFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }else {
+            Toast.makeText(this.getActivity(), "Please fill in all fields!", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -128,7 +140,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
-            if ( resultCode == RESULT_OK && requestCode == RESULT_LOAD_IMAGE  && data != null && data.getData() != null) {
+            if (data != null && data.getData() != null) {
                 Uri imageUri = data.getData();
                 outputImage.setImageURI(imageUri);
                 try {
@@ -150,7 +162,6 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     }
 
   /*  public static Bitmap decode(String input) {
-
         byte[] decodedBytes = Base64.decode(input, Base64.NO_WRAP);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
