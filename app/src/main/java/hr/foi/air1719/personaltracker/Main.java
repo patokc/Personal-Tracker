@@ -14,8 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
-import hr.foi.air1719.personaltracker.fragments.LocationManualFragment;
+
 import hr.foi.air1719.personaltracker.fragments.MapFragment;
+import hr.foi.air1719.personaltracker.fragments.Settings;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -69,6 +70,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            onNavigationItemSelected(item);
             return true;
         }
 
@@ -85,6 +87,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.drivingMode:
                 fragment = new DrivingModeFragment();
+                break;
+            case R.id.settings:
+                fragment = new Settings();
+                break;
+            case R.id.action_settings:
+                fragment = new Settings();
                 break;
         }
 
