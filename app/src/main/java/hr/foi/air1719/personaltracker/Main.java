@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
 import hr.foi.air1719.personaltracker.fragments.LocationManualFragment;
+import hr.foi.air1719.personaltracker.fragments.MapFragment;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,7 +59,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -74,33 +75,39 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return super.onOptionsItemSelected(item);
     }
 
+    private void selectedFragment(int itemId) {
+       Fragment fragment= null;
+        switch (itemId) {
+            case R.id.walkingMode:
+                fragment = new MapFragment();
+                break;
+            case R.id.runningMode:
+                break;
+            case R.id.drivingMode:
+                fragment = new DrivingModeFragment();
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
-        if (id == R.id.runningMode) {
-
-        } else if (id == R.id.walkingMode) {
-
-        } else if (id == R.id.drivingMode) {
-
-            DrivingModeFragment drivingModeFragment = new DrivingModeFragment();
-            FragmentManager mFragmentManager = getFragmentManager();
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, drivingModeFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-
-        } else if (id == R.id.settings) {
-
-        } else if (id == R.id.exit) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        selectedFragment(id);
         return true;
+
     }
+
+
 }

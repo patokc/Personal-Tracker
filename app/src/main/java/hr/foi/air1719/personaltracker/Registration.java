@@ -23,6 +23,7 @@ import hr.foi.air1719.restservice.RestServiceHandler;
 
 public class Registration extends AppCompatActivity implements RestServiceHandler  {
 
+
     private EditText FullName=null;
     private EditText UserName=null;
     private EditText Password= null;
@@ -84,7 +85,6 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
 
     public void onClick_Registration(View v) {
 
-
         try {
 
             if(FullName.getText().toString().equals("")|| !validate_letters(FullName.getText().toString())) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
@@ -92,7 +92,6 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
             if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
             if(!Helper.isValidEmail(Email.getText().toString())){Toast.makeText(getBaseContext(), "Wrong e-mail address!",Toast.LENGTH_LONG).show();  return;}
-
 
             if (!Helper.isInternetAvailable(this)) {
                 Toast.makeText(this, "No internet connection right now, please check internet settings and try again", Toast.LENGTH_LONG).show();
@@ -151,6 +150,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
                         Intent intent = new Intent(getApplicationContext(), LogIn.class);
                         startActivity(intent);
                     }
+
                 }
             };
 
