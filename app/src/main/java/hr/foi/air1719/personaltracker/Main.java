@@ -98,9 +98,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.settings:
                 fragment = new Settings();
+                tag = "Settings";
                 break;
             case R.id.action_settings:
                 fragment = new Settings();
+                tag = "Settings";
                 break;
         }
 
