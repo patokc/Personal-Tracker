@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -34,6 +35,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
     MyLocation myLocation = null;
     GoogleMap googleMap = null;
     Marker mMarker = null;
+    FloatingActionButton floatingActionButton;
+    boolean  gps_enabled = false;
 
 
     @Override
@@ -45,6 +48,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
 
         super.onViewCreated(view, savedInstanceState);
 
+        floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
+
+
         myLocation = new MyLocation();
         myLocation.LocationStart(this);
 
@@ -53,19 +59,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
         mapFragment.onResume();
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
+
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                LocationManualFragment locationManual = new LocationManualFragment();
-                mFragmentManager = getFragmentManager();
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, locationManual)
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
+                CheckLocationService();
+                if (gps_enabled) {
+                    LocationManualFragment locationManual = new LocationManualFragment();
+                    mFragmentManager = getFragmentManager();
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, locationManual)
+                            .addToBackStack(null)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Your GPS is off, please turn on your GPS.", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    public void  CheckLocationService () {
+        LocationManager lm = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception E) {
+            E.printStackTrace();
+
+        }
+
     }
 
     @Override

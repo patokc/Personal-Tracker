@@ -8,4 +8,5 @@
     <color name="text">#ffffff</color>
     <color name="background">#ffffff</color>
     <color name="textSplash">#1125cc</color>
+    <color name="flabuttondisabled">#c5c8cc</color>
 </resources>
