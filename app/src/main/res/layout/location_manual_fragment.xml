@@ -58,6 +58,8 @@
                 android:layout_marginLeft="7dp"
                 android:layout_marginTop="5dp"
                 android:ems="14"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
                  />
 
             <Button

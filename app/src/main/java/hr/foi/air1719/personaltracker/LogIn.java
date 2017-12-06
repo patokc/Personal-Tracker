@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
     private EditText UserName=null;
     private EditText Password= null;
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
+    boolean doublePressedToExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,25 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    public void onBackPressed() {
+
+        if (doublePressedToExit) {
+            super.onBackPressed();
+
+        } else {
+
+            this.doublePressedToExit = true;
+            Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doublePressedToExit = false;
+                }
+            }, 2000);
         }
     }
 }

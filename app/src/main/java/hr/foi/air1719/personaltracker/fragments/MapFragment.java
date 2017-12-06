@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
 import hr.foi.air1719.personaltracker.Helper;
+import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
 /**
@@ -60,6 +61,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                 mFragmentManager = getFragmentManager();
                 mFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, locationManual)
+                        .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
@@ -119,5 +121,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
         {
             E.printStackTrace();
         }
+    }
+
+    public void onResume(){
+        super.onResume();
+
+        ((Main) getActivity())
+                .setActionBarTitle("Walking mode");
     }
 }

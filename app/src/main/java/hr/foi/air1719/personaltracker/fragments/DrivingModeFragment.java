@@ -28,6 +28,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -70,8 +71,9 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         });
 
         btnShowTrip.setVisibility(View.INVISIBLE);
-    }
 
+
+    }
 
     public void onClick_Start(View v) {
 
@@ -121,5 +123,13 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         {
             E.printStackTrace();
         }
+    }
+
+    public void onResume(){
+        super.onResume();
+
+        ((Main) getActivity())
+                .setActionBarTitle("Driving mode");
+
     }
 }

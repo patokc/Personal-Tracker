@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
     private TextView RepeatPassword= null;
     private TextView Email= null;
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
+    boolean doublePressedToExit = false;
 
     public static final Pattern letters_only_check =
             Pattern.compile("^[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
@@ -159,6 +161,25 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
             RestServiceCaller restServiceCaller = new RestServiceCaller(regHandler);
             restServiceCaller.createUser(u);
 
+        }
+    }
+
+    public void onBackPressed() {
+
+        if (doublePressedToExit) {
+            super.onBackPressed();
+
+        } else {
+
+            this.doublePressedToExit = true;
+            Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doublePressedToExit = false;
+                }
+            }, 2000);
         }
     }
 }

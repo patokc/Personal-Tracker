@@ -34,6 +34,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -43,6 +44,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class LocationManualFragment extends Fragment implements IGPSActivity {
+
     Geocoder geocoder ;
     List<Address> lokacija;
     public static int RESULT_LOAD_IMAGE = 1;
@@ -51,7 +53,6 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     EditText description;
     Location location;
     Editable note;
-
     private FragmentManager mFragmentManager;
 
     @Override
@@ -81,6 +82,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
         String finalAddress = addressLine+", "+county;
         address.setText(finalAddress);
 
+
         AddImage();
         Button buttonSave = (Button) getView().findViewById(R.id.btn_save_location_data);
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +97,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
             }
         });
     }
+
     private void AddImage()
     {
         outputImage = (ImageButton) getView().findViewById(R.id.img_location_photo);
@@ -106,6 +109,12 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
             }
         });
 
+    }
+
+    public void onResume(){
+        super.onResume();
+        ((Main) getActivity())
+                .setActionBarTitle("Save location");
     }
 
     private void Save () {
@@ -123,12 +132,14 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                 }
             });
             thread.start();
-            MapFragment mapFragment = new MapFragment();
+          /*  MapFragment mapFragment = new MapFragment();
             mFragmentManager = getFragmentManager();
             mFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, mapFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
+                    .commit();*/
+            mFragmentManager = getFragmentManager();
+            mFragmentManager.popBackStack();
         }else {
             Toast.makeText(this.getActivity(), "Please fill in all fields!", Toast.LENGTH_LONG).show();
         }
