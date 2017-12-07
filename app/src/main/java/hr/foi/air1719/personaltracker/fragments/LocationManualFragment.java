@@ -50,6 +50,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     public static int RESULT_LOAD_IMAGE = 1;
     private ImageButton outputImage;
     Bitmap outputBitmap;
+    String outputBitmapPath="";
     EditText description;
     Location location;
     Editable note;
@@ -124,11 +125,13 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                 public void run(){
                     Activity ac = new Activity(ActivityMode.WALKING);
                     DatabaseFacade db = new DatabaseFacade(getView().getContext());
-                    ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
+                    ac.setImage(outputBitmapPath);
                     ac.setDescription(note.toString());
                     db.saveActivity(ac);
                     db.saveLocation(new GpsLocation(ac.getActivityId(),
                             location.getLongitude(), location.getLatitude(), location.getAccuracy()));
+
+                    //ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
                 }
             });
             thread.start();
@@ -157,6 +160,9 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                 try {
                     outputBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                     outputImage.setImageBitmap(outputBitmap);
+
+                    outputBitmapPath = imageUri.getPath();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
