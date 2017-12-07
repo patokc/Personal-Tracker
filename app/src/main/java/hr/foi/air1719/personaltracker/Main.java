@@ -1,7 +1,11 @@
 package hr.foi.air1719.personaltracker;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -9,23 +13,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import hr.foi.air1719.location.IGPSActivity;
-import android.location.Location;
+import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
 
-import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.fragments.MapFragment;
+import hr.foi.air1719.personaltracker.fragments.Settings;
 
 
-public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , IGPSActivity, OnMapReadyCallback {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
 
+
+    NavigationView navigationView;
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 2;
+    ActionBarDrawerToggle toggle;
+    boolean doublePressedToExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,46 +38,34 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        getFragmentManager().addOnBackStackChangedListener(this);
+        toolbar.setNavigationOnClickListener(navigationClick);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);mapFragment.getMapAsync(this);
+        navigationView.setCheckedItem(R.id.walkingMode);
 
-        //ovo sluzi za dohvacanje lokacije. Ovo radi na principu daj mi zadnju poznatu lokaciju, ovo ne mora biti tocna lokacija, nego zadnja poznata
-        //tocna lokacija se bude prozivala na drugaciji nacin "myLocation.LocationStart(this)" i imala bude callback metodu
-        MyLocation myLocation = new MyLocation();
-        Location location = myLocation.GetLastKnownLocation(this);
-
-        if(location != null)
-        {
-            Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
-        }
-        else
-            Toast.makeText(this, "Your GPS is off, please turn on your GPS.", Toast.LENGTH_LONG).show();
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new hr.foi.air1719.personaltracker.fragments.MapFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -83,10 +74,61 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            onNavigationItemSelected(item);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void selectedFragment(int itemId) {
+        Fragment fragment = null;
+        String tag = null;
+        switch (itemId) {
+            case R.id.walkingMode:
+                fragment = new MapFragment();
+                tag = "WalkingMode";
+                break;
+            case R.id.runningMode:
+                tag = "RunningMode";
+                break;
+            case R.id.drivingMode:
+                fragment = new DrivingModeFragment();
+                tag = "DrivingMode";
+                break;
+            case R.id.settings:
+                fragment = new Settings();
+                tag = "Settings";
+                break;
+            case R.id.action_settings:
+                fragment = new Settings();
+                tag = "Settings";
+                break;
+        }
+
+        if (fragment != null) {
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment, tag);
+            if (tag != "WalkingMode") {
+                transaction.addToBackStack(null);
+            }
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.commit();
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -94,52 +136,61 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
-        if (id == R.id.runningMode) {
-
-        } else if (id == R.id.walkingMode) {
-
-        } else if (id == R.id.drivingMode) {
-
-            //MyLocation myLocation = new MyLocation();
-            //myLocation.LocationStart(this);
-
-        } else if (id == R.id.settings) {
-
-        } else if (id == R.id.exit) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        selectedFragment(id);
         return true;
     }
 
     @Override
-    public void locationChanged(Location location) {
-        Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+    public void onBackStackChanged() {
+
+        FragmentManager fragmentManager = getFragmentManager();
+        toggle.setDrawerIndicatorEnabled(fragmentManager.getBackStackEntryCount() == 0);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(fragmentManager.getBackStackEntryCount() > 0);
+        toggle.syncState();
     }
 
     @Override
-    public void displayGPSSettingsDialog() {
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() != 0) {
 
-    }
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                fragmentManager.popBackStack();
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.walkingMode);
+            }
+        } else {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            } else if (doublePressedToExit) {
+                super.onBackPressed();
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+            } else {
+                this.doublePressedToExit = true;
+                Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
 
-        MyLocation myLocation = new MyLocation();
-        Location location = myLocation.GetLastKnownLocation(this);
-
-        if(location != null)
-        {
-            Toast.makeText(this, "Your location is: \nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude() + "\nAccuracy: " + location.getAccuracy(), Toast.LENGTH_LONG).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doublePressedToExit = false;
+                    }
+                }, 2000);
+            }
         }
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                .title("My location"));
     }
+
+    View.OnClickListener navigationClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (getFragmentManager().getBackStackEntryCount() == 0) {
+                    drawer.openDrawer(GravityCompat.START);
+                } else {
+                    onBackPressed();
+                }
+            }
+    };
 }
