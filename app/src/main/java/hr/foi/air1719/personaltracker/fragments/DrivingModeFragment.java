@@ -106,14 +106,28 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    Location lastPoint = null;
+    double distance = 0;
+    public double CalculateDistance(Location startPoint, Location endPoint)
+    {
+        return startPoint.distanceTo(endPoint);
+    }
+
     @Override
     public void locationChanged(Location location) {
 
         try {
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
             txtSpeed.setText(speed + " km/h");
-            txtTotalKm.setText("0 km");
-            
+
+
+            if(lastPoint==null)lastPoint = location;
+
+            distance += CalculateDistance(lastPoint, location);
+
+            lastPoint=location;
+
+            txtTotalKm.setText(distance + " km");
 
             DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.DRIVING);
