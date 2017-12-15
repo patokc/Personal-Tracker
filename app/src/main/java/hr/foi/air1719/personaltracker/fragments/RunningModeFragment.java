@@ -40,6 +40,5 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     }
 
 
-
 }
 
