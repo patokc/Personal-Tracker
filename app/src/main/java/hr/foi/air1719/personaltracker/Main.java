@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
+import hr.foi.air1719.personaltracker.fragments.RunningModeFragment;
 
 import hr.foi.air1719.personaltracker.fragments.MapFragment;
 import hr.foi.air1719.personaltracker.fragments.Settings;
@@ -95,6 +96,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.runningMode:
                 tag = "RunningMode";
+                fragment=new RunningModeFragment();
                 break;
             case R.id.drivingMode:
                 fragment = new DrivingModeFragment();
