@@ -5,9 +5,23 @@
     tools:context="hr.foi.air1719.personaltracker.fragments.DrivingHistoryFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <ScrollView
+        android:id="@+id/scrolID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/tableHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:stretchColumns="*"
+            android:layout_marginTop="10dp">
+
+        </TableLayout>
+
+    </ScrollView>
 </FrameLayout>

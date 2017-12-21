@@ -1,16 +1,37 @@
 package hr.foi.air1719.personaltracker.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
+import hr.foi.air1719.core.facade.DatabaseFacade;
+import hr.foi.air1719.database.entities.Activity;
+import hr.foi.air1719.database.entities.ActivityMode;
+import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.personaltracker.R;
 
-public class DrivingHistoryFragment extends Fragment {
+/**
+ * Created by DrazenVuk on 12/20/2017.
+ */
+
+public class DrivingHistoryFragment extends android.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -19,6 +40,8 @@ public class DrivingHistoryFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TableLayout tableHistory=null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,6 +68,144 @@ public class DrivingHistoryFragment extends Fragment {
         }
     }
 
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tableHistory = (TableLayout)getView().findViewById(R.id.tableHistory);
+        fillGrid();
+    }
+
+    private void fillGrid() {
+
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                List<Activity> ac = dbfacade.getActivityByMode(ActivityMode.DRIVING);
+
+            }
+        }).start();
+
+
+        TableRow tbrow0 = new TableRow(getActivity());
+
+        TextView tv0 = new TextView(getActivity());
+        tv0.setText(" Start ");
+        tv0.setBackgroundColor(Color.LTGRAY);
+        tv0.setHeight(100);
+        tv0.setTypeface(null, Typeface.BOLD);
+        tv0.setGravity(Gravity.CENTER);
+        tv0.setTextColor(Color.BLACK);
+        tbrow0.addView(tv0);
+
+        /*TextView tv1 = new TextView(getActivity());
+        tv1.setText(" End ");
+        tv1.setTextColor(Color.BLACK);
+        tv1.setBackgroundColor(Color.LTGRAY);
+        tv1.setHeight(100);
+        tbrow0.addView(tv1);*/
+
+        TextView tv2 = new TextView(getActivity());
+        tv2.setText(" AVG speed ");
+        tv2.setTextColor(Color.BLACK);
+        tv2.setBackgroundColor(Color.LTGRAY);
+        tv2.setHeight(100);
+        tv2.setTypeface(null, Typeface.BOLD);
+        tv2.setGravity(Gravity.CENTER);
+        tbrow0.addView(tv2);
+
+        TextView tv3 = new TextView(getActivity());
+        tv3.setText(" Distance ");
+        tv3.setTextColor(Color.BLACK);
+        tv3.setBackgroundColor(Color.LTGRAY);
+        tv3.setHeight(100);
+        tv3.setTypeface(null, Typeface.BOLD);
+        tv3.setGravity(Gravity.CENTER);
+        tbrow0.addView(tv3);
+
+        TextView tv4 = new TextView(getActivity());
+        tv4.setText(" Show ");
+        tv4.setTextColor(Color.BLACK);
+        tv4.setBackgroundColor(Color.LTGRAY);
+        tv4.setHeight(100);
+        tv4.setTypeface(null, Typeface.BOLD);
+        tv4.setGravity(Gravity.CENTER);
+        tbrow0.addView(tv4);
+
+        tv4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_ShowActivity(v, new Activity(ActivityMode.DRIVING));
+            }
+        });
+
+        tableHistory.addView(tbrow0);
+
+
+        for (int i = 0; i < 25; i++) {
+
+            TableRow tbrow = new TableRow(getActivity());
+            TextView t1v = new TextView(getActivity());
+            t1v.setText("27.11.2017 12:55:55");
+            t1v.setTextColor(Color.BLACK);
+            t1v.setGravity(Gravity.CENTER);
+            if(i%2==0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
+            tbrow.addView(t1v);
+
+            /*TextView t2v = new TextView(getActivity());
+            t2v.setText("27.11.2017 16:55:55");
+            t2v.setTextColor(Color.BLACK);
+            t2v.setGravity(Gravity.CENTER);
+            tbrow.addView(t2v);*/
+
+            TextView t3v = new TextView(getActivity());
+            t3v.setText(String.valueOf(10 * i));
+            t3v.setTextColor(Color.BLACK);
+            t3v.setGravity(Gravity.CENTER);
+            if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
+            tbrow.addView(t3v);
+
+            TextView t4v = new TextView(getActivity());
+            t4v.setText("" + i * 15 / 32 * 10);
+            t4v.setTextColor(Color.BLACK);
+            t4v.setGravity(Gravity.CENTER);
+            if(i%2==0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
+            tbrow.addView(t4v);
+
+            TextView t5v = new TextView(getActivity());
+            t5v.setText("Show");
+            t5v.setTextColor(Color.BLACK);
+            t5v.setGravity(Gravity.CENTER);
+            t5v.setTextColor(Color.BLUE);
+            if(i%2==0) t5v.setBackgroundColor(Color.rgb(236, 236, 236));
+
+
+            t5v.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onClick_ShowActivity(v, new Activity(ActivityMode.DRIVING));
+                }
+            });
+            tbrow.addView(t5v);
+
+            tableHistory.addView(tbrow);
+        }
+
+
+
+
+    }
+
+
+
+    public void onClick_ShowActivity(View v, Activity activity) {
+
+        Toast.makeText(getActivity(), "This work, TODO", Toast.LENGTH_LONG).show();
+
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,25 +220,10 @@ public class DrivingHistoryFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
+
+
