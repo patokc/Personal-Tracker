@@ -1,5 +1,7 @@
 package hr.foi.air1719.personaltracker.fragments;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -198,9 +200,19 @@ public class DrivingHistoryFragment extends android.app.Fragment {
 
 
 
-    public void onClick_ShowActivity(View v, Activity activity) {
-
+    public void onClick_ShowActivity(View v, Activity activity)
+    {
         Toast.makeText(getActivity(), "This work, TODO", Toast.LENGTH_LONG).show();
+
+
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, "Driving Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+
 
     }
 
