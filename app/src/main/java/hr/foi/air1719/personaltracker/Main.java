@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import hr.foi.air1719.personaltracker.fragments.DrivingHistoryFragment;
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
 
 import hr.foi.air1719.personaltracker.fragments.MapFragment;

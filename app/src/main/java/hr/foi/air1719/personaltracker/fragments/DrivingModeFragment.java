@@ -36,6 +36,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
     MyLocation myLocation = null;
     TextView txtSpeed=null;
+    TextView txtAvgSpeed=null;
     TextView txtTotalKm=null;
     Button btnDrivingStart = null;
     Button btnShowTrip = null;
@@ -51,6 +52,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
         txtSpeed = (TextView) getView().findViewById(R.id.txtSpeedInfo);
         txtTotalKm = (TextView) getView().findViewById(R.id.txtTotalKm);
+        txtAvgSpeed = (TextView) getView().findViewById(R.id.txtAvgSpeed);
 
         btnDrivingStart = (Button) getView().findViewById(R.id.btnDrivingStart);
         btnDrivingStart.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +101,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
 
             Toast.makeText(this.getActivity(), "Start driving mode", Toast.LENGTH_SHORT).show();
+            if(startDate==null) startDate= new Date();
             myLocation = new MyLocation();
             myLocation.LocationStart(this);
             btnDrivingStart.setText("Stop");
@@ -139,9 +142,27 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
     Location lastPoint = null;
     double distance = 0;
+    Date startDate = null;
+
     public double CalculateDistance(Location startPoint, Location endPoint)
     {
-        return startPoint.distanceTo(endPoint);
+        return (startPoint.distanceTo(endPoint)/1000);
+    }
+
+    public double CalculateAvgSpeed(Date startDate,Date endDate, double KM)
+    {
+        try {
+            long different = endDate.getTime() - startDate.getTime();
+
+            long diffHours = different / (60 * 60 * 1000);
+
+            return KM / diffHours;
+        }
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
@@ -153,12 +174,16 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
 
             if(lastPoint==null)lastPoint = location;
+            if(startDate==null) startDate= new Date();
 
             distance += CalculateDistance(lastPoint, location);
 
             lastPoint=location;
 
             txtTotalKm.setText(distance + " km");
+
+            txtAvgSpeed.setText(String.valueOf(CalculateAvgSpeed(startDate, new Date(), distance)));
+
 
             DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.DRIVING);
@@ -173,8 +198,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     public void onResume(){
         super.onResume();
 
-        ((Main) getActivity())
-                .setActionBarTitle("Driving mode");
+        ((Main) getActivity()).setActionBarTitle("Driving mode");
 
     }
 }

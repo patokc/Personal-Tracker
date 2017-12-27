@@ -103,13 +103,12 @@ public class DrivingHistoryFragment extends android.app.Fragment{
 
         android.app.Fragment fragment = new ActivityMapFragment();
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack("Driving Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("Driving Activity");
         transaction.replace(R.id.fragment_container, fragment, "Driving Activity");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
-
-
     }
 
 

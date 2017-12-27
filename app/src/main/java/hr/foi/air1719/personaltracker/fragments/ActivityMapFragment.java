@@ -15,7 +15,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import hr.foi.air1719.personaltracker.R;
 
-
+/**
+ * Created by DrazenVuk on 12/27/2017.
+ */
 public class ActivityMapFragment extends android.app.Fragment implements OnMapReadyCallback {
 
     GoogleMap googleMap = null;
