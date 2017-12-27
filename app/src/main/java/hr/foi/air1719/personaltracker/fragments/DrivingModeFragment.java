@@ -23,6 +23,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
@@ -42,6 +43,13 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     Button btnShowTrip = null;
     Button btnShowHistory = null;
 
+    Location lastPoint = null;
+    double totalDistance = 0;
+    Date startDate = null;
+
+    DatabaseFacade dbCurrentFacade = null;
+    Activity currentActivity = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.driving_mode_fragment, container, false);
@@ -53,6 +61,9 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         txtSpeed = (TextView) getView().findViewById(R.id.txtSpeedInfo);
         txtTotalKm = (TextView) getView().findViewById(R.id.txtTotalKm);
         txtAvgSpeed = (TextView) getView().findViewById(R.id.txtAvgSpeed);
+
+        dbCurrentFacade = new DatabaseFacade(getView().getContext());
+        currentActivity = new Activity(ActivityMode.DRIVING);
 
         btnDrivingStart = (Button) getView().findViewById(R.id.btnDrivingStart);
         btnDrivingStart.setOnClickListener(new View.OnClickListener() {
@@ -86,18 +97,9 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         if(myLocation ==null)
         {
 
+            currentActivity.setActivityId(currentActivity.getActivityId());
+            currentActivity.setStart(new Timestamp(new Date().getTime()));
 
-            new Thread(new Runnable() {
-                public void run() {
-
-                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-                    Activity activity = new Activity(ActivityMode.DRIVING);
-                    activity.setActivityId(activity.getActivityId());
-                    activity.setStart(new Timestamp(new Date().getTime()));
-                    dbfacade.saveActivity(activity);
-
-                }
-            }).start();
 
 
             Toast.makeText(this.getActivity(), "Start driving mode", Toast.LENGTH_SHORT).show();
@@ -109,6 +111,20 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         }
         else
         {
+
+
+            new Thread(new Runnable() {
+                public void run() {
+
+                    currentActivity.setDistance((float)totalDistance);
+                    currentActivity.setAverageSpeed((float)Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance));
+                    currentActivity.setFinish(new Timestamp(new Date().getTime()));
+                    currentActivity.setUser("todo");
+                    dbCurrentFacade.saveActivity(currentActivity);
+                }
+            }).start();
+
+
             Toast.makeText(this.getActivity(), "Stop driving mode", Toast.LENGTH_SHORT).show();
             myLocation.LocationListenerStop();
             myLocation = null;
@@ -140,30 +156,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    Location lastPoint = null;
-    double distance = 0;
-    Date startDate = null;
 
-    public double CalculateDistance(Location startPoint, Location endPoint)
-    {
-        return (startPoint.distanceTo(endPoint)/1000);
-    }
-
-    public double CalculateAvgSpeed(Date startDate,Date endDate, double KM)
-    {
-        try {
-            long different = endDate.getTime() - startDate.getTime();
-
-            long diffHours = different / (60 * 60 * 1000);
-
-            return KM / diffHours;
-        }
-        catch (Exception E)
-        {
-            E.printStackTrace();
-        }
-        return -1;
-    }
 
     @Override
     public void locationChanged(Location location) {
@@ -176,13 +169,13 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
             if(lastPoint==null)lastPoint = location;
             if(startDate==null) startDate= new Date();
 
-            distance += CalculateDistance(lastPoint, location);
+            totalDistance += Helper.CalculateDistance(lastPoint, location);
 
             lastPoint=location;
 
-            txtTotalKm.setText(distance + " km");
+            txtTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            txtAvgSpeed.setText(String.valueOf(CalculateAvgSpeed(startDate, new Date(), distance)));
+            txtAvgSpeed.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)));
 
 
             DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
