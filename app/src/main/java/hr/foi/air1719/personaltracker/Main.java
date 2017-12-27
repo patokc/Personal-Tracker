@@ -1,7 +1,11 @@
 package hr.foi.air1719.personaltracker;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -104,6 +108,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment = new Settings();
                 tag = "Settings";
                 break;
+            case R.id.logout:
+                tag= "Logout";
+                break;
         }
 
         if (fragment != null) {
@@ -113,16 +120,42 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment, tag);
             if (tag != "WalkingMode" && tag !="RunningMode"  && tag !="DrivingMode") {
+
                 transaction.addToBackStack(null);
             }
+
+
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
 
         }
 
+        if(tag == "Logout") {
+            new AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog)
+                    .setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setTitle("Log out?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                            Intent intent = new Intent(getApplicationContext(), LogIn.class);
+                            startActivity(intent);
+                            SharedPreferences settings = getSharedPreferences("user", 0);
+                            SharedPreferences.Editor editor = settings.edit().clear();
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create()
+                    .show();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
     }
 
     @Override
@@ -137,7 +170,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         int id = item.getItemId();
         selectedFragment(id);
+        if (id == R.id.logout) {
+            return false;
+        }
+        else {
         return true;
+        }
     }
 
     @Override
