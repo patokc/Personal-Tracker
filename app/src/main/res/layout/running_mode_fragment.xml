@@ -17,7 +17,7 @@
             android:paddingTop="8dp">
 
             <Button
-                android:id="@+id/btnRunningStart"
+                android:id="@+id/btnRunningModeStart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/textView"
@@ -93,13 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Show last route" />
-
-
-            <Button
-                android:id="@+id/btnBackToMap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Back to map" />
 
         </LinearLayout>
     </ScrollView>
