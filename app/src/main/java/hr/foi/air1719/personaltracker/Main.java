@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import hr.foi.air1719.personaltracker.fragments.DrivingHistoryFragment;
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
 
 import hr.foi.air1719.personaltracker.fragments.MapFragment;
@@ -119,7 +120,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment, tag);
-            if (tag != "WalkingMode" ) {
+            if (tag != "WalkingMode" && tag !="RunningMode"  && tag !="DrivingMode") {
+
                 transaction.addToBackStack(null);
             }
 
@@ -196,8 +198,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 drawer.closeDrawer(GravityCompat.START);
             } else {
                 fragmentManager.popBackStack();
-                navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setCheckedItem(R.id.walkingMode);
+              /*  navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.walkingMode);*/
             }
         } else {
             if (drawer.isDrawerOpen(GravityCompat.START)) {

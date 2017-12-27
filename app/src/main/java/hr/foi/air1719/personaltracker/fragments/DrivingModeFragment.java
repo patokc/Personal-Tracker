@@ -1,26 +1,21 @@
 package hr.foi.air1719.personaltracker.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
@@ -44,6 +39,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     TextView txtTotalKm=null;
     Button btnDrivingStart = null;
     Button btnShowTrip = null;
+    Button btnShowHistory = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +66,14 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
             }
         });
 
+        btnShowHistory = (Button) getView().findViewById(R.id.btnShowHistory);
+        btnShowHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_ShowHistory(v);
+            }
+        });
+
+
         btnShowTrip.setVisibility(View.INVISIBLE);
 
 
@@ -79,6 +83,21 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
         if(myLocation ==null)
         {
+
+
+            new Thread(new Runnable() {
+                public void run() {
+
+                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                    Activity activity = new Activity(ActivityMode.DRIVING);
+                    activity.setActivityId(activity.getActivityId());
+                    activity.setStart(new Timestamp(new Date().getTime()));
+                    dbfacade.saveActivity(activity);
+
+                }
+            }).start();
+
+
             Toast.makeText(this.getActivity(), "Start driving mode", Toast.LENGTH_SHORT).show();
             myLocation = new MyLocation();
             myLocation.LocationStart(this);
@@ -99,6 +118,18 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         Toast.makeText(this.getActivity(), "TODO", Toast.LENGTH_SHORT).show();
     }
 
+    public void onClick_ShowHistory(View v) {
+
+        Fragment fragment = new DrivingHistoryFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, "Driving History");
+        transaction.addToBackStack(null);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+
+    }
 
 
     @Override
