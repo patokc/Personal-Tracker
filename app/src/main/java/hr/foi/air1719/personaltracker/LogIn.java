@@ -68,6 +68,12 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
         {
             E.printStackTrace();
         }
+
+        SharedPreferences sp = getSharedPreferences("user", 0);
+        if(sp.contains("username")) {
+            Intent intent = new Intent(getApplicationContext(), Main.class);
+            startActivity(intent);
+        }
     }
 
     public void onClick_LogIn(View v) {
