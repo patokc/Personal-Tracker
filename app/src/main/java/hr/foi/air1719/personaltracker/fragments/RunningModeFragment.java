@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
@@ -27,7 +28,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     MyLocation myLocation=null;
     Button btnRunningModeStart=null;
-
+    TextView txtTotalDistance=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -39,6 +40,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     {
         super.onViewCreated(view, savedInstanceState);
 
+        txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
+
         btnRunningModeStart = (Button) getView().findViewById(R.id.btnRunningModeStart);
         btnRunningModeStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
                 onClick_StartRunningMode(v);
             }
         });
+
+
 
     }
 
@@ -77,11 +82,28 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    Location lastPoint = null;
+    double totalDistance = 0;
+    public double CalculateDistance(Location startPoint, Location endPoint)
+    {
+        return startPoint.distanceTo(endPoint);
+    }
+
+
     @Override
     public void locationChanged(Location location)
     {
         try
         {
+
+            if(lastPoint==null)lastPoint = location;
+
+            totalDistance += CalculateDistance(lastPoint, location);
+
+            lastPoint=location;
+            txtTotalDistance.setText(totalDistance + " km");
+
             DatabaseFacade dbf = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.RUNNING);
             dbf.saveLocation(new GpsLocation(activity.getActivityId(), location.getLongitude(), location.getLatitude(), location.getAccuracy()));
