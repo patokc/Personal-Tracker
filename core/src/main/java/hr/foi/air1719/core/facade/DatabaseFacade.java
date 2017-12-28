@@ -39,7 +39,6 @@ public class DatabaseFacade extends Database implements DataHandler {
         this.local = new LocalDatabase(context);
         this.remote = new RemoteDatabase(context, handler);
         this.handler = handler;
-        isLocalOnly = false;
     }
 
     @Override
@@ -115,7 +114,10 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             this.remote.getActivity(mode, activityId);
         }
-        return this.local.getActivity(mode, activityId);
+
+        Activity data = this.local.getActivity(mode, activityId);
+        this.handler.onDataArrived(data, data !=null);
+        return data;
     }
 
     @Override
@@ -125,23 +127,30 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             remote.getAllActivities();
         }
-
+        this.handler.onDataArrived(this.activities, !this.activities.isEmpty());
         return this.activities;
     }
 
     @Override
     public List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date) {
-        return this.local.getActivityByDate(mode, activityId, date);
+        List<Activity> data = this.local.getActivityByDate(mode, activityId, date);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     @Override
     public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
-        return this.local.getActivityByDateRangeAndMode(mode, start, end);
+        List<Activity> data = this.local.getActivityByDateRangeAndMode(mode, start, end);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     @Override
     public List<Activity> getActivityByMode(ActivityMode mode) {
-        return this.local.getActivityByMode(mode);
+        List<Activity> data = this.local.getActivityByMode(mode);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
+
     }
 
     @Override
@@ -156,7 +165,7 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             remote.getLocations(activityId);
         }
-
+        this.handler.onDataArrived(this.gpsLocations, !this.gpsLocations.isEmpty());
         return this.gpsLocations;
     }
 
@@ -165,7 +174,10 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             this.remote.getAllLocations();
         }
-        return this.local.getAllLocations();
+
+        Map<String, GpsLocation> data = this.local.getAllLocations();
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     public void syncData(){
