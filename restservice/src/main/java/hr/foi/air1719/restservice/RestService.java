@@ -1,17 +1,23 @@
 package hr.foi.air1719.restservice;
 
+import com.squareup.okhttp.RequestBody;
+
 import java.util.Map;
 
 import hr.foi.air1719.database.entities.Activity;
-import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.database.entities.User;
+import hr.foi.air1719.restservice.responses.ImageResponse;
 import hr.foi.air1719.restservice.responses.UserResponse;
-import retrofit.Call;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.PUT;
-import retrofit.http.Path;
+import okhttp3.MultipartBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 /**
  * Created by abenkovic on 10/29/17.
@@ -42,6 +48,8 @@ public interface RestService {
     @GET("gpsLocations/{user}.json")
     Call<Map<String, GpsLocation>> getAllLocations(@Path("user") String user);
 
-
+    @Multipart
+    @POST("https://benkovic.net/air/upload.php")
+    Call<ImageResponse> uploadImage(@Part MultipartBody.Part image);
 
 }
