@@ -4,9 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -72,5 +69,4 @@ public class Helper {
         }
         return -1;
     }
-
 }

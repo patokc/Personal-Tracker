@@ -27,8 +27,6 @@ import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by DrazenVuk on 11/30/2017.
  */
@@ -138,6 +136,21 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
     public void onClick_ShowTrip(View v) {
         Toast.makeText(this.getActivity(), "TODO", Toast.LENGTH_SHORT).show();
+
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack("Driving Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("Driving Activity");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activityID", currentActivity.getActivityId());
+        fragment.setArguments(bundle);
+
+        transaction.replace(R.id.fragment_container, fragment, "Driving Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+
     }
 
     public void onClick_ShowHistory(View v) {
@@ -159,14 +172,15 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     }
 
 
-
+    Location tempLocation=null;
     @Override
     public void locationChanged(Location location) {
 
         try {
+            tempLocation=location;
+
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
             txtSpeed.setText(speed + " km/h");
-
 
             if(lastPoint==null)lastPoint = location;
             if(startDate==null) startDate= new Date();
@@ -179,14 +193,21 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
             txtAvgSpeed.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)) + " km");
             //TODO
-            txtTodayTotalKm.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)) + " km");
+            txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
+            //Toast.makeText(this.getActivity(), "Save location: " + location.getLongitude() + ", " + location.getLatitude(), Toast.LENGTH_SHORT).show();
 
-            DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-            dbfacade.saveLocation(new GpsLocation(currentActivity.getActivityId(), location.getLongitude(), location.getLatitude(), location.getAccuracy()));
+            new Thread(new Runnable() {
+                public void run() {
+
+                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                    dbfacade.saveLocation(new GpsLocation(currentActivity.getActivityId(), tempLocation.getLongitude(), tempLocation.getLatitude(), tempLocation.getAccuracy()));
+                }
+            }).start();
 
         }catch (Exception E)
         {
+            Toast.makeText(this.getActivity(), E.toString(), Toast.LENGTH_SHORT).show();
             E.printStackTrace();
         }
     }
