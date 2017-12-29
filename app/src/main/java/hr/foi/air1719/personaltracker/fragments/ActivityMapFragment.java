@@ -78,11 +78,13 @@ public class ActivityMapFragment extends android.app.Fragment implements OnMapRe
                 Lat_Lng = new ArrayList();
                 Map<String, GpsLocation> loc = (Map<String, GpsLocation>)message.obj;
 
+                List<GpsLocation> lGpsLocation = locationSortMap(loc);
 
-                for(GpsLocation a: loc.values()) {
+                for(GpsLocation a: lGpsLocation) {
                     Lat_Lng.add(new LatLng(a.getLatitude(), a.getLongitude()));
                     System.out.println("Unsort......" + a.getTimestamp());
                 }
+
 
                 if(line!=null)
                     line.remove();
@@ -100,7 +102,21 @@ public class ActivityMapFragment extends android.app.Fragment implements OnMapRe
         }
     };
 
+    public static List<GpsLocation> locationSortMap(Map<String, GpsLocation> loc)
+    {
+        if (loc != null) {
+            List<GpsLocation> values = new ArrayList();
+            values.addAll(loc.values());
+            Collections.sort(values, new Comparator<GpsLocation>() {
+                public int compare(GpsLocation o1, GpsLocation o2) {
+                    return o1.getTimestamp().compareTo(o2.getTimestamp());
+                }
+            });
 
+            return values;
+        }
+        return null;
+    }
 
 
     public static ActivityMapFragment newInstance(String param1, String param2) {
