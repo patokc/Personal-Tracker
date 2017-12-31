@@ -1,7 +1,5 @@
 package hr.foi.air1719.core.facade;
 
-import android.graphics.Bitmap;
-
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +32,5 @@ public abstract class Database {
 
     public abstract Map<String, GpsLocation> getAllLocations();
 
-    public abstract String uploadImage(Bitmap image);
 
 }

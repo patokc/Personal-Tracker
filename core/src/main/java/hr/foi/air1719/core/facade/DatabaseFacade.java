@@ -1,14 +1,12 @@
 package hr.foi.air1719.core.facade;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
@@ -200,8 +198,7 @@ public class DatabaseFacade extends Database implements DataHandler {
         }
     }
 
-    @Override
-    public String uploadImage(Bitmap image) {
-        return this.remote.uploadImage(image);
-    }
+
+
+
 }

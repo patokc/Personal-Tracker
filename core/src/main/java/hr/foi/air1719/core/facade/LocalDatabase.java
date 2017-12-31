@@ -2,7 +2,6 @@ package hr.foi.air1719.core.facade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -89,10 +88,5 @@ public class LocalDatabase extends Database {
             map.put(gps.getLocationId(), gps);
         }
         return map;
-    }
-
-    @Override
-    public String uploadImage(Bitmap image) {
-        return "Not Implemented Yet";
     }
 }

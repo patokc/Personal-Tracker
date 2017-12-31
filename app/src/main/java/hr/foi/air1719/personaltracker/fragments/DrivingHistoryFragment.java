@@ -96,17 +96,15 @@ public class DrivingHistoryFragment extends android.app.Fragment{
 
 
 
-    public void onClick_ShowActivity(View v, String activityID)
+    public void onClick_ShowActivity(View v, Activity activity)
     {
+        Toast.makeText(getActivity(), "This work, TODO", Toast.LENGTH_LONG).show();
+
+
         android.app.Fragment fragment = new ActivityMapFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack("Driving Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("activityID", activityID);
-        fragment.setArguments(bundle);
-
         transaction.addToBackStack("Driving Activity");
         transaction.replace(R.id.fragment_container, fragment, "Driving Activity");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -176,6 +174,11 @@ public class DrivingHistoryFragment extends android.app.Fragment{
             tv4.setGravity(Gravity.CENTER);
             tbrow0.addView(tv4);
 
+            tv4.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onClick_ShowActivity(v, new Activity(ActivityMode.DRIVING));
+                }
+            });
 
             tableHistory.addView(tbrow0);
 
@@ -191,14 +194,14 @@ public class DrivingHistoryFragment extends android.app.Fragment{
                 tbrow.addView(t1v);
 
                 TextView t3v = new TextView(getActivity());
-                t3v.setText(String.valueOf(String.format("%.1f", a.getAverageSpeed())));
+                t3v.setText(String.valueOf(a.getAverageSpeed()));
                 t3v.setTextColor(Color.BLACK);
                 t3v.setGravity(Gravity.CENTER);
                 if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
                 tbrow.addView(t3v);
 
                 TextView t4v = new TextView(getActivity());
-                t4v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
+                t4v.setText(String.valueOf(a.getDistance()));
                 t4v.setTextColor(Color.BLACK);
                 t4v.setGravity(Gravity.CENTER);
                 if(i%2==0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
@@ -212,10 +215,9 @@ public class DrivingHistoryFragment extends android.app.Fragment{
                 if(i%2==0) t5v.setBackgroundColor(Color.rgb(236, 236, 236));
 
 
-                final String activityId = a.getActivityId();
                 t5v.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        onClick_ShowActivity(v, activityId);
+                        onClick_ShowActivity(v, new Activity(ActivityMode.DRIVING));
                     }
                 });
                 tbrow.addView(t5v);

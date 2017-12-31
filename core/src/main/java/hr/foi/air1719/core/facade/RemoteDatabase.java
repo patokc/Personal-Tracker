@@ -2,7 +2,6 @@ package hr.foi.air1719.core.facade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,7 +24,7 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
     private String user;
 
     public RemoteDatabase(Context context, DataHandler handler) {
-        this.restServiceCaller = new RestServiceCaller( this);
+        this.restServiceCaller = new RestServiceCaller(this);
         this.settings = context.getSharedPreferences("user", 0);
         this.user = settings.getString("username", "0");
         this.dataHandler = handler;
@@ -84,10 +83,5 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
     public Map<String, GpsLocation> getAllLocations() {
         this.restServiceCaller.getAllLocations(this.user);
         return null;
-    }
-
-    @Override
-    public String uploadImage(Bitmap image) {
-        return this.restServiceCaller.uploadImage(image);
     }
 }

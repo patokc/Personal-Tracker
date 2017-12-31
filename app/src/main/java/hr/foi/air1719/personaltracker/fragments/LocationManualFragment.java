@@ -125,7 +125,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                 public void run(){
                     Activity ac = new Activity(ActivityMode.WALKING);
                     DatabaseFacade db = new DatabaseFacade(getView().getContext());
-                    ac.setImage(db.uploadImage(outputBitmap));
+                    ac.setImage(outputBitmapPath);
                     ac.setDescription(note.toString());
                     db.saveActivity(ac);
                     db.saveLocation(new GpsLocation(ac.getActivityId(),
