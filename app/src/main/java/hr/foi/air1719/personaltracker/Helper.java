@@ -4,9 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -51,20 +48,20 @@ public class Helper {
         return false;
     }
 
-    public static double CalculateDistance(Location startPoint, Location endPoint)
+    public static float CalculateDistance(Location startPoint, Location endPoint)
     {
-        return (startPoint.distanceTo(endPoint)/1000);
+        return (startPoint.distanceTo(endPoint) / ((float)1000));
     }
 
-    public static double CalculateAvgSpeed(Date startDate, Date endDate, double KM)
+    public static float CalculateAvgSpeed(Date startDate, Date endDate, double KM)
     {
         try {
             long different = endDate.getTime() - startDate.getTime();
 
-            double diffHours = (different / (60 * 60 * 1000));
+            float diffHours = (float)((float)different / (float)(60 * 60 * 1000));
             if(diffHours==0) return 0;
 
-            return (KM / diffHours);
+            return (float)(KM / diffHours);
         }
         catch (Exception E)
         {
@@ -72,5 +69,4 @@ public class Helper {
         }
         return -1;
     }
-
 }
