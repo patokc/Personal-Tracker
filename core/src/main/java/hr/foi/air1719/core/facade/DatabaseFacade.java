@@ -156,9 +156,23 @@ public class DatabaseFacade extends Database implements DataHandler {
     }
 
     @Override
+    public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        List<Activity> data = this.local.getActivityByModeOrderByStartDESC(mode);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
+
+    }
+
+    @Override
     public void saveLocation(GpsLocation location){
         local.saveLocation(location);
         remote.saveLocation(location);
+    }
+
+    @Override
+    public void deleteByActivity(Activity activity) {
+        remote.deleteByActivity(activity);
+        local.deleteByActivity(activity);
     }
 
     @Override

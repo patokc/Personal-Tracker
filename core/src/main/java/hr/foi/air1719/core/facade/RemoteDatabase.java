@@ -64,6 +64,11 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
     }
 
     @Override
+    public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        return null;
+    }
+
+    @Override
     public Map<String, Activity> getAllActivities() {
         this.restServiceCaller.getAllActivities(this.user);
         return null;
@@ -72,6 +77,11 @@ public class RemoteDatabase  extends Database implements RestServiceHandler {
     @Override
     public void saveLocation(GpsLocation location) {
         this.restServiceCaller.saveLocation(location, this.user, location.getActivityId());
+    }
+
+    @Override
+    public void deleteByActivity(Activity activity) {
+
     }
 
     @Override

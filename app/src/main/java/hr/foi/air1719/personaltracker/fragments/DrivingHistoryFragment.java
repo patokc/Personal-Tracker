@@ -1,8 +1,10 @@
 package hr.foi.air1719.personaltracker.fragments;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -46,7 +48,9 @@ public class DrivingHistoryFragment extends android.app.Fragment{
     private String mParam1;
     private String mParam2;
 
+    AlertDialog.Builder builder = null;
     TableLayout tableHistory=null;
+    //Button btnDeleteHistory = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -79,21 +83,75 @@ public class DrivingHistoryFragment extends android.app.Fragment{
 
         myFrame=this;
         tableHistory = (TableLayout)getView().findViewById(R.id.tableHistory);
+        //btnDeleteHistory = (Button)getView().findViewById(R.id.btnDeleteDrivingActivitys);
+        builder = new AlertDialog.Builder(getActivity());
+
+        /*btnDeleteHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_DeleteHistory(v);
+            }
+        });*/
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                        dbfacade.deleteByActivity(activityForDelete);
+                    }
+                }).start();
+
+                View row = (View) viewForDelete.getParent();
+                ViewGroup container = ((ViewGroup)row.getParent());
+                container.removeView(row);
+                container.invalidate();
+
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
         fillGrid();
+    }
+
+
+    public void onClick_DeleteHistory(View v) {
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure you want to delete all Driver activities?");
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void fillGrid() {
 
-
         new Thread(new Runnable() {
             public void run() {
                 DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByMode(ActivityMode.DRIVING));
+                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC(ActivityMode.DRIVING));
                 message.sendToTarget();
             }
         }).start();
     }
 
+
+    private Activity activityForDelete = null;
+    private View viewForDelete = null;
+    public void onClick_DeleteActivity(View v, final Activity activity) {
+
+        activityForDelete=activity;
+        viewForDelete=v;
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure you want to delete this activity?");
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
     public void onClick_ShowActivity(View v, String activityID)
@@ -167,14 +225,25 @@ public class DrivingHistoryFragment extends android.app.Fragment{
             tv3.setGravity(Gravity.CENTER);
             tbrow0.addView(tv3);
 
+
             TextView tv4 = new TextView(getActivity());
-            tv4.setText(" Show ");
+            tv4.setText("DEL");
             tv4.setTextColor(Color.BLACK);
             tv4.setBackgroundColor(Color.LTGRAY);
             tv4.setHeight(100);
             tv4.setTypeface(null, Typeface.BOLD);
             tv4.setGravity(Gravity.CENTER);
             tbrow0.addView(tv4);
+
+
+            TextView tv5 = new TextView(getActivity());
+            tv5.setText(" Show ");
+            tv5.setTextColor(Color.BLACK);
+            tv5.setBackgroundColor(Color.LTGRAY);
+            tv5.setHeight(100);
+            tv5.setTypeface(null, Typeface.BOLD);
+            tv5.setGravity(Gravity.CENTER);
+            tbrow0.addView(tv5);
 
 
             tableHistory.addView(tbrow0);
@@ -184,7 +253,7 @@ public class DrivingHistoryFragment extends android.app.Fragment{
 
                 TableRow tbrow = new TableRow(getActivity());
                 TextView t1v = new TextView(getActivity());
-                t1v.setText(a.getStart().toString());
+                t1v.setText(a.getStart().toString().substring(0, 11));
                 t1v.setTextColor(Color.BLACK);
                 t1v.setGravity(Gravity.CENTER);
                 if(i%2==0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
@@ -204,9 +273,15 @@ public class DrivingHistoryFragment extends android.app.Fragment{
                 if(i%2==0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
                 tbrow.addView(t4v);
 
+                TextView t4_1v = new TextView(getActivity());
+                t4_1v.setText("Delete");
+                t4_1v.setGravity(Gravity.CENTER);
+                t4_1v.setTextColor(Color.RED);
+                if(i%2==0) t4_1v.setBackgroundColor(Color.rgb(236, 236, 236));
+                tbrow.addView(t4_1v);
+
                 TextView t5v = new TextView(getActivity());
                 t5v.setText("Show");
-                t5v.setTextColor(Color.BLACK);
                 t5v.setGravity(Gravity.CENTER);
                 t5v.setTextColor(Color.BLUE);
                 if(i%2==0) t5v.setBackgroundColor(Color.rgb(236, 236, 236));
@@ -219,6 +294,16 @@ public class DrivingHistoryFragment extends android.app.Fragment{
                     }
                 });
                 tbrow.addView(t5v);
+
+
+                final Activity activity = a;
+                t4_1v.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        onClick_DeleteActivity(v, activity);
+                    }
+                });
+
+
 
                 tableHistory.addView(tbrow);
                 i++;

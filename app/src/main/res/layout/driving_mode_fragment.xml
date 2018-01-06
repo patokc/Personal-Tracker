@@ -3,9 +3,27 @@
     android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btnShowHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Show history" />
+
+        <Button
+            android:id="@+id/btnShowTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnShowHistory"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Show this trip" />
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -130,24 +148,6 @@
                                 </TableRow>
 
                         </TableLayout>
-
-                        <Button
-                            android:id="@+id/btnShowTrip"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Show this trip" />
-
-                        <Button
-                            android:id="@+id/btnShowHistory"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Show history" />
-
-                        <Button
-                            android:id="@+id/btnBackToMap"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Back to map" />
 
                 </LinearLayout>
         </ScrollView>

@@ -26,9 +26,13 @@ public abstract class Database {
 
     public abstract List<Activity> getActivityByMode(ActivityMode mode);
 
+    public abstract List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode);
+
     public abstract Map<String, Activity> getAllActivities();
 
     public abstract void saveLocation(GpsLocation location);
+
+    public abstract void deleteByActivity(Activity activity);
 
     public abstract Map<String, GpsLocation> getLocations(String activityId);
 

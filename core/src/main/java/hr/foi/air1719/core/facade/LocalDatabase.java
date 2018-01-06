@@ -57,6 +57,11 @@ public class LocalDatabase extends Database {
     }
 
     @Override
+    public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        return this.db.activityDao().findByModeOrderByStartDESC(mode);
+    }
+
+    @Override
     public Map<String, Activity> getAllActivities() {
         Map<String, Activity> map = new HashMap<>();
         for(Activity activity: this.db.activityDao().findAll()){
@@ -70,6 +75,11 @@ public class LocalDatabase extends Database {
     public void saveLocation(GpsLocation location) {
         location.setUsername(this.user);
         this.db.gpsLocationDao().save(location);
+    }
+
+    @Override
+    public void deleteByActivity(Activity activity) {
+        this.db.activityDao().deleteByActivity(activity);
     }
 
     @Override
