@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="12dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp">
+
+            <Button
+                android:id="@+id/btnRunningModeStart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/textView"
+                android:layout_toRightOf="@+id/textView"
+                android:height="90dp"
+                android:paddingTop="5dp"
+                android:text="Start" />
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="25dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewDistance"
+                        android:text="Total distance:"
+                        android:textSize="20sp"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <TextView
+                        android:id="@+id/txtTotalDistance"
+                        android:layout_alignBaseline="@+id/textView"
+                        android:layout_alignBottom="@+id/textView"
+                        android:text=" 0 km"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        tools:layout_editor_absoluteX="1206dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="20dp">
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="25dp"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:id="@+id/textViewCalories"
+                        android:text="Calories:"
+                        android:textSize="20sp"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <TextView
+                        android:id="@+id/txtCalories"
+                        android:layout_alignBaseline="@+id/textView"
+                        android:layout_alignBottom="@+id/textView"
+                        android:text="0 kcal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        tools:layout_editor_absoluteX="126dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btnShowRoute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show last route" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
