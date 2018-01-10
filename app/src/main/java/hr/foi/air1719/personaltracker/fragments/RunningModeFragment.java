@@ -1,5 +1,7 @@
 package hr.foi.air1719.personaltracker.fragments;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +31,13 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     MyLocation myLocation=null;
     Button btnRunningModeStart=null;
+    EditText txtWeight=null;
     TextView txtTotalDistance=null;
+    TextView txtCalories=null;
+    Button btnShowRunningHistory = null;
+
+    //String weight;
+    //Float weightInKg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -41,6 +50,10 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         super.onViewCreated(view, savedInstanceState);
 
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
+        txtWeight=(EditText) getView().findViewById(R.id.txtWeight);
+        txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
+        //weight=txtWeight.getText().toString();
+        //weightInKg=Float.parseFloat(weight);
 
         btnRunningModeStart = (Button) getView().findViewById(R.id.btnRunningModeStart);
         btnRunningModeStart.setOnClickListener(new View.OnClickListener() {
@@ -51,9 +64,26 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             }
         });
 
-
+        btnShowRunningHistory = (Button) getView().findViewById(R.id.btnShowRunningHistory);
+        btnShowRunningHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_ShowRunningHistory(v);
+            }
+        });
 
     }
+
+    private void onClick_ShowRunningHistory(View v) {
+
+        Fragment fragment = new RunningHistoryFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, "Running History");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
 
     private void onClick_StartRunningMode(View v)
 
@@ -84,13 +114,18 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
 
     Location lastPoint = null;
-    double totalDistance = 0;
-    public double CalculateDistance(Location startPoint, Location endPoint)
+    float totalDistance = 0;
+    //float caloriesBurned=0;
+
+    public static float CalculateDistance(Location startPoint, Location endPoint)
     {
-        return startPoint.distanceTo(endPoint);
+        return (startPoint.distanceTo(endPoint) / ((float)1000));
     }
 
-
+    /*public static float CalculateCalories(float a, float b){
+        return ((float)1.036)*a*b;
+    }
+    */
     @Override
     public void locationChanged(Location location)
     {
@@ -103,6 +138,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
             lastPoint=location;
             txtTotalDistance.setText(totalDistance + " km");
+            //caloriesBurned=CalculateCalories(totalDistance,weightInKg);
+            //txtCalories.setText(caloriesBurned + " kcal");
 
             DatabaseFacade dbf = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.RUNNING);
@@ -110,7 +147,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         }catch (Exception E)
 
         {
-        E.printStackTrace();
+            E.printStackTrace();
         }
     }
 
@@ -121,4 +158,5 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     }
 }
+
 
