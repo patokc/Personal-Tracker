@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.6.0'
     implementation project(':restservice')
     implementation project(':core')
+    compile 'com.jjoe64:graphview:4.2.1'
 }

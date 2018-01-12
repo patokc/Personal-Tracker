@@ -22,9 +22,9 @@ import android.widget.Toast;
 
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
 import hr.foi.air1719.personaltracker.fragments.RunningModeFragment;
-
 import hr.foi.air1719.personaltracker.fragments.MapFragment;
 import hr.foi.air1719.personaltracker.fragments.Settings;
+import hr.foi.air1719.personaltracker.fragments.StatisticsFragment;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
@@ -102,6 +102,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment = new DrivingModeFragment();
                 tag = "DrivingMode";
                 break;
+            case R.id.statistics:
+                fragment = new StatisticsFragment();
+                tag = "Statistics";
+                break;
             case R.id.settings:
                 fragment = new Settings();
                 tag = "Settings";
@@ -125,7 +129,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
                 transaction.addToBackStack(null);
             }
-
 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();

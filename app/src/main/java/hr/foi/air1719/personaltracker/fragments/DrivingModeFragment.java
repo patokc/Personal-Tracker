@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -216,6 +217,8 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         super.onResume();
 
         ((Main) getActivity()).setActionBarTitle("Driving mode");
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.drivingMode);
 
     }
 }
