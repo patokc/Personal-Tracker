@@ -3,6 +3,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,9 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     public void onResume(){
         super.onResume();
         ((Main) getActivity()).setActionBarTitle("Running mode");
+         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+       //  navigationView.setNavigationItemSelectedListener((Main) getActivity());
+        navigationView.setCheckedItem(R.id.runningMode);
 
     }
 }
