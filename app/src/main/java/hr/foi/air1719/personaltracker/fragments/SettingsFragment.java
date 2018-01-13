@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment {
         super.onResume();
 
         ((Main) getActivity())
-                .setActionBarTitle("SettingsFragment");
+                .setActionBarTitle("Settings");
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.settings_tabs);
 
