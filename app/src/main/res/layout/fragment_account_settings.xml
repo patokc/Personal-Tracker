@@ -1,200 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/conLayout"
+    android:id="@+id/relLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
+    android:layout_height="match_parent">
 
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.0">
-
-
-    <EditText
-        android:id="@+id/inputFullName"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="10"
-        android:hint="Full name"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblFullName" />
-
-    <TextView
-        android:id="@+id/lblFullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Full name"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/inputUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="10"
-        android:hint="User name"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblUserName" />
-
-    <TextView
-        android:id="@+id/lblUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User name"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputFullName" />
-
-    <EditText
-        android:id="@+id/inputOldPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="10"
-        android:hint="Current Password"
-        android:inputType="textPassword"
-        android:singleLine="false"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblOldPassword" />
-
-    <TextView
-        android:id="@+id/lblOldPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Password"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputUserName" />
-
-    <EditText
-        android:id="@+id/inputPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="10"
-        android:hint="New Password"
-        android:inputType="textPassword"
-        android:singleLine="false"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblPassword" />
-
-    <TextView
-        android:id="@+id/lblPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Password"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputOldPassword" />
-
-    <TextView
-        android:id="@+id/lblRepeatPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Repeat new password"
-
-        app:layout_constraintLeft_toLeftOf="@+id/lblPassword"
-        app:layout_constraintStart_toStartOf="@+id/lblPassword"
-        app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
-
-    <EditText
-        android:id="@+id/inputRepeatPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Repeat new password"
-        android:inputType="textPassword"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblRepeatPassword" />
-
-    
-    <Button
-        android:id="@+id/actionCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="onClick_Cancel"
-        android:text="Cancel"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/text"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+        android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/actionSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick_Save"
-        android:text="Save"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/text"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp">
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/actionCancel"/>
+            <TextView
+                android:id="@+id/lblFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Full name"
 
-    <TextView
-        android:id="@+id/lblEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="E-mail"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        app:layout_constraintLeft_toLeftOf="@+id/lblRepeatPassword"
-        app:layout_constraintStart_toStartOf="@+id/lblRepeatPassword"
-        app:layout_constraintTop_toBottomOf="@+id/inputRepeatPassword" />
+            <EditText
+                android:id="@+id/inputFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="10"
+                android:hint="Full name"
+                android:inputType="textPersonName"
+                android:singleLine="false"
 
-    <EditText
-        android:id="@+id/inputEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-
-        app:layout_constraintLeft_toLeftOf="@+id/inputRepeatPassword"
-        app:layout_constraintStart_toStartOf="@+id/inputRepeatPassword"
-        app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblFullName" />
 
 
-</android.support.constraint.ConstraintLayout>
+            <EditText
+                android:id="@+id/inputUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="10"
+                android:hint="User name"
+                android:inputType="textPersonName"
+                android:singleLine="false"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblUserName" />
+
+            <TextView
+                android:id="@+id/lblUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User name"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputFullName" />
+
+            <EditText
+                android:id="@+id/inputOldPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="10"
+                android:hint="Current Password"
+                android:inputType="textPassword"
+                android:singleLine="false"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblOldPassword" />
+
+            <TextView
+                android:id="@+id/lblOldPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Password"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputUserName" />
+
+            <EditText
+                android:id="@+id/inputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="10"
+                android:hint="New Password"
+                android:inputType="textPassword"
+                android:singleLine="false"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblPassword" />
+
+            <TextView
+                android:id="@+id/lblPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Password"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputOldPassword" />
+
+            <TextView
+                android:id="@+id/lblRepeatPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repeat new password"
+
+                app:layout_constraintLeft_toLeftOf="@+id/lblPassword"
+                app:layout_constraintStart_toStartOf="@+id/lblPassword"
+                app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+
+            <EditText
+                android:id="@+id/inputRepeatPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Repeat new password"
+                android:inputType="textPassword"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblRepeatPassword" />
+
+
+            <Button
+                android:id="@+id/actionCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="onClick_Cancel"
+                android:text="Cancel"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/text"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+
+
+            <Button
+                android:id="@+id/actionSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick_Save"
+                android:text="Save"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/text"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/actionCancel"/>
+
+            <TextView
+                android:id="@+id/lblEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="E-mail"
+
+                app:layout_constraintLeft_toLeftOf="@+id/lblRepeatPassword"
+                app:layout_constraintStart_toStartOf="@+id/lblRepeatPassword"
+                app:layout_constraintTop_toBottomOf="@+id/inputRepeatPassword" />
+
+            <EditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="10"
+                android:hint="E-mail"
+                android:inputType="textPersonName"
+                android:singleLine="false"
+
+                app:layout_constraintLeft_toLeftOf="@+id/inputRepeatPassword"
+                app:layout_constraintStart_toStartOf="@+id/inputRepeatPassword"
+                app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</RelativeLayout>
 
 
