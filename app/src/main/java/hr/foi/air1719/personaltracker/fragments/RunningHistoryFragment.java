@@ -7,17 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 
 import hr.foi.air1719.personaltracker.R;
 
+
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RunningHistoryFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RunningHistoryFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by Nikolina on 14.01.2018..
  */
+
 public class RunningHistoryFragment extends android.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +25,8 @@ public class RunningHistoryFragment extends android.app.Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TableLayout tableRunningHistory=null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,12 +61,22 @@ public class RunningHistoryFragment extends android.app.Fragment {
         }
     }
 
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        tableRunningHistory = (TableLayout)getView().findViewById(R.id.tableHistory);
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_running_history, container, false);
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -75,22 +85,6 @@ public class RunningHistoryFragment extends android.app.Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
 
     public interface OnFragmentInteractionListener {

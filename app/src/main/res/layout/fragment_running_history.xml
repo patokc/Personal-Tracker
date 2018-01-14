@@ -4,10 +4,23 @@
     android:layout_height="match_parent"
     tools:context="hr.foi.air1719.personaltracker.fragments.RunningHistoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+        <ScrollView
+            android:id="@+id/scrolID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableLayout
+                android:id="@+id/tableRunningHistory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:stretchColumns="*"
+                android:layout_marginTop="15dp">
+
+            </TableLayout>
+
+        </ScrollView>
+    </FrameLayout>
