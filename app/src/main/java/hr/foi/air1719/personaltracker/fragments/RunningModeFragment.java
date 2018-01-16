@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
@@ -91,6 +94,19 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     {
         if(myLocation ==null)
         {
+            new Thread(new Runnable() {
+                public void run() {
+
+                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                    Activity activity = new Activity(ActivityMode.RUNNING);
+                    activity.setActivityId(activity.getActivityId());
+                    activity.setStart(new Timestamp(new Date().getTime()));
+                    dbfacade.saveActivity(activity);
+
+                }
+            }).start();
+
+
             Toast.makeText(this.getActivity(), "Start Running mode", Toast.LENGTH_SHORT).show();
             myLocation = new MyLocation();
             myLocation.LocationStart(this);
@@ -127,6 +143,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         return ((float)1.036)*a*b;
     }
     */
+
+
     @Override
     public void locationChanged(Location location)
     {
@@ -156,8 +174,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     public void onResume(){
         super.onResume();
         ((Main) getActivity()).setActionBarTitle("Running mode");
-         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
-       //  navigationView.setNavigationItemSelectedListener((Main) getActivity());
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        //  navigationView.setNavigationItemSelectedListener((Main) getActivity());
         navigationView.setCheckedItem(R.id.runningMode);
 
     }
