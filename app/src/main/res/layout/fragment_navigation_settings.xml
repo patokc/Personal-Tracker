@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/conLayout"
+    android:id="@+id/layout_navigation_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -81,7 +81,7 @@
     </SeekBar>
 
     <Button
-        android:id="@+id/actionCancel"
+        android:id="@+id/actionCancelNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -96,7 +96,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
 
     <Button
-        android:id="@+id/actionSave"
+        android:id="@+id/actionSaveNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="40dp"
@@ -107,7 +107,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/actionCancel"/>
+        app:layout_constraintTop_toTopOf="@+id/actionCancelNavigation"/>
 
 
 </android.support.constraint.ConstraintLayout>
