@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/relLayout"
+    android:id="@+id/layout_account_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +15,7 @@
 
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/layout_account"
+            android:id="@+id/content_account_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -146,7 +146,7 @@
 
 
             <Button
-                android:id="@+id/actionCancel"
+                android:id="@+id/actionCancelAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -161,7 +161,7 @@
 
 
             <Button
-                android:id="@+id/actionSave"
+                android:id="@+id/actionSaveAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick_Save"
@@ -171,7 +171,7 @@
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/actionCancel"/>
+                app:layout_constraintTop_toTopOf="@+id/actionCancelAccount"/>
 
             <TextView
                 android:id="@+id/lblEmail"
