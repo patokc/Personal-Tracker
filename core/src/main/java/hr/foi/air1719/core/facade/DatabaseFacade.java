@@ -1,12 +1,14 @@
 package hr.foi.air1719.core.facade;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
@@ -39,7 +41,6 @@ public class DatabaseFacade extends Database implements DataHandler {
         this.local = new LocalDatabase(context);
         this.remote = new RemoteDatabase(context, handler);
         this.handler = handler;
-        isLocalOnly = false;
     }
 
     @Override
@@ -115,7 +116,10 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             this.remote.getActivity(mode, activityId);
         }
-        return this.local.getActivity(mode, activityId);
+
+        Activity data = this.local.getActivity(mode, activityId);
+        this.handler.onDataArrived(data, data !=null);
+        return data;
     }
 
     @Override
@@ -125,23 +129,38 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             remote.getAllActivities();
         }
-
+        this.handler.onDataArrived(this.activities, !this.activities.isEmpty());
         return this.activities;
     }
 
     @Override
     public List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date) {
-        return this.local.getActivityByDate(mode, activityId, date);
+        List<Activity> data = this.local.getActivityByDate(mode, activityId, date);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     @Override
     public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
-        return this.local.getActivityByDateRangeAndMode(mode, start, end);
+        List<Activity> data = this.local.getActivityByDateRangeAndMode(mode, start, end);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     @Override
     public List<Activity> getActivityByMode(ActivityMode mode) {
-        return this.local.getActivityByMode(mode);
+        List<Activity> data = this.local.getActivityByMode(mode);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
+
+    }
+
+    @Override
+    public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        List<Activity> data = this.local.getActivityByModeOrderByStartDESC(mode);
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
+
     }
 
     @Override
@@ -151,12 +170,18 @@ public class DatabaseFacade extends Database implements DataHandler {
     }
 
     @Override
+    public void deleteByActivity(Activity activity) {
+        remote.deleteByActivity(activity);
+        local.deleteByActivity(activity);
+    }
+
+    @Override
     public Map<String, GpsLocation> getLocations(String activityId){
         this.gpsLocations = local.getLocations(activityId);
         if(!this.isLocalOnly){
             remote.getLocations(activityId);
         }
-
+        this.handler.onDataArrived(this.gpsLocations, !this.gpsLocations.isEmpty());
         return this.gpsLocations;
     }
 
@@ -165,7 +190,10 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!this.isLocalOnly){
             this.remote.getAllLocations();
         }
-        return this.local.getAllLocations();
+
+        Map<String, GpsLocation> data = this.local.getAllLocations();
+        this.handler.onDataArrived(data, !data.isEmpty());
+        return data;
     }
 
     public void syncData(){
@@ -186,7 +214,8 @@ public class DatabaseFacade extends Database implements DataHandler {
         }
     }
 
-
-
-
+    @Override
+    public String uploadImage(Bitmap image) {
+        return this.remote.uploadImage(image);
+    }
 }

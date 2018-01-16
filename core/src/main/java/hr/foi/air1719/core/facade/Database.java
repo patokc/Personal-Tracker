@@ -1,5 +1,7 @@
 package hr.foi.air1719.core.facade;
 
+import android.graphics.Bitmap;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +26,18 @@ public abstract class Database {
 
     public abstract List<Activity> getActivityByMode(ActivityMode mode);
 
+    public abstract List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode);
+
     public abstract Map<String, Activity> getAllActivities();
 
     public abstract void saveLocation(GpsLocation location);
+
+    public abstract void deleteByActivity(Activity activity);
 
     public abstract Map<String, GpsLocation> getLocations(String activityId);
 
     public abstract Map<String, GpsLocation> getAllLocations();
 
+    public abstract String uploadImage(Bitmap image);
 
 }

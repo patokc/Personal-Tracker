@@ -27,6 +27,9 @@ public interface ActivityDao {
     @Query("SELECT * FROM activity WHERE mode = :mode")
     List<Activity> findByMode(ActivityMode mode);
 
+    @Query("SELECT * FROM activity WHERE mode = :mode ORDER BY start DESC LIMIT 50")
+    List<Activity> findByModeOrderByStartDESC(ActivityMode mode);
+
     @Query("SELECT * FROM activity WHERE start >= :date")
     List<Activity> findByDate(Timestamp date);
 
@@ -47,4 +50,7 @@ public interface ActivityDao {
 
     @Delete
     void delete(Activity activity);
+
+    @Delete
+    void deleteByActivity(Activity activity);
 }

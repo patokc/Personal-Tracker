@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,5 +154,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
 
         ((Main) getActivity())
                 .setActionBarTitle("Walking mode");
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.walkingMode);
     }
 }
