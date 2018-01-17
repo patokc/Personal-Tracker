@@ -3,6 +3,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -23,6 +23,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
@@ -46,7 +47,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.running_mode_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_running_mode, container, false);
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -56,8 +57,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
         txtWeight=(EditText) getView().findViewById(R.id.txtWeight);
         txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
-        //weight=txtWeight.getText().toString();
-        //weightInKg=Float.parseFloat(weight);
 
         btnRunningModeStart = (Button) getView().findViewById(R.id.btnRunningModeStart);
         btnRunningModeStart.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +106,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             }).start();
 
 
-            Toast.makeText(this.getActivity(), "Start Running mode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getActivity(), "Running mode started", Toast.LENGTH_SHORT).show();
             myLocation = new MyLocation();
             myLocation.LocationStart(this);
             btnRunningModeStart.setText("Stop");
@@ -115,10 +114,19 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
         else
         {
-            Toast.makeText(this.getActivity(), "Stop Running mode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getActivity(), "Running mode stopped", Toast.LENGTH_SHORT).show();
             myLocation.LocationListenerStop();
             myLocation = null;
             btnRunningModeStart.setText("Start");
+            /*if (txtWeight.getText().toString().isEmpty())
+            {
+                return;
+            }
+            else {
+                weight = txtWeight.getText().toString();
+                weightInKg = Float.parseFloat(weight);
+            }
+            */
         }
     }
 
@@ -134,15 +142,11 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     float totalDistance = 0;
     //float caloriesBurned=0;
 
-    public static float CalculateDistance(Location startPoint, Location endPoint)
+    /*public static float CalculateCalories(float a, float b)
     {
-        return (startPoint.distanceTo(endPoint) / ((float)1000));
-    }
-
-    /*public static float CalculateCalories(float a, float b){
         return ((float)1.036)*a*b;
-    }
-    */
+    }*/
+
 
 
     @Override
@@ -153,12 +157,12 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
             if(lastPoint==null)lastPoint = location;
 
-            totalDistance += CalculateDistance(lastPoint, location);
+            totalDistance += Helper.CalculateDistance(lastPoint, location);
 
             lastPoint=location;
             txtTotalDistance.setText(totalDistance + " km");
             //caloriesBurned=CalculateCalories(totalDistance,weightInKg);
-            //txtCalories.setText(caloriesBurned + " kcal");
+            //txtCalories.setText(caloriesBurned);
 
             DatabaseFacade dbf = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.RUNNING);

@@ -7,9 +7,22 @@ import android.text.TextUtils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Helper {
+
+
+    public static final Pattern letters_only_check =
+            Pattern.compile("^[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
+
+
+
+    public static boolean validateLetters(String letters) {
+        Matcher matcher = letters_only_check.matcher(letters);
+        return matcher.find();
+    }
 
     public static String md5(final String s) {
         final String MD5 = "MD5";
