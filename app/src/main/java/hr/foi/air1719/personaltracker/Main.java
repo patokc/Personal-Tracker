@@ -26,7 +26,7 @@ import hr.foi.air1719.personaltracker.fragments.MapFragment;
 
 import hr.foi.air1719.personaltracker.fragments.SettingsFragment;
 import hr.foi.air1719.personaltracker.fragments.StatisticsFragment;
-
+import hr.foi.air1719.personaltracker.fragments.WalkingModeFragment;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
@@ -60,7 +60,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new hr.foi.air1719.personaltracker.fragments.MapFragment())
+                .replace(R.id.fragment_container, new WalkingModeFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
@@ -93,7 +93,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         String tag = null;
         switch (itemId) {
             case R.id.walkingMode:
-                fragment = new MapFragment();
+                fragment = new WalkingModeFragment();
                 tag = "WalkingMode";
                 break;
             case R.id.runningMode:
