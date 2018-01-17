@@ -71,6 +71,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
         SharedPreferences sp = getSharedPreferences("user", 0);
         if(sp.contains("username")) {
+            finish();
             Intent intent = new Intent(getApplicationContext(), Main.class);
             startActivity(intent);
         }
