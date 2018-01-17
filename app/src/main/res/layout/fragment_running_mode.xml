@@ -17,24 +17,25 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/texViewWeight"
+                android:id="@+id/textViewWeight"
                 android:layout_width="151dp"
                 android:layout_height="match_parent"
                 android:paddingTop="15dp"
                 android:text="Your weight in kg:"
+                android:textStyle="bold"
                 android:textSize="18sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="0dp" />
+                />
 
             <EditText
                 android:id="@+id/txtWeight"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <Button
                 android:id="@+id/btnRunningModeStart"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:height="70dp"
@@ -49,18 +50,16 @@
                 android:paddingTop="25dp"
                 android:text="Total distance:"
                 android:textSize="20sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="0dp" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtTotalDistance"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text=" 0 km"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold"
                 android:textSize="25sp"
-                tools:layout_editor_absoluteX="126dp"
-                tools:layout_editor_absoluteY="0dp" />
+                 />
 
 
             <TextView
@@ -69,14 +68,16 @@
                 android:layout_height="match_parent"
                 android:paddingTop="25dp"
                 android:text="Burned calories:"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/txtCalories"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="0 kcal"
-                android:textSize="25sp" />
+                android:text=" 0 calories"
+                android:textSize="25sp"
+                android:textStyle="bold"/>
 
 
             <Button
