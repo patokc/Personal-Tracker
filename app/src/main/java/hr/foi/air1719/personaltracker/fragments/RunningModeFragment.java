@@ -23,6 +23,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
+import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 
@@ -46,7 +47,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.running_mode_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_running_mode, container, false);
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -134,11 +135,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     float totalDistance = 0;
     //float caloriesBurned=0;
 
-    public static float CalculateDistance(Location startPoint, Location endPoint)
-    {
-        return (startPoint.distanceTo(endPoint) / ((float)1000));
-    }
-
     /*public static float CalculateCalories(float a, float b){
         return ((float)1.036)*a*b;
     }
@@ -153,12 +149,12 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
             if(lastPoint==null)lastPoint = location;
 
-            totalDistance += CalculateDistance(lastPoint, location);
+            totalDistance += Helper.CalculateDistance(lastPoint, location);
 
             lastPoint=location;
             txtTotalDistance.setText(totalDistance + " km");
             //caloriesBurned=CalculateCalories(totalDistance,weightInKg);
-            //txtCalories.setText(caloriesBurned + " kcal");
+            //txtCalories.setText(caloriesBurned);
 
             DatabaseFacade dbf = new DatabaseFacade(getView().getContext());
             Activity activity = new Activity(ActivityMode.RUNNING);
