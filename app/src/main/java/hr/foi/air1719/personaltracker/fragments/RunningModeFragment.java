@@ -98,7 +98,20 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     private void onClick_ShowLastRoure(View v)
     {
-        //todo
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack("Running Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("Running Activity");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activityID", currentActivity.getActivityId());
+        fragment.setArguments(bundle);
+
+        transaction.replace(R.id.fragment_container, fragment, "Running Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+
     }
 
     private void onClick_ShowRunningHistory(View v) {
