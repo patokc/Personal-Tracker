@@ -45,7 +45,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
         this.context = context;
         this.savedLocations = savedLocations;
         this.gpsLocations= locationCoordinate;
-
     }
 
     @Override
@@ -56,8 +55,9 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        lokacija(gpsLocations.get(0).getLongitude(), gpsLocations.get(0).getLatitude());
-        viewHolder.address.setText(finalAddress);
+        //lokacija(gpsLocations.get(0).getLongitude(), gpsLocations.get(0).getLatitude());
+      //  viewHolder.address.setText(finalAddress);
+
         viewHolder.description.setText(savedLocations.get(i).getDescription());
         Picasso.with(context).load(savedLocations.get(i).getImage()).resize(160, 180).into(viewHolder.img);
     }
@@ -88,5 +88,4 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
             address=(TextView)view.findViewById(R.id.address);
         }
     }
-
 }
