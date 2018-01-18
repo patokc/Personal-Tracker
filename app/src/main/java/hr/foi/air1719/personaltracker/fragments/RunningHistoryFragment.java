@@ -1,5 +1,8 @@
 package hr.foi.air1719.personaltracker.fragments;
 
+import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -81,12 +84,32 @@ public class RunningHistoryFragment extends android.app.Fragment {
         new Thread(new Runnable() {
             public void run() {
                 DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC(ActivityMode.RUNNING));
+                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC
+                        (ActivityMode.RUNNING));
                 message.sendToTarget();
             }
         }).start();
 
     }
+
+
+    private void onClick_ShowActivity(View v, String  activityID) {
+
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack("Running Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activityID", activityID);
+        fragment.setArguments(bundle);
+
+        transaction.addToBackStack("Running Activity");
+        transaction.replace(R.id.fragment_container, fragment, "Running Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
 
 
     @Override
@@ -113,91 +136,77 @@ public class RunningHistoryFragment extends android.app.Fragment {
 
             List<Activity> ac = (List<Activity>) message.obj;
 
-            TableRow tbrow0 = new TableRow(getActivity());
+            TableRow firstrow = new TableRow(getActivity());
 
             TextView tv1 = new TextView(getActivity());
-            tv1.setText(" Start ");
+            tv1.setText(" Date and Time ");
             tv1.setBackgroundColor(Color.LTGRAY);
             tv1.setHeight(100);
             tv1.setTypeface(null, Typeface.BOLD);
             tv1.setGravity(Gravity.CENTER);
             tv1.setTextColor(Color.BLACK);
-            tbrow0.addView(tv1);
+            firstrow.addView(tv1);
 
             TextView tv2 = new TextView(getActivity());
-            tv2.setText(" Distance");
+            tv2.setText("Distance");
             tv2.setTextColor(Color.BLACK);
             tv2.setBackgroundColor(Color.LTGRAY);
             tv2.setHeight(100);
             tv2.setTypeface(null, Typeface.BOLD);
             tv2.setGravity(Gravity.CENTER);
-            tbrow0.addView(tv2);
+            firstrow.addView(tv2);
 
             TextView tv3 = new TextView(getActivity());
-            tv3.setText(" Show activity ");
+            tv3.setText("Map View");
             tv3.setTextColor(Color.BLACK);
             tv3.setBackgroundColor(Color.LTGRAY);
             tv3.setHeight(100);
             tv3.setTypeface(null, Typeface.BOLD);
             tv3.setGravity(Gravity.CENTER);
-            tbrow0.addView(tv3);
-            tv3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClick_ShowActivity(v, new Activity(ActivityMode.RUNNING));
-
-                }
-
-            });
-
-
-            tableRunningHistory.addView(tbrow0);
+            firstrow.addView(tv3);
+            tableRunningHistory.addView(firstrow);
 
 
             for (Activity a : ac) {
 
-                TableRow tbrow = new TableRow(getActivity());
+                TableRow tablerow = new TableRow(getActivity());
                 TextView t1v = new TextView(getActivity());
                 t1v.setText(a.getStart().toString());
                 t1v.setTextColor(Color.BLACK);
                 t1v.setGravity(Gravity.CENTER);
                 if (i % 2 == 0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t1v);
+                tablerow.addView(t1v);
 
 
                 TextView t2v = new TextView(getActivity());
-                t2v.setText(String.valueOf(a.getDistance()));
+                t2v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
                 t2v.setTextColor(Color.BLACK);
                 t2v.setGravity(Gravity.CENTER);
                 if (i % 2 == 0) t2v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t2v);
+                tablerow.addView(t2v);
 
                 TextView t3v = new TextView(getActivity());
-                t3v.setText("Show activity");
-                t3v.setTextColor(Color.BLACK);
-                t3v.setGravity(Gravity.CENTER);
+                t3v.setText("Map View");
                 t3v.setTextColor(Color.BLUE);
+                t3v.setGravity(Gravity.CENTER);
                 if (i % 2 == 0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
 
+                final String activityId = a.getActivityId();
                 t3v.setOnClickListener(new View.OnClickListener() {
-                    @Override
                     public void onClick(View v) {
-                        onClick_ShowActivity(v, new Activity(ActivityMode.RUNNING));
+                        onClick_ShowActivity(v, activityId);
+
                     }
                 });
-                tbrow.addView(t3v);
+                tablerow.addView(t3v);
 
-                tableRunningHistory.addView(tbrow);
+                tableRunningHistory.addView(tablerow);
                 i++;
 
             }
         }
     };
 
-    private void onClick_ShowActivity(View v, Activity activity) {
-
-        //todo
-    }
 
 
     public interface OnFragmentInteractionListener {

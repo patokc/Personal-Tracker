@@ -3,7 +3,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -40,6 +39,15 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     TextView txtTotalDistance=null;
     TextView txtCalories=null;
     Button btnShowRunningHistory = null;
+    Button btnShowRoute=null;
+    float totalDistance = 0;
+    Date startDate = null;
+    Location lastPoint=null;
+
+
+    DatabaseFacade dbCurrentFacade = null;
+    Activity currentActivity = null;
+
 
     //String weight;
     //Float weightInKg;
@@ -57,6 +65,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
         txtWeight=(EditText) getView().findViewById(R.id.txtWeight);
         txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
+        dbCurrentFacade = new DatabaseFacade(getView().getContext());
+        currentActivity = new Activity(ActivityMode.RUNNING);
 
         btnRunningModeStart = (Button) getView().findViewById(R.id.btnRunningModeStart);
         btnRunningModeStart.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +83,34 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
                 onClick_ShowRunningHistory(v);
             }
         });
+
+
+        btnShowRoute=(Button)getView().findViewById(R.id.btnShowRoute);
+        btnShowRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                onClick_ShowLastRoure(v);
+
+            }
+        });
+    }
+
+    private void onClick_ShowLastRoure(View v)
+    {
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack("Running Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("Running Activity");
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activityID", currentActivity.getActivityId());
+        fragment.setArguments(bundle);
+
+        transaction.replace(R.id.fragment_container, fragment, "Running Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
 
     }
 
@@ -93,20 +131,13 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     {
         if(myLocation ==null)
         {
-            new Thread(new Runnable() {
-                public void run() {
-
-                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-                    Activity activity = new Activity(ActivityMode.RUNNING);
-                    activity.setActivityId(activity.getActivityId());
-                    activity.setStart(new Timestamp(new Date().getTime()));
-                    dbfacade.saveActivity(activity);
-
-                }
-            }).start();
-
+            totalDistance = 0;
+            startDate = null;
+            currentActivity.setActivityId(currentActivity.getActivityId());
+            currentActivity.setStart(new Timestamp(new Date().getTime()));
 
             Toast.makeText(this.getActivity(), "Running mode started", Toast.LENGTH_SHORT).show();
+            if(startDate==null) startDate= new Date();
             myLocation = new MyLocation();
             myLocation.LocationStart(this);
             btnRunningModeStart.setText("Stop");
@@ -114,10 +145,22 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
         else
         {
+            new Thread(new Runnable() {
+                public void run() {
+
+
+                    currentActivity.setDistance(totalDistance);
+                    currentActivity.setFinish(new Timestamp(new Date().getTime()));
+                    dbCurrentFacade.saveActivity(currentActivity);
+
+                }
+            }).start();
+
             Toast.makeText(this.getActivity(), "Running mode stopped", Toast.LENGTH_SHORT).show();
             myLocation.LocationListenerStop();
             myLocation = null;
             btnRunningModeStart.setText("Start");
+
             /*if (txtWeight.getText().toString().isEmpty())
             {
                 return;
@@ -138,38 +181,41 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     }
 
 
-    Location lastPoint = null;
-    float totalDistance = 0;
     //float caloriesBurned=0;
-
     /*public static float CalculateCalories(float a, float b)
     {
         return ((float)1.036)*a*b;
     }*/
 
 
+    Location tempLocation=null;
 
     @Override
     public void locationChanged(Location location)
     {
         try
         {
+            tempLocation=location;
 
             if(lastPoint==null)lastPoint = location;
-
+            if(startDate==null) startDate= new Date();
             totalDistance += Helper.CalculateDistance(lastPoint, location);
-
             lastPoint=location;
-            txtTotalDistance.setText(totalDistance + " km");
+            txtTotalDistance.setText(String.format("%.2f", totalDistance) + " km");
             //caloriesBurned=CalculateCalories(totalDistance,weightInKg);
             //txtCalories.setText(caloriesBurned);
 
-            DatabaseFacade dbf = new DatabaseFacade(getView().getContext());
-            Activity activity = new Activity(ActivityMode.RUNNING);
-            dbf.saveLocation(new GpsLocation(activity.getActivityId(), location.getLongitude(), location.getLatitude(), location.getAccuracy()));
+            new Thread(new Runnable() {
+                public void run() {
+
+                    DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                    dbfacade.saveLocation(new GpsLocation(currentActivity.getActivityId(), tempLocation.getLongitude(), tempLocation.getLatitude(), tempLocation.getAccuracy()));
+                }
+            }).start();
         }catch (Exception E)
 
         {
+            Toast.makeText(this.getActivity(), E.toString(), Toast.LENGTH_SHORT).show();
             E.printStackTrace();
         }
     }
