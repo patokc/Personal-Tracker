@@ -56,6 +56,10 @@ public class GpsLocation {
 
     }
 
+    public GpsLocation() {
+
+    }
+
     @Ignore
     public GpsLocation(@NonNull String activityId, double longitude, double latitude, float accuracy) {
         this.locationId = UUID.randomUUID().toString();
