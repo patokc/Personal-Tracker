@@ -24,6 +24,10 @@ public class WalkingModeFragment extends Fragment {
     private MapFragment mapFragment;
     private SavedLocationFragment savedLocationFragment;
 
+    public WalkingModeFragment () {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
