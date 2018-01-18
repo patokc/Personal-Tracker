@@ -1,5 +1,8 @@
 package hr.foi.air1719.personaltracker.fragments;
 
+import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -81,12 +84,32 @@ public class RunningHistoryFragment extends android.app.Fragment {
         new Thread(new Runnable() {
             public void run() {
                 DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
-                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC(ActivityMode.RUNNING));
+                Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC
+                        (ActivityMode.RUNNING));
                 message.sendToTarget();
             }
         }).start();
 
     }
+
+
+    private void onClick_ShowActivity(View v, String  activityID) {
+
+        android.app.Fragment fragment = new ActivityMapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack("Running Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activityID", activityID);
+        fragment.setArguments(bundle);
+
+        transaction.addToBackStack("Running Activity");
+        transaction.replace(R.id.fragment_container, fragment, "Running Activity");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
 
 
     @Override
@@ -141,16 +164,6 @@ public class RunningHistoryFragment extends android.app.Fragment {
             tv3.setTypeface(null, Typeface.BOLD);
             tv3.setGravity(Gravity.CENTER);
             firstrow.addView(tv3);
-            tv3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClick_ShowActivity(v, new Activity(ActivityMode.RUNNING));
-
-                }
-
-            });
-
-
             tableRunningHistory.addView(firstrow);
 
 
@@ -178,10 +191,11 @@ public class RunningHistoryFragment extends android.app.Fragment {
                 t3v.setGravity(Gravity.CENTER);
                 if (i % 2 == 0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
 
+                final String activityId = a.getActivityId();
                 t3v.setOnClickListener(new View.OnClickListener() {
-                    @Override
                     public void onClick(View v) {
-                        onClick_ShowActivity(v, new Activity(ActivityMode.RUNNING));
+                        onClick_ShowActivity(v, activityId);
+
                     }
                 });
                 tablerow.addView(t3v);
@@ -193,10 +207,6 @@ public class RunningHistoryFragment extends android.app.Fragment {
         }
     };
 
-    private void onClick_ShowActivity(View v, Activity activity) {
-
-        //todo
-    }
 
 
     public interface OnFragmentInteractionListener {
