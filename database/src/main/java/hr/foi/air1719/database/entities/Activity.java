@@ -45,6 +45,12 @@ public class Activity {
     @ColumnInfo(name = "image")
     private String image;
 
+    @ColumnInfo(name = "avgFuel")
+    private float avgFuel;
+
+    @ColumnInfo(name = "avgCal")
+    private float avgCal;
+
     public Activity(ActivityMode mode) {
         this.activityId = UUID.randomUUID().toString();
         this.mode = mode;
@@ -134,5 +140,21 @@ public class Activity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public float getAvgFuel() {
+        return avgFuel;
+    }
+
+    public void setAvgFuel(float avgFuel) {
+        this.avgFuel = avgFuel;
+    }
+
+    public float getAvgCal() {
+        return avgCal;
+    }
+
+    public void setAvgCal(float avgCal) {
+        this.avgCal = avgCal;
     }
 }

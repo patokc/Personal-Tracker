@@ -111,30 +111,9 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 SharedPreferences settings = getSharedPreferences("user", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("username", UserName.getText().toString());
+                editor.putBoolean("isSynced", false);
                 editor.commit();
 
-                Thread thread = new Thread(new Runnable(){
-
-                    @Override
-                    public void run(){
-                        //Activity act = new Activity(ActivityMode.DRIVING);
-                        DatabaseFacade dbfacade = new DatabaseFacade(getApplicationContext());
-                        //dbfacade.saveActivity(act);
-
-
-                        /*for(Activity a: dbfacade.getAllActivities().values()){
-                            System.out.println(a.getActivityId());
-                        }
-
-                        GpsLocation loc = new GpsLocation("1274e380-5f2e-407c-b0cc-a1785ee47b43",12.3243243,21.556345, 1);
-                        dbfacade.saveLocation(loc);
-
-                        dbfacade.getLocations("1274e380-5f2e-407c-b0cc-a1785ee47b43");*/
-
-                        dbfacade.syncData();
-                    }
-                });
-                thread.start();
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();
