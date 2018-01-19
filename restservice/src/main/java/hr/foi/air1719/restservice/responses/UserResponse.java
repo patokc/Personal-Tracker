@@ -7,7 +7,7 @@ import hr.foi.air1719.database.entities.User;
  */
 
 public class UserResponse extends User {
-    public UserResponse(String username, String password, String fullname) {
-        super(username, password, fullname);
+    public UserResponse(String username, String password, String fullname, String email) {
+        super(username, password, fullname, email);
     }
 }

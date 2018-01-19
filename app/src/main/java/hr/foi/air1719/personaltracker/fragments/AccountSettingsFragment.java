@@ -16,8 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.R;
+import hr.foi.air1719.restservice.RestServiceCaller;
+import hr.foi.air1719.restservice.RestServiceHandler;
 
 /**
  * Created by Timotea on 13.1.2018..
@@ -28,6 +31,8 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
     EditText inputFullName = null;
     EditText inputUserName = null;
     EditText inputEmail = null;
+    String logInUser = null;
+    User korisnik = null;
 
 
     public AccountSettingsFragment() {
@@ -45,10 +50,24 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
         inputUserName = (EditText)view.findViewById(R.id.inputUserName);
         inputEmail = (EditText) view.findViewById(R.id.inputEmail);
 
-        SharedPreferences settings = this.getActivity().getSharedPreferences("Registration", 0);
-        inputFullName.setText(settings.getString("FullName", ""));
-        inputUserName.setText(settings.getString("UserName", ""));
-        inputEmail.setText(settings.getString("Email", ""));
+        SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
+        logInUser = settings.getString("username", "");
+
+
+        RestServiceHandler restServiceHandler =  new RestServiceHandler() {
+            @Override
+            public void onDataArrived(Object result, boolean ok) {
+
+                korisnik = (User) result;
+                inputFullName.setText(korisnik.getFullname().toString());
+                inputUserName.setText(korisnik.getUsername().toString());
+                inputEmail.setText(korisnik.getEmail().toString());
+
+            }
+        };
+
+        RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
+        restServiceCaller.getUser(logInUser.toString());
 
         return view;
     }
