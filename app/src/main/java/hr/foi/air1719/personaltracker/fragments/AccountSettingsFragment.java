@@ -9,15 +9,16 @@ import android.content.SharedPreferences;
 
 import android.support.annotation.Nullable;
 
-import android.support.design.widget.NavigationView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 import hr.foi.air1719.database.entities.User;
-import hr.foi.air1719.personaltracker.Helper;
+
 import hr.foi.air1719.personaltracker.R;
 import hr.foi.air1719.restservice.RestServiceCaller;
 import hr.foi.air1719.restservice.RestServiceHandler;
@@ -43,8 +44,8 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_account_settings, container, false);
-        Button button = (Button) view.findViewById(R.id.actionCancelAccount);
-        button.setOnClickListener(this);
+        Button actionCancelAccount = (Button) view.findViewById(R.id.actionCancelAccount);
+        actionCancelAccount.setOnClickListener(this);
 
         inputFullName = (EditText)view.findViewById(R.id.inputFullName);
         inputUserName = (EditText)view.findViewById(R.id.inputUserName);
@@ -77,12 +78,17 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
         super.onViewCreated(view, savedInstanceState);
     }
 
+
     @Override
     public void onClick(View view) {
 
         Fragment fragment = new AccountSettingsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        inputFullName.setText("");
+        inputUserName.setText("");
+        inputEmail.setText("");
 
         fragmentTransaction.replace(R.id.layout_account_settings, fragment);
         fragmentTransaction
