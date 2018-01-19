@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import hr.foi.air1719.database.entities.User;
@@ -34,6 +35,7 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
     EditText inputEmail = null;
     String logInUser = null;
     User korisnik = null;
+    Button actionSaveAccount = null;
 
 
     public AccountSettingsFragment() {
@@ -50,6 +52,13 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
         inputFullName = (EditText)view.findViewById(R.id.inputFullName);
         inputUserName = (EditText)view.findViewById(R.id.inputUserName);
         inputEmail = (EditText) view.findViewById(R.id.inputEmail);
+
+        actionSaveAccount = (Button) view.findViewById(R.id.actionSaveAccount);
+        actionSaveAccount.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClick_Save(v);
+            }
+        });
 
         SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
         logInUser = settings.getString("username", "");
@@ -78,6 +87,41 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
         super.onViewCreated(view, savedInstanceState);
     }
 
+    public void onClick_Save(View v) {
+
+        System.out.println("OVDJE SAM!");
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", 0);
+        logInUser = sharedPreferences.getString("username", "");
+
+
+        RestServiceHandler restServiceHandler2 =  new RestServiceHandler() {
+            @Override
+            public void onDataArrived(Object result, boolean ok) {
+
+                korisnik = (User) result;
+
+            }
+        };
+
+        korisnik.setFullname(inputFullName.getText().toString());
+        korisnik.setUsername(inputUserName.getText().toString());
+        korisnik.setEmail(inputEmail.getText().toString());
+
+        RestServiceCaller restServiceCaller2 = new RestServiceCaller(restServiceHandler2);
+        restServiceCaller2.getUser(logInUser.toString());
+
+        if(korisnik!=null){
+            restServiceCaller2.createUser(korisnik);
+        }
+
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", inputUserName.getText().toString());
+        editor.commit();
+
+        Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onClick(View view) {
