@@ -58,6 +58,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         navigationView.setCheckedItem(R.id.walkingMode);
 
+
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, new WalkingModeFragment())
