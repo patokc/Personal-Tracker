@@ -27,6 +27,7 @@ import hr.foi.air1719.personaltracker.fragments.MapFragment;
 import hr.foi.air1719.personaltracker.fragments.SettingsFragment;
 import hr.foi.air1719.personaltracker.fragments.StatisticsFragment;
 import hr.foi.air1719.personaltracker.fragments.WalkingModeFragment;
+import hr.foi.air1719.walking.WalkingMode;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
@@ -102,7 +103,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment=new RunningModeFragment();
                 break;
             case R.id.drivingMode:
-                fragment = new DrivingModeFragment();
+                //fragment = new DrivingModeFragment();
+                fragment = new WalkingMode();
                 tag = "DrivingMode";
                 break;
             case R.id.statistics:
