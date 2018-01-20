@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,12 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
@@ -40,15 +47,16 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     TextView txtTotalKm=null;
     TextView txtTodayTotalKm=null;
     TextView txtFuel=null;
+    TextView txtAddress=null;
     Button btnDrivingStart = null;
     Button btnShowTrip = null;
     Button btnShowHistory = null;
-
+    Geocoder geocoder = null;
     Location lastPoint = null;
     float totalDistance = 0;
     Date startDate = null;
-
-    DatabaseFacade dbCurrentFacade = null;
+    SharedPreferences userSP = null;
+            DatabaseFacade dbCurrentFacade = null;
     Activity currentActivity = null;
 
     @Override
@@ -59,12 +67,15 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        userSP = getActivity().getSharedPreferences("user", 0);
+
         txtSpeed = (TextView) getView().findViewById(R.id.txtSpeedInfo);
         txtTotalKm = (TextView) getView().findViewById(R.id.txtTotalKm);
         txtAvgSpeed = (TextView) getView().findViewById(R.id.txtAvgSpeed);
         txtTodayTotalKm = (TextView) getView().findViewById(R.id.txtTodayTotalKm);
         txtFuel = (TextView) getView().findViewById(R.id.txtFuelConsum);
-
+        txtAddress = (TextView) getView().findViewById(R.id.txtAddressDM);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
         currentActivity = new Activity(ActivityMode.DRIVING);
 
@@ -92,7 +103,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
         btnShowTrip.setVisibility(View.INVISIBLE);
 
-
+        txtAddress.setText("Waiting for GPS fix...");
     }
 
     public void onClick_Start(View v) {
@@ -122,7 +133,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
                     currentActivity.setDistance(totalDistance);
                     currentActivity.setAverageSpeed((float)Helper.CalculateAvgSpeed(startDate, new Date(), (double)totalDistance));
                     currentActivity.setFinish(new Timestamp(new Date().getTime()));
-                    currentActivity.setUser("todo");
+                    currentActivity.setUser(userSP.getString("username", ""));
                     currentActivity.setAvgFuel(6.5f);
                     dbCurrentFacade.saveActivity(currentActivity);
                 }
@@ -179,6 +190,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     public void locationChanged(Location location) {
 
         try {
+            List<Address> lokacija = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
             tempLocation=location;
 
             int speed = (int) ((location.getSpeed() * 3600) / 1000);
@@ -198,6 +210,9 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
             txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
             txtFuel.setText(String.format("%.2f", ((totalDistance*6.6f)/(float)100)) + " km");
+
+            if(lokacija.size()>0)
+                txtAddress.setText(lokacija.get(0).getAddressLine(0));
 
 
             new Thread(new Runnable() {

@@ -176,6 +176,20 @@
 
                         </TableLayout>
 
+                        <TextView
+                            android:id="@+id/txtAddressDM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignBaseline="@+id/textView"
+                            android:layout_alignBottom="@+id/textView"
+                            android:paddingBottom="30dp"
+                            android:paddingTop="30dp"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            tools:layout_editor_absoluteX="126dp"
+                            tools:layout_editor_absoluteY="0dp" />
+
                 </LinearLayout>
         </ScrollView>
 
