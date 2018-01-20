@@ -35,7 +35,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     MyLocation myLocation=null;
     Button btnRunningModeStart=null;
-    EditText txtWeight=null;
     TextView txtTotalDistance=null;
     TextView txtCalories=null;
     Button btnShowRunningHistory = null;
@@ -49,9 +48,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     Activity currentActivity = null;
 
 
-    //String weight;
-    //Float weightInKg;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -63,7 +59,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         super.onViewCreated(view, savedInstanceState);
 
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
-        txtWeight=(EditText) getView().findViewById(R.id.txtWeight);
         txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
         currentActivity = new Activity(ActivityMode.RUNNING);
@@ -114,6 +109,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
     }
 
+
     private void onClick_ShowRunningHistory(View v) {
 
         Fragment fragment = new RunningHistoryFragment();
@@ -161,15 +157,6 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             myLocation = null;
             btnRunningModeStart.setText("Start");
 
-            /*if (txtWeight.getText().toString().isEmpty())
-            {
-                return;
-            }
-            else {
-                weight = txtWeight.getText().toString();
-                weightInKg = Float.parseFloat(weight);
-            }
-            */
         }
     }
 
@@ -182,9 +169,9 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
 
     //float caloriesBurned=0;
-    /*public static float CalculateCalories(float a, float b)
+    /*public static float CalculateCalories(float weight, float distance)
     {
-        return ((float)1.036)*a*b;
+        return ((float)1.036)*weight*distance;
     }*/
 
 
