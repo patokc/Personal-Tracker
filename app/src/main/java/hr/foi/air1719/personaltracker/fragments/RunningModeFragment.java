@@ -90,13 +90,13 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             @Override
             public void onClick(View v)
             {
-                onClick_ShowLastRoure(v);
+                onClick_ShowLastRoute(v);
 
             }
         });
     }
 
-    private void onClick_ShowLastRoure(View v)
+    private void onClick_ShowLastRoute(View v)
     {
         android.app.Fragment fragment = new ActivityMapFragment();
         FragmentManager fragmentManager = getFragmentManager();
