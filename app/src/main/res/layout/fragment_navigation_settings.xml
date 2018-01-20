@@ -21,6 +21,18 @@
     app:layout_constraintVertical_bias="0.0">
 
 
+    <TextView
+        android:id="@+id/lblGeneral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="General"
+        android:layout_marginTop="2dp"
+        android:textSize="17dp"
+        android:textStyle="bold|italic"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/lblRefreshRate"
@@ -28,12 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:text="Refresh rate"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/lblGeneral"/>
 
     <SeekBar
         android:id="@+id/sbRefreshRate"
@@ -41,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:max="5000"
         android:progress="1500"
 
@@ -70,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:max="50"
         android:progress="20"
 
@@ -80,11 +92,91 @@
 
     </SeekBar>
 
+    <TextView
+        android:id="@+id/lblDrivingMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Driving mode"
+        android:layout_marginTop="35dp"
+        android:textSize="17dp"
+        android:textStyle="bold|italic"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
+
+    <TextView
+        android:id="@+id/lblFuelConsumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Fuel consumption (L/100km)"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
+
+    <EditText
+        android:id="@+id/inputFuelConsumption"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:ems="5"
+        android:singleLine="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+
+        app:layout_constraintLeft_toRightOf="@+id/lblFuelConsumption"
+        app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
+
+    <TextView
+        android:id="@+id/lblRunningMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Running mode"
+        android:layout_marginTop="40dp"
+        android:textSize="17dp"
+        android:textStyle="bold|italic"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblFuelConsumption" />
+
+    <TextView
+        android:id="@+id/lblWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Weight (kg)"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
+
+    <EditText
+        android:id="@+id/inputWeight"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:ems="5"
+        android:singleLine="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+
+        app:layout_constraintLeft_toRightOf="@+id/lblWeight"
+        app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
+
     <Button
         android:id="@+id/actionCancelNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_marginLeft="40dp"
         android:onClick="onClick_Cancel"
         android:text="Cancel"
@@ -93,7 +185,7 @@
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
+        app:layout_constraintTop_toBottomOf="@+id/lblWeight" />
 
     <Button
         android:id="@+id/actionSaveNavigation"

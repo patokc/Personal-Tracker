@@ -89,7 +89,6 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
 
     public void onClick_Save(View v) {
 
-        System.out.println("OVDJE SAM!");
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", 0);
         logInUser = sharedPreferences.getString("username", "");
@@ -104,12 +103,13 @@ public class AccountSettingsFragment extends Fragment implements View.OnClickLis
             }
         };
 
+        RestServiceCaller restServiceCaller2 = new RestServiceCaller(restServiceHandler2);
+        restServiceCaller2.getUser(logInUser.toString());
+        restServiceCaller2.deleteUser(korisnik.getUsername().toString());
+
         korisnik.setFullname(inputFullName.getText().toString());
         korisnik.setUsername(inputUserName.getText().toString());
         korisnik.setEmail(inputEmail.getText().toString());
-
-        RestServiceCaller restServiceCaller2 = new RestServiceCaller(restServiceHandler2);
-        restServiceCaller2.getUser(logInUser.toString());
 
         if(korisnik!=null){
             restServiceCaller2.createUser(korisnik);
