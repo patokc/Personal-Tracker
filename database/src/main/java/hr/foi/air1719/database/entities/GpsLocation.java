@@ -55,7 +55,7 @@ public class GpsLocation {
         this.gpsType=gpsType;
 
     }
-
+    @Ignore
     public GpsLocation() {
 
     }

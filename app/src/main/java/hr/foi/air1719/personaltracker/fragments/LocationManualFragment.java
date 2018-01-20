@@ -120,7 +120,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
 
     private void Save () {
         if(outputBitmap !=null && note.length() !=0) {
-            Thread thread = new Thread(new Runnable(){
+            new Thread(new Runnable(){
                 @Override
                 public void run(){
                     Activity ac = new Activity(ActivityMode.WALKING);
@@ -131,16 +131,8 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                     db.saveLocation(new GpsLocation(ac.getActivityId(),
                             location.getLongitude(), location.getLatitude(), location.getAccuracy()));
 
-                    //ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
                 }
-            });
-            thread.start();
-          /*  MapFragment mapFragment = new MapFragment();
-            mFragmentManager = getFragmentManager();
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, mapFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();*/
+            }).start();
             mFragmentManager = getFragmentManager();
             mFragmentManager.popBackStack();
         }else {
