@@ -39,6 +39,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     TextView txtAvgSpeed=null;
     TextView txtTotalKm=null;
     TextView txtTodayTotalKm=null;
+    TextView txtFuel=null;
     Button btnDrivingStart = null;
     Button btnShowTrip = null;
     Button btnShowHistory = null;
@@ -62,7 +63,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         txtTotalKm = (TextView) getView().findViewById(R.id.txtTotalKm);
         txtAvgSpeed = (TextView) getView().findViewById(R.id.txtAvgSpeed);
         txtTodayTotalKm = (TextView) getView().findViewById(R.id.txtTodayTotalKm);
-
+        txtFuel = (TextView) getView().findViewById(R.id.txtFuelConsum);
 
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
         currentActivity = new Activity(ActivityMode.DRIVING);
@@ -122,6 +123,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
                     currentActivity.setAverageSpeed((float)Helper.CalculateAvgSpeed(startDate, new Date(), (double)totalDistance));
                     currentActivity.setFinish(new Timestamp(new Date().getTime()));
                     currentActivity.setUser("todo");
+                    currentActivity.setAvgFuel(6.5f);
                     dbCurrentFacade.saveActivity(currentActivity);
                 }
             }).start();
@@ -136,7 +138,6 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     }
 
     public void onClick_ShowTrip(View v) {
-        Toast.makeText(this.getActivity(), "TODO", Toast.LENGTH_SHORT).show();
 
         android.app.Fragment fragment = new ActivityMapFragment();
         FragmentManager fragmentManager = getFragmentManager();
@@ -193,10 +194,11 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
             txtTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
             txtAvgSpeed.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)) + " km");
-            //TODO
+
             txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            //Toast.makeText(this.getActivity(), "Save location: " + location.getLongitude() + ", " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+            txtFuel.setText(String.format("%.2f", ((totalDistance*6.6f)/(float)100)) + " km");
+
 
             new Thread(new Runnable() {
                 public void run() {

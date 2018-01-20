@@ -93,7 +93,7 @@
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:paddingTop="20dp">
+                                    android:paddingTop="10dp">
 
                                         <TextView
                                             android:id="@+id/textView10"
@@ -121,8 +121,7 @@
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:paddingBottom="20dp"
-                                    android:paddingTop="20dp">
+                                    android:paddingTop="10dp">
 
                                         <TextView
                                             android:id="@+id/textView10"
@@ -141,6 +140,34 @@
                                             android:layout_alignBaseline="@+id/textView"
                                             android:layout_alignBottom="@+id/textView"
                                             android:text="0 km"
+                                            android:textSize="18sp"
+                                            android:textStyle="bold"
+                                            tools:layout_editor_absoluteX="126dp"
+                                            tools:layout_editor_absoluteY="0dp" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingTop="10dp">
+
+                                        <TextView
+                                            android:id="@+id/textView10"
+                                            android:layout_width="178dp"
+                                            android:layout_height="wrap_content"
+                                            android:text="Fuel consumption:"
+                                            android:textSize="18sp"
+                                            tools:layout_editor_absoluteX="16dp"
+                                            tools:layout_editor_absoluteY="0dp" />
+
+                                        <TextView
+                                            android:id="@+id/txtFuelConsum"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+
+                                            android:layout_alignBaseline="@+id/textView"
+                                            android:layout_alignBottom="@+id/textView"
+                                            android:text="0 L"
                                             android:textSize="18sp"
                                             android:textStyle="bold"
                                             tools:layout_editor_absoluteX="126dp"
