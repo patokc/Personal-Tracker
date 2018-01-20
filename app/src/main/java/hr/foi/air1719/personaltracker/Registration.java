@@ -151,7 +151,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
                 }
             };
 
-            User u = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString());
+            User u = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString(), Email.getText().toString());
 
             RestServiceCaller restServiceCaller = new RestServiceCaller(regHandler);
             restServiceCaller.createUser(u);

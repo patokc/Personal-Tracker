@@ -23,11 +23,21 @@ public class User {
     @ColumnInfo(name = "fullname")
     private String fullname;
 
+    @ColumnInfo(name = "email")
+    private String email;
 
-    public User(String username, String password, String fullname) {
+    @ColumnInfo(name = "avgFuel")
+    private float avgFuel;
+
+    @ColumnInfo(name = "weight")
+    private float weight;
+
+
+    public User(String username, String password, String fullname, String email) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
+        this.email = email;
     }
 
 
@@ -62,5 +72,25 @@ public class User {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getEmail() {return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public float getAvgFuel() {
+        return avgFuel;
+    }
+
+    public void setAvgFuel(float avgFuel) {
+        this.avgFuel = avgFuel;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 }

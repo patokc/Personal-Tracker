@@ -87,6 +87,38 @@ public class RestServiceCaller {
 
     }
 
+    public void deleteUser(String user) {
+        RestService serviceCaller = retrofit.create(RestService.class);
+        Call<UserResponse> call = serviceCaller.deleteUser(user);
+
+        if (call != null) {
+            call.enqueue(new Callback<UserResponse>() {
+
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            if (trsHandler != null) {
+                                trsHandler.onDataArrived(response.body(), true);
+                            }
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    if (trsHandler != null) {
+                        trsHandler.onDataArrived(null, false);
+                    }
+                }
+            });
+        }
+
+    }
+
     public void createUser(User user) {
         RestService serviceCaller = retrofit.create(RestService.class);
         Call<User> call = serviceCaller.createUser(user, user.getUsername());

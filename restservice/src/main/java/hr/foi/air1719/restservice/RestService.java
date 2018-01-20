@@ -12,6 +12,7 @@ import hr.foi.air1719.restservice.responses.UserResponse;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -26,6 +27,9 @@ import retrofit2.http.Path;
 public interface RestService {
     @GET("users/{user}.json")
     Call<UserResponse> getUser(@Path("user") String user);
+
+    @DELETE("users/{user}.json")
+    Call<UserResponse> deleteUser(@Path("user") String user);
 
     @PUT("users/{user}.json")
     Call<User> createUser(@Body User data, @Path("user") String user);

@@ -1,6 +1,7 @@
 package hr.foi.air1719.core.facade;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
@@ -26,21 +27,26 @@ public class DatabaseFacade extends Database implements DataHandler {
     private boolean isLocalOnly = true;
     private boolean syncActivities = false;
     private boolean syncLocations = false;
+    private boolean isSyncChecked = false;
 
     private Map<String, Activity> activities = null;
     private Map<String, GpsLocation> gpsLocations = null;
+
+    Context context = null;
 
 
     public DatabaseFacade(Context context) {
         this.local = new LocalDatabase(context);
         this.remote = new RemoteDatabase(context, this);
         this.handler = this;
+        this.context = context;
     }
 
     public DatabaseFacade(Context context, DataHandler handler) {
         this.local = new LocalDatabase(context);
         this.remote = new RemoteDatabase(context, handler);
         this.handler = handler;
+        this.context = context;
     }
 
     @Override
@@ -113,6 +119,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public Activity getActivity(ActivityMode mode, String activityId){
+        syncCheck();
         if(!this.isLocalOnly){
             this.remote.getActivity(mode, activityId);
         }
@@ -124,6 +131,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public Map<String, Activity> getAllActivities(){
+        syncCheck();
         this.activities = local.getAllActivities();
 
         if(!this.isLocalOnly){
@@ -135,6 +143,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public List<Activity> getActivityByDate(ActivityMode mode, String activityId, Timestamp date) {
+        syncCheck();
         List<Activity> data = this.local.getActivityByDate(mode, activityId, date);
         this.handler.onDataArrived(data, !data.isEmpty());
         return data;
@@ -142,6 +151,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
+        syncCheck();
         List<Activity> data = this.local.getActivityByDateRangeAndMode(mode, start, end);
         this.handler.onDataArrived(data, !data.isEmpty());
         return data;
@@ -149,6 +159,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public List<Activity> getActivityByMode(ActivityMode mode) {
+        syncCheck();
         List<Activity> data = this.local.getActivityByMode(mode);
         this.handler.onDataArrived(data, !data.isEmpty());
         return data;
@@ -157,6 +168,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        syncCheck();
         List<Activity> data = this.local.getActivityByModeOrderByStartDESC(mode);
         this.handler.onDataArrived(data, !data.isEmpty());
         return data;
@@ -177,6 +189,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public Map<String, GpsLocation> getLocations(String activityId){
+        syncCheck();
         this.gpsLocations = local.getLocations(activityId);
         if(!this.isLocalOnly){
             remote.getLocations(activityId);
@@ -187,6 +200,7 @@ public class DatabaseFacade extends Database implements DataHandler {
 
     @Override
     public Map<String, GpsLocation> getAllLocations() {
+        syncCheck();
         if(!this.isLocalOnly){
             this.remote.getAllLocations();
         }
@@ -217,5 +231,19 @@ public class DatabaseFacade extends Database implements DataHandler {
     @Override
     public String uploadImage(Bitmap image) {
         return this.remote.uploadImage(image);
+    }
+
+    private void syncCheck(){
+        if(!isSyncChecked){
+            SharedPreferences settings = context.getSharedPreferences("user", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            if(!settings.getBoolean("isSynced", false)){
+                this.syncData();
+                editor.putBoolean("isSynced", true);
+                editor.apply();
+            }
+            isSyncChecked = true;
+        }
+
     }
 }
