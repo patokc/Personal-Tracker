@@ -109,7 +109,12 @@ public class SavedLocationsDetails extends Fragment implements OnMapReadyCallbac
                longitude = a.getLongitude();
                langitude = a.getLatitude();
             }
-            findLocation(longitude,langitude);
+            try {
+            findLocation(longitude,langitude);}
+            catch (Exception E)
+            {
+                E.printStackTrace();
+            }
         }
     };
 
