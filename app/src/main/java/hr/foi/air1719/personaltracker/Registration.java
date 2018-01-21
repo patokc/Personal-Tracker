@@ -88,7 +88,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
 
         try {
 
-            if(FullName.getText().toString().equals("")|| !Helper.validateLetters(FullName.getText().toString())) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
+            if(FullName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
             if(UserName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong user name!",Toast.LENGTH_LONG).show(); return;}
             if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
