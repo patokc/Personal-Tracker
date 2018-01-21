@@ -38,7 +38,7 @@ public class LocalDatabase extends Database {
 
     @Override
     public Activity getActivity(ActivityMode mode, String activityId) {
-        return this.db.activityDao().findById(activityId);
+        return this.db.activityDao().findById(activityId, user);
     }
 
     @Override
@@ -48,23 +48,23 @@ public class LocalDatabase extends Database {
 
     @Override
     public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
-        return this.db.activityDao().findByDateRangeAndMode(start, end, mode);
+        return this.db.activityDao().findByDateRangeAndMode(start, end, mode, user);
     }
 
     @Override
     public List<Activity> getActivityByMode(ActivityMode mode) {
-        return this.db.activityDao().findByMode(mode);
+        return this.db.activityDao().findByMode(mode, user);
     }
 
     @Override
     public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
-        return this.db.activityDao().findByModeOrderByStartDESC(mode);
+        return this.db.activityDao().findByModeOrderByStartDESC(mode, user);
     }
 
     @Override
     public Map<String, Activity> getAllActivities() {
         Map<String, Activity> map = new HashMap<>();
-        for(Activity activity: this.db.activityDao().findAll()){
+        for(Activity activity: this.db.activityDao().findAll(user)){
             map.put(activity.getActivityId(), activity);
         }
 
