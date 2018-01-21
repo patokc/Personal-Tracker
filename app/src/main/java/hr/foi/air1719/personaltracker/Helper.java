@@ -62,7 +62,7 @@ public class Helper {
 
 
     public static final Pattern letters_only_check =
-            Pattern.compile("^[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile(    "^[a-zA-Z\\s]*$", Pattern.CASE_INSENSITIVE);
 
 
 
