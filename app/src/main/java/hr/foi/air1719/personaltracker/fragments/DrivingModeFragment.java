@@ -205,11 +205,11 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
             txtTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            txtAvgSpeed.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)) + " km");
+            txtAvgSpeed.setText(String.format("%.2f", Helper.CalculateAvgSpeed(startDate, new Date(), totalDistance)) + " km/h");
 
             txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            txtFuel.setText(String.format("%.2f", ((totalDistance*6.6f)/(float)100)) + " km");
+            txtFuel.setText(String.format("%.2f", ((totalDistance*6.6f)/(float)100)) + " L");
 
             if(lokacija.size()>0)
                 txtAddress.setText(lokacija.get(0).getAddressLine(0));

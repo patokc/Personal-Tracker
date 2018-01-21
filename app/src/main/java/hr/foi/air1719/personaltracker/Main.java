@@ -103,8 +103,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment=new RunningModeFragment();
                 break;
             case R.id.drivingMode:
-                //fragment = new DrivingModeFragment();
-                fragment = new WalkingMode();
+                fragment = new DrivingModeFragment();
                 tag = "DrivingMode";
                 break;
             case R.id.statistics:

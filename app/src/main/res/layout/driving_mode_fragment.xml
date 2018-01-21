@@ -127,7 +127,7 @@
                                             android:id="@+id/textView10"
                                             android:layout_width="178dp"
                                             android:layout_height="wrap_content"
-                                            android:text="Average total km:"
+                                            android:text="Average speed:"
                                             android:textSize="18sp"
                                             tools:layout_editor_absoluteX="16dp"
                                             tools:layout_editor_absoluteY="0dp" />
