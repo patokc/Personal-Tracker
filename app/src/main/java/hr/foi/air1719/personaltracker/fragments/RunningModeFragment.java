@@ -45,12 +45,9 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     float totalDistance = 0;
     Date startDate = null;
     Location lastPoint=null;
-    User korisnik=null;
-    float weight=0;
-
+    float weight=70.0f;
     DatabaseFacade dbCurrentFacade = null;
     Activity currentActivity = null;
-
     SharedPreferences userSP = null;
 
 
@@ -97,19 +94,52 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
             }
         });
+        btnShowRoute.setVisibility(View.INVISIBLE);
 
     }
 
 
-    RestServiceHandler restServiceHandler =  new RestServiceHandler() {
-        @Override
-        public void onDataArrived(Object result, boolean ok) {
 
-            korisnik = (User) result;
-            float weight=korisnik.getWeight();
+
+    private void onClick_StartRunningMode(View v)
+
+    {
+        if(myLocation ==null)
+        {
+            totalDistance = 0;
+            startDate = null;
+            currentActivity.setActivityId(currentActivity.getActivityId());
+            currentActivity.setStart(new Timestamp(new Date().getTime()));
+            Toast.makeText(this.getActivity(), "Running mode started", Toast.LENGTH_SHORT).show();
+            if(startDate==null) startDate= new Date();
+            myLocation = new MyLocation();
+            myLocation.LocationStart(this);
+            btnRunningModeStart.setText("Stop");
         }
-    };
 
+        else
+        {
+            new Thread(new Runnable() {
+                public void run() {
+
+                    currentActivity.setUser(userSP.getString("username", ""));
+                    currentActivity.setDistance(totalDistance);
+                    currentActivity.setFinish(new Timestamp(new Date().getTime()));
+                    currentActivity.setAvgCal(CalculateCalories(weight,totalDistance));
+                    dbCurrentFacade.saveActivity(currentActivity);
+
+                }
+            }).start();
+
+            Toast.makeText(this.getActivity(), "Running mode stopped", Toast.LENGTH_SHORT).show();
+            myLocation.LocationListenerStop();
+            myLocation = null;
+            btnRunningModeStart.setText("Start");
+            btnShowRoute.setVisibility(View.VISIBLE);
+
+
+        }
+    }
 
 
     private void onClick_ShowLastRoute(View v)
@@ -143,59 +173,12 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     }
 
 
-    private void onClick_StartRunningMode(View v)
-
-    {
-        if(myLocation ==null)
-        {
-            totalDistance = 0;
-            startDate = null;
-
-            currentActivity.setActivityId(currentActivity.getActivityId());
-            currentActivity.setStart(new Timestamp(new Date().getTime()));
-
-            Toast.makeText(this.getActivity(), "Running mode started", Toast.LENGTH_SHORT).show();
-            if(startDate==null) startDate= new Date();
-            myLocation = new MyLocation();
-            myLocation.LocationStart(this);
-            btnRunningModeStart.setText("Stop");
-        }
-
-        else
-        {
-            new Thread(new Runnable() {
-                public void run() {
-
-                    currentActivity.setUser(userSP.getString("username", ""));
-                    currentActivity.setDistance(totalDistance);
-                    currentActivity.setFinish(new Timestamp(new Date().getTime()));
-                    currentActivity.setAvgCal(caloriesBurned);
-                    dbCurrentFacade.saveActivity(currentActivity);
-
-                }
-            }).start();
-
-            Toast.makeText(this.getActivity(), "Running mode stopped", Toast.LENGTH_SHORT).show();
-            myLocation.LocationListenerStop();
-            myLocation = null;
-            btnRunningModeStart.setText("Start");
-
-        }
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    float caloriesBurned=0;
-    public static float CalculateCalories(float w, float d)
-    {
-        return ((float)1.036)*w*d;
-    }
 
 
     Location tempLocation=null;
@@ -212,8 +195,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             totalDistance += Helper.CalculateDistance(lastPoint, location);
             lastPoint=location;
             txtTotalDistance.setText(String.format("%.2f", totalDistance) + " km");
-            caloriesBurned=CalculateCalories(totalDistance,weight);
-            txtTotalDistance.setText(String.format(Math.round(caloriesBurned) + "calories"));
+            txtCalories.setText(String.format("%.2f", CalculateCalories(weight, totalDistance))+ " kcal");
 
             new Thread(new Runnable() {
                 public void run() {
@@ -228,6 +210,11 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             Toast.makeText(this.getActivity(), E.toString(), Toast.LENGTH_SHORT).show();
             E.printStackTrace();
         }
+    }
+
+    public float CalculateCalories(float w, float d)
+    {
+        return ((float)1.036)*w*d;
     }
 
 
