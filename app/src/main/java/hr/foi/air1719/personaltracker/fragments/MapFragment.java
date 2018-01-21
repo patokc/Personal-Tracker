@@ -98,11 +98,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                         WalkingMode fragment1 = new WalkingMode();
                         fragment1.share(getActivity(), getFragmentManager().beginTransaction(), R.id.fragment_container);
                         fragment = fragment1;
-                        tag = "WalkingMode";
+                        tag = "Walking mode";
                         FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fragmentManager.popBackStack("Walking mode", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment_container, fragment, tag);
+                        transaction.addToBackStack("Walking mode");
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         transaction.commit();
                         return;

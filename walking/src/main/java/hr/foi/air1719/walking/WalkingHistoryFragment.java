@@ -151,17 +151,17 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
 
     public void onClick_ShowActivity(View v, String activityID)
     {
-        android.app.Fragment fragment = new ActivityMapFragment();
+        ActivityMapFragment fragment = new ActivityMapFragment();
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack("Driving Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack("Walking Map", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         Bundle bundle = new Bundle();
         bundle.putString("activityID", activityID);
         fragment.setArguments(bundle);
 
-        transaction.addToBackStack("Walking Activity");
-        transaction.replace(fragment_container, fragment, "Walking Activity");
+        transaction.addToBackStack("Walking Map");
+        transaction.replace(fragment_container, fragment, "Walking Map");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
     }

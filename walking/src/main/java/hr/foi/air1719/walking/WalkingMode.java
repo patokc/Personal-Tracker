@@ -1,6 +1,7 @@
 package hr.foi.air1719.walking;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -147,31 +148,31 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
         ActivityMapFragment fragment = new ActivityMapFragment();
         fragment.share(activity,fragmentTransaction, fragment_container);
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack("Walking Activity", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack("Walking Map", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.addToBackStack("Walking Activity");
+        transaction.addToBackStack("Walking Map");
 
         Bundle bundle = new Bundle();
         bundle.putString("activityID", currentActivity.getActivityId());
         fragment.setArguments(bundle);
 
-        transaction.replace(fragment_container, fragment, "Walking Activity");
+        transaction.replace(fragment_container, fragment, "Walking Map");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
-
     }
 
     public void onClick_ShowHistory(View v) {
 
         WalkingHistoryFragment fragment = new WalkingHistoryFragment();
-        fragment.share(getActivity(), fragmentTransaction, fragment_container);
+        fragment.share(activity,fragmentTransaction, fragment_container);
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack("Walking History", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(fragment_container, fragment, "Driving History");
-        transaction.addToBackStack(null);
+        transaction.replace(fragment_container, fragment, "Walking History");
+        transaction.addToBackStack("Walking History");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
+
     }
 
 
@@ -179,7 +180,6 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     Location tempLocation=null;
     @Override
