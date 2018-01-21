@@ -42,6 +42,9 @@ public class AccountSettingsFragment extends Fragment  {
     Button actionSaveAccount = null;
     boolean check = false;
 
+    float avgFuel = 0;
+    float weight = 0;
+
 
     public AccountSettingsFragment() {
 
@@ -174,6 +177,9 @@ public class AccountSettingsFragment extends Fragment  {
                 check = true;
             }
 
+            avgFuel = korisnik.getAvgFuel();
+            weight = korisnik.getWeight();
+
             restServiceCaller2.deleteUser(korisnik.getUsername().toString());
 
             korisnik.setFullname(inputFullName.getText().toString());
@@ -183,6 +189,9 @@ public class AccountSettingsFragment extends Fragment  {
             if (check) {
                 korisnik.setPassword(Helper.md5(inputPassword.getText().toString()));
             }
+
+            korisnik.setAvgFuel(avgFuel);
+            korisnik.setWeight(weight);
 
             if(korisnik!=null){
                 restServiceCaller2.createUser(korisnik);
