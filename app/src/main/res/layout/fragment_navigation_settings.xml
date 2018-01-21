@@ -1,207 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/layout_navigation_settings"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.0">
+    android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/lblGeneral"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="General"
-        android:layout_marginTop="2dp"
-        android:textSize="17dp"
-        android:textStyle="bold|italic"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lblRefreshRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:text="Refresh rate"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblGeneral"/>
-
-    <SeekBar
-        android:id="@+id/sbRefreshRate"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:max="5000"
-        android:progress="1500"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblRefreshRate">
-
-    </SeekBar>
-
-    <TextView
-        android:id="@+id/lblMinimalDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:text="Minimal distance"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sbRefreshRate" />
-
-    <SeekBar
-        android:id="@+id/sbMinimalDistance"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:max="50"
-        android:progress="20"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblMinimalDistance">
-
-    </SeekBar>
-
-    <TextView
-        android:id="@+id/lblDrivingMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Driving mode"
-        android:layout_marginTop="35dp"
-        android:textSize="17dp"
-        android:textStyle="bold|italic"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
-
-    <TextView
-        android:id="@+id/lblFuelConsumption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text="Fuel consumption (L/100km)"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
-
-    <EditText
-        android:id="@+id/inputFuelConsumption"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="5"
-        android:singleLine="false"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-
-        app:layout_constraintLeft_toRightOf="@+id/lblFuelConsumption"
-        app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
-
-    <TextView
-        android:id="@+id/lblRunningMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Running mode"
-        android:layout_marginTop="40dp"
-        android:textSize="17dp"
-        android:textStyle="bold|italic"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblFuelConsumption" />
-
-    <TextView
-        android:id="@+id/lblWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text="Weight (kg)"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
-
-    <EditText
-        android:id="@+id/inputWeight"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:ems="5"
-        android:singleLine="false"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-
-        app:layout_constraintLeft_toRightOf="@+id/lblWeight"
-        app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
-
-    <Button
-        android:id="@+id/actionCancelNavigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="40dp"
-        android:onClick="onClick_Cancel"
-        android:text="Cancel"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/text"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblWeight" />
-
-    <Button
-        android:id="@+id/actionSaveNavigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="40dp"
-        android:onClick="onClick_Save"
-        android:text="Save"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/text"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/actionCancelNavigation"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/content_navigation_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+
+
+            <TextView
+                android:id="@+id/lblGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="General"
+                android:layout_marginTop="2dp"
+                android:textSize="17dp"
+                android:textStyle="bold|italic"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lblRefreshRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:text="Refresh rate"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblGeneral"/>
+
+            <SeekBar
+                android:id="@+id/sbRefreshRate"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:max="5000"
+                android:progress="1500"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblRefreshRate">
+
+            </SeekBar>
+
+            <TextView
+                android:id="@+id/lblOutputRefreshRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+
+                app:layout_constraintRight_toRightOf="@id/sbRefreshRate"
+                app:layout_constraintEnd_toEndOf="@id/sbRefreshRate"
+                app:layout_constraintTop_toBottomOf="@+id/sbRefreshRate"/>
+
+            <TextView
+                android:id="@+id/lblMinimalDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:text="Minimal distance"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblOutputRefreshRate" />
+
+            <TextView
+                android:id="@+id/lblNest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="10dp"
+
+                app:layout_constraintLeft_toLeftOf="@+id/actionSaveNavigation"
+                app:layout_constraintStart_toStartOf="@+id/actionSaveNavigation"
+                app:layout_constraintTop_toBottomOf="@+id/actionSaveNavigation" />
+
+            <SeekBar
+                android:id="@+id/sbMinimalDistance"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:max="50"
+                android:progress="20"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblMinimalDistance">
+
+            </SeekBar>
+
+            <TextView
+                android:id="@+id/lblOutputMinimalDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="5dp"
+                android:text=""
+
+                app:layout_constraintRight_toRightOf="@id/sbMinimalDistance"
+                app:layout_constraintEnd_toEndOf="@id/sbMinimalDistance"
+                app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance"/>
+
+            <TextView
+                android:id="@+id/lblDrivingMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driving mode"
+                android:layout_marginTop="35dp"
+                android:textSize="17dp"
+                android:textStyle="bold|italic"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
+
+            <TextView
+                android:id="@+id/lblFuelConsumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Fuel consumption (L/100km)"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
+
+            <EditText
+                android:id="@+id/inputFuelConsumption"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="5"
+                android:singleLine="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="8dp"
+
+                app:layout_constraintLeft_toRightOf="@+id/lblFuelConsumption"
+                app:layout_constraintTop_toBottomOf="@+id/lblDrivingMode" />
+
+            <TextView
+                android:id="@+id/lblRunningMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Running mode"
+                android:layout_marginTop="40dp"
+                android:textSize="17dp"
+                android:textStyle="bold|italic"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblFuelConsumption" />
+
+            <TextView
+                android:id="@+id/lblWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Weight (kg)"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
+
+            <EditText
+                android:id="@+id/inputWeight"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="false"
+                android:ems="5"
+                android:singleLine="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="8dp"
+
+                app:layout_constraintLeft_toRightOf="@+id/lblWeight"
+                app:layout_constraintTop_toBottomOf="@+id/lblRunningMode" />
+
+            <Button
+                android:id="@+id/actionSaveNavigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:onClick="onClick_Save"
+                android:text="Save"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/text"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputWeight"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
 
 

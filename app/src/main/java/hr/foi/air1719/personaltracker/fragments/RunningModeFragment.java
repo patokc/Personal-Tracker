@@ -3,6 +3,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,11 +21,13 @@ import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
+import hr.foi.air1719.database.entities.User;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
 import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
+import hr.foi.air1719.restservice.RestServiceHandler;
 
 /**
  * Created by Nikolina on 13.12.2017..
@@ -42,10 +45,13 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     float totalDistance = 0;
     Date startDate = null;
     Location lastPoint=null;
-
+    User korisnik=null;
+    float weight=0;
 
     DatabaseFacade dbCurrentFacade = null;
     Activity currentActivity = null;
+
+    SharedPreferences userSP = null;
 
 
     @Override
@@ -58,6 +64,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     {
         super.onViewCreated(view, savedInstanceState);
 
+
+        SharedPreferences userSP= getActivity().getSharedPreferences("user",0);
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
         txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
@@ -89,7 +97,20 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
             }
         });
+
     }
+
+
+    RestServiceHandler restServiceHandler =  new RestServiceHandler() {
+        @Override
+        public void onDataArrived(Object result, boolean ok) {
+
+            korisnik = (User) result;
+            float weight=korisnik.getWeight();
+        }
+    };
+
+
 
     private void onClick_ShowLastRoute(View v)
     {
@@ -129,6 +150,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         {
             totalDistance = 0;
             startDate = null;
+
             currentActivity.setActivityId(currentActivity.getActivityId());
             currentActivity.setStart(new Timestamp(new Date().getTime()));
 
@@ -144,9 +166,10 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             new Thread(new Runnable() {
                 public void run() {
 
-
+                    currentActivity.setUser(userSP.getString("username", ""));
                     currentActivity.setDistance(totalDistance);
                     currentActivity.setFinish(new Timestamp(new Date().getTime()));
+                    currentActivity.setAvgCal(caloriesBurned);
                     dbCurrentFacade.saveActivity(currentActivity);
 
                 }
@@ -168,11 +191,11 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
     }
 
 
-    //float caloriesBurned=0;
-    /*public static float CalculateCalories(float weight, float distance)
+    float caloriesBurned=0;
+    public static float CalculateCalories(float w, float d)
     {
-        return ((float)1.036)*weight*distance;
-    }*/
+        return ((float)1.036)*w*d;
+    }
 
 
     Location tempLocation=null;
@@ -189,8 +212,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             totalDistance += Helper.CalculateDistance(lastPoint, location);
             lastPoint=location;
             txtTotalDistance.setText(String.format("%.2f", totalDistance) + " km");
-            //caloriesBurned=CalculateCalories(totalDistance,weightInKg);
-            //txtCalories.setText(caloriesBurned);
+            caloriesBurned=CalculateCalories(totalDistance,weight);
+            txtTotalDistance.setText(String.format(Math.round(caloriesBurned) + "calories"));
 
             new Thread(new Runnable() {
                 public void run() {

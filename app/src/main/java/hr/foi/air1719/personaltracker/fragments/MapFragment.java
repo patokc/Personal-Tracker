@@ -32,6 +32,7 @@ import hr.foi.air1719.location.MyLocation;
 import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
+import hr.foi.air1719.walking.WalkingMode;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -75,13 +76,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
             public void onClick(View view) {
                 CheckLocationService();
                 if (gps_enabled) {
-                    LocationManualFragment locationManual = new LocationManualFragment();
-                    mFragmentManager = getFragmentManager();
-                    mFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, locationManual)
-                            .addToBackStack(null)
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .commit();
+
+                    Fragment fragment;
+
+
+                    //TODO, depends about settings
+                    if(1<0)
+                    {
+                        fragment = new LocationManualFragment();
+                        mFragmentManager = getFragmentManager();
+                        mFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                .commit();
+                    }
+                    else
+                    {
+                        //TODO
+                        String tag = null;
+                        WalkingMode fragment1 = new WalkingMode();
+                        fragment1.share(getActivity(), getFragmentManager().beginTransaction(), R.id.fragment_container);
+                        fragment = fragment1;
+                        tag = "WalkingMode";
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, fragment, tag);
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.commit();
+                        return;
+                    }
                 }
                 else {
                     Helper.PushNotificationGPS(getActivity().getWindow().getContext());

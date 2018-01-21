@@ -47,7 +47,6 @@ public class MyLocation implements LocationListener {
             gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-
             if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
