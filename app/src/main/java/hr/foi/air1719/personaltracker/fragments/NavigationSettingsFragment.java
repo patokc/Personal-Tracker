@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,20 +32,20 @@ public class NavigationSettingsFragment extends Fragment {
 
     TextView lblOutputRefreshRate = null;
     TextView lblOutputMinimalDistance = null;
+
     SeekBar sbRefreshRate = null;
     SeekBar sbMinimalDistance = null;
+
     EditText inputFuelConsumption = null;
     EditText inputWeight = null;
 
     Button actionSaveNavigation = null;
-    String logedInUser = null;
-    User user = null;
     User korisnik = null;
 
-    String fullName = null;
-    String userName = null;
-    String email = null;
-    String password = null;
+    Switch localDataOnly = null;
+    Boolean stateLocalDataOnly = false;
+    Switch manualSavingData = null;
+    Boolean stateManualSavingData = false;
 
     public NavigationSettingsFragment(){
 
@@ -62,6 +64,9 @@ public class NavigationSettingsFragment extends Fragment {
         inputFuelConsumption = (EditText) view.findViewById(R.id.inputFuelConsumption);
         inputWeight = (EditText) view.findViewById(R.id.inputWeight);
 
+        localDataOnly = (Switch) view.findViewById(R.id.switchLocalData);
+        manualSavingData = (Switch) view.findViewById(R.id.switchManualSaving);
+
         actionSaveNavigation = (Button) view.findViewById(R.id.actionSaveNavigation);
         actionSaveNavigation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -69,35 +74,19 @@ public class NavigationSettingsFragment extends Fragment {
             }
         });
 
-        final SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
-        logedInUser = settings.getString("username", "");
+        SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
 
-        RestServiceHandler restServiceHandler =  new RestServiceHandler() {
-            @Override
-            public void onDataArrived(Object result, boolean ok) {
+        inputFuelConsumption.setText(Float.toString(settings.getFloat("fuelConsumption", 0)));
+        inputWeight.setText(Float.toString(settings.getFloat("weight", 0)));
 
-                user = (User) result;
-                inputFuelConsumption.setText(Float.toString(user.getAvgFuel()));
-                inputWeight.setText(Float.toString(user.getWeight()));
+        sbRefreshRate.setProgress(settings.getInt("refreshRate", 0));
+        sbMinimalDistance.setProgress(settings.getInt("minimalDistance", 0));
 
-                if (settings.getString("refreshrate", "") != null){
+        lblOutputRefreshRate.setText(sbRefreshRate.getProgress() + "/" + sbRefreshRate.getMax());
+        lblOutputMinimalDistance.setText(sbMinimalDistance.getProgress()+ "/" + sbMinimalDistance.getMax());
 
-                    sbRefreshRate.setProgress(Integer.parseInt(settings.getString("refreshRate", "")));
-                }
-
-                if(settings.getString("minimaldistance", "") != null) {
-
-                    sbMinimalDistance.setProgress(Integer.parseInt(settings.getString("minimalDistance", "")));
-                }
-
-                lblOutputRefreshRate.setText(sbRefreshRate.getProgress() + "/" + sbRefreshRate.getMax());
-                lblOutputMinimalDistance.setText(sbMinimalDistance.getProgress()+ "/" + sbMinimalDistance.getMax());
-
-            }
-        };
-
-        RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
-        restServiceCaller.getUser(logedInUser.toString());
+        localDataOnly.setChecked(settings.getBoolean("localOnlyData", false));
+        manualSavingData.setChecked(settings.getBoolean("manualSaving", false));
 
         sbRefreshRate.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
@@ -143,6 +132,7 @@ public class NavigationSettingsFragment extends Fragment {
                 });
 
 
+
         return view;
 
     }
@@ -159,10 +149,9 @@ public class NavigationSettingsFragment extends Fragment {
     public void onClick_Save(View v) {
 
         SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
-        logedInUser = settings.getString("username", "");
 
 
-        RestServiceHandler restServiceHandler2 =  new RestServiceHandler() {
+        RestServiceHandler restServiceHandler =  new RestServiceHandler() {
             @Override
             public void onDataArrived(Object result, boolean ok) {
 
@@ -171,8 +160,8 @@ public class NavigationSettingsFragment extends Fragment {
             }
         };
 
-        RestServiceCaller restServiceCaller2 = new RestServiceCaller(restServiceHandler2);
-        restServiceCaller2.getUser(logedInUser.toString());
+        RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
+        restServiceCaller.getUser(settings.getString("username", ""));
 
         try {
 
@@ -226,31 +215,33 @@ public class NavigationSettingsFragment extends Fragment {
                 return;
             }
 
-            fullName = korisnik.getFullname();
-            userName = korisnik.getUsername();
-            email = korisnik.getEmail();
-            password = korisnik.getPassword();
-
-            restServiceCaller2.deleteUser(korisnik.getUsername().toString());
-
-            korisnik.setFullname(fullName);
-            korisnik.setUsername(userName);
-            korisnik.setEmail(email);
-            korisnik.setPassword(password);
-
             korisnik.setAvgFuel(Float.parseFloat(inputFuelConsumption.getText().toString()));
             korisnik.setWeight(Float.parseFloat(inputWeight.getText().toString()));
 
+            stateLocalDataOnly = localDataOnly.isChecked();
+            stateManualSavingData = manualSavingData.isChecked();
+
             if(korisnik!=null){
-                restServiceCaller2.createUser(korisnik);
+
+                restServiceCaller.createUser(korisnik);
+
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("refreshRate", sbRefreshRate.getProgress());
+                editor.putInt("minimalDistance", sbMinimalDistance.getProgress());
+                editor.putFloat("fuelConsumption", korisnik.getAvgFuel());
+                editor.putFloat("weight", korisnik.getWeight());
+                editor.putBoolean("localOnlyData", stateLocalDataOnly);
+                editor.putBoolean("manualSaving", stateManualSavingData);
+                editor.commit();
+
+                Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+
             }
 
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("refreshRate", Integer.toString(sbRefreshRate.getProgress()));
-            editor.putString("minimalDistance", Integer.toString(sbMinimalDistance.getProgress()));
-            editor.commit();
-
-            Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this.getActivity(), "Problem with saving data!",Toast.LENGTH_LONG).show();
+                return;
+            }
 
 
         } catch (Exception e) {

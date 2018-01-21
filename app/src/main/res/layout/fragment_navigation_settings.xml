@@ -5,13 +5,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_navigation_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
@@ -20,10 +21,10 @@
             android:id="@+id/content_navigation_settings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -64,8 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
                 android:max="5000"
                 android:progress="1500"
 
@@ -118,8 +120,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
                 android:max="50"
                 android:progress="20"
 
@@ -144,6 +147,47 @@
                 app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance"/>
 
             <TextView
+                android:id="@+id/lblWalkingMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walking mode"
+                android:layout_marginTop="35dp"
+                android:textSize="17dp"
+                android:textStyle="bold|italic"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
+
+            <TextView
+                android:id="@+id/lblLocalDataOnly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Local data only"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblWalkingMode" />
+
+            <TextView
+                android:id="@+id/lblManualSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Manual saving data"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblLocalDataOnly" />
+
+            <TextView
                 android:id="@+id/lblDrivingMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,7 +198,7 @@
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sbMinimalDistance" />
+                app:layout_constraintTop_toBottomOf="@+id/lblManualSaving" />
 
             <TextView
                 android:id="@+id/lblFuelConsumption"
@@ -238,6 +282,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/inputWeight"/>
+
+            <Switch
+                android:id="@+id/switchLocalData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
+
+                app:layout_constraintStart_toEndOf="@id/lblLocalDataOnly"
+                app:layout_constraintTop_toBottomOf="@id/lblWalkingMode" />
+
+            <Switch
+                android:id="@+id/switchManualSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
+
+                app:layout_constraintStart_toEndOf="@id/lblManualSaving"
+                app:layout_constraintTop_toBottomOf="@id/lblLocalDataOnly" />
 
         </android.support.constraint.ConstraintLayout>
 

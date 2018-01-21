@@ -36,15 +36,12 @@ public class AccountSettingsFragment extends Fragment  {
     EditText inputPassword = null;
     EditText inputRepeatPassword = null;
 
-    String logInUser = null;
     User korisnik = null;
-    User checkUser = null;
     Button actionSaveAccount = null;
     boolean check = false;
 
-    float avgFuel = 0;
+    float fuelConsumption = 0;
     float weight = 0;
-
 
     public AccountSettingsFragment() {
 
@@ -54,8 +51,6 @@ public class AccountSettingsFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_account_settings, container, false);
-
-        check = false;
 
         inputFullName = (EditText)view.findViewById(R.id.inputFullName);
         inputUserName = (EditText)view.findViewById(R.id.inputUserName);
@@ -73,25 +68,11 @@ public class AccountSettingsFragment extends Fragment  {
         });
 
         SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
-        logInUser = settings.getString("username", "");
 
-
-        RestServiceHandler restServiceHandler =  new RestServiceHandler() {
-            @Override
-            public void onDataArrived(Object result, boolean ok) {
-
-                korisnik = (User) result;
-                inputFullName.setText(korisnik.getFullname().toString());
-                inputUserName.setText(korisnik.getUsername().toString());
-                inputEmail.setText(korisnik.getEmail().toString());
-
-            }
-        };
-
-        RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
-        restServiceCaller.getUser(logInUser.toString());
-
+        inputFullName.setText(settings.getString("fullName", ""));
+        inputUserName.setText(settings.getString("username", ""));
         inputUserName.setEnabled(false);
+        inputEmail.setText(settings.getString("email", ""));
 
         return view;
     }
@@ -103,49 +84,13 @@ public class AccountSettingsFragment extends Fragment  {
 
     public void onClick_Save(View v) {
 
-
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", 0);
-        logInUser = sharedPreferences.getString("username", "");
-
-
-        RestServiceHandler restServiceHandler2 =  new RestServiceHandler() {
-            @Override
-            public void onDataArrived(Object result, boolean ok) {
-
-                korisnik = (User) result;
-
-            }
-        };
-
-        RestServiceCaller restServiceCaller2 = new RestServiceCaller(restServiceHandler2);
-        restServiceCaller2.getUser(logInUser.toString());
+        SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
+        check = false;
 
         try {
 
             if(inputFullName.getText().toString().equals("")) {
                 Toast.makeText(this.getActivity(), "Wrong full name!",Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            if(inputUserName.getText().toString().equals("")) {
-                Toast.makeText(this.getActivity(), "Wrong user name!",Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            RestServiceHandler restServiceHandler3 =  new RestServiceHandler() {
-                @Override
-                public void onDataArrived(Object result, boolean ok) {
-
-                    checkUser = (User) result;
-
-                }
-            };
-
-            RestServiceCaller restServiceCaller3 = new RestServiceCaller(restServiceHandler3);
-            restServiceCaller3.getUser(inputUserName.getText().toString());
-
-            if(checkUser != null) {
-                Toast.makeText(this.getActivity(), "Username already exists please choose another!",Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -161,7 +106,9 @@ public class AccountSettingsFragment extends Fragment  {
                     return;
                 }
 
-                if(korisnik.getPassword().equals(Helper.md5(inputOldPassword.getText().toString()))) {
+                String password = settings.getString("password", "");
+
+                if(!password.equals(Helper.md5(inputOldPassword.getText().toString()))) {
                     Toast.makeText(this.getActivity(), "Your current password is incorrect!",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -172,39 +119,50 @@ public class AccountSettingsFragment extends Fragment  {
                 }
 
                 if(!inputPassword.getText().toString().equals(inputRepeatPassword.getText().toString())) {
-                    Toast.makeText(this.getActivity(), "Password is not equal!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getActivity(), "Passwords are not equal!",Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 check = true;
+
             }
 
-            avgFuel = korisnik.getAvgFuel();
-            weight = korisnik.getWeight();
+            RestServiceHandler restServiceHandler =  new RestServiceHandler() {
+                @Override
+                public void onDataArrived(Object result, boolean ok) {
 
-            restServiceCaller2.deleteUser(korisnik.getUsername().toString());
+                    korisnik = (User) result;
+
+                }
+            };
+
+            RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
+            restServiceCaller.getUser(settings.getString("username", ""));
 
             korisnik.setFullname(inputFullName.getText().toString());
-            korisnik.setUsername(inputUserName.getText().toString());
             korisnik.setEmail(inputEmail.getText().toString());
 
-            if (check) {
+            if(check){
                 korisnik.setPassword(Helper.md5(inputPassword.getText().toString()));
             }
 
-            korisnik.setAvgFuel(avgFuel);
-            korisnik.setWeight(weight);
-
             if(korisnik!=null){
-                restServiceCaller2.createUser(korisnik);
+
+                restServiceCaller.createUser(korisnik);
+
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("fullName", korisnik.getFullname().toString());
+                editor.putString("email", korisnik.getEmail().toString());
+                editor.putString("password", korisnik.getPassword().toString());
+                editor.commit();
+
+                Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
             }
 
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", inputUserName.getText().toString());
-            editor.commit();
-
-            Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this.getActivity(), "Problem with saving data!",Toast.LENGTH_LONG).show();
+                return;
+            }
 
 
         } catch (Exception e) {
