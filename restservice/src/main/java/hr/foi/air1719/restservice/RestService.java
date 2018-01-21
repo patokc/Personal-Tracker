@@ -19,6 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by abenkovic on 10/29/17.
@@ -46,8 +47,11 @@ public interface RestService {
     @PUT("gpsLocations/{user}/{gpsLocationId}.json")
     Call<GpsLocation> saveLocation(@Body GpsLocation data, @Path("user") String user, @Path("gpsLocationId") String gpsLocationId);
 
-    @GET("gpsLocations/{user}.json?orderBy=\"activityId\"&equalTo=\"{activityId}.json\"")
-    Call<Map<String, GpsLocation>> getLocations(@Path("user") String user, @Path("activityId") String activityId);
+    //@GET("gpsLocations/{user}.json?orderBy=\"activityId\"&equalTo=\"{activityId}.json\"")
+    //Call<Map<String, GpsLocation>> getLocations(@Path("user") String user, @Path("activityId") String activityId);
+
+    @GET("gpsLocations/{user}.json?")
+    Call<Map<String, GpsLocation>> getLocations(@Path("user") String user, @Query("orderBy=\"activityId\"&equalTo=\"{activityId}.json\"") String activityId);
 
     @GET("gpsLocations/{user}.json")
     Call<Map<String, GpsLocation>> getAllLocations(@Path("user") String user);
