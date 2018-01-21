@@ -55,7 +55,7 @@ public class NavigationSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_navigation_settings, container, false);
-        korisnik = new User("","","","");
+
         lblOutputRefreshRate = (TextView) view.findViewById(R.id.lblOutputRefreshRate);
         lblOutputMinimalDistance = (TextView) view.findViewById(R.id.lblOutputMinimalDistance);
         sbRefreshRate = (SeekBar) view.findViewById(R.id.sbRefreshRate);
@@ -75,6 +75,7 @@ public class NavigationSettingsFragment extends Fragment {
         });
 
         SharedPreferences settings = this.getActivity().getSharedPreferences("user", 0);
+        korisnik = new User(settings.getString("username", ""), settings.getString("password", ""),settings.getString("fullName", ""),settings.getString("email", ""));
 
         inputFuelConsumption.setText(Float.toString(settings.getFloat("fuelConsumption", 0)));
         inputWeight.setText(Float.toString(settings.getFloat("weight", 0)));
@@ -154,9 +155,7 @@ public class NavigationSettingsFragment extends Fragment {
         RestServiceHandler restServiceHandler =  new RestServiceHandler() {
             @Override
             public void onDataArrived(Object result, boolean ok) {
-
                 korisnik = (User) result;
-
             }
         };
 
@@ -209,7 +208,6 @@ public class NavigationSettingsFragment extends Fragment {
 
 
             }
-
             else{
                 Toast.makeText(this.getActivity(), "Weight is not in right format!",Toast.LENGTH_LONG).show();
                 return;
@@ -221,7 +219,7 @@ public class NavigationSettingsFragment extends Fragment {
             stateLocalDataOnly = localDataOnly.isChecked();
             stateManualSavingData = manualSavingData.isChecked();
 
-            if(korisnik!=null){
+            if(korisnik!=null && !korisnik.getUsername().equals("")){
 
                 restServiceCaller.createUser(korisnik);
 
@@ -237,7 +235,6 @@ public class NavigationSettingsFragment extends Fragment {
                 Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
 
             }
-
             else {
                 Toast.makeText(this.getActivity(), "Problem with saving data!",Toast.LENGTH_LONG).show();
                 return;
