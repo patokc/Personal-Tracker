@@ -74,6 +74,7 @@ public class AccountSettingsFragment extends Fragment  {
         inputUserName.setEnabled(false);
         inputEmail.setText(settings.getString("email", ""));
 
+        korisnik = new User("","","","");
         return view;
     }
 

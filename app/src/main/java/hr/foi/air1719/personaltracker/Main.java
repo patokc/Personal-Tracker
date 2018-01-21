@@ -99,80 +99,88 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void selectedFragment(int itemId) {
-        Fragment fragment = null;
-        String tag = null;
-        switch (itemId) {
-            case R.id.walkingMode:
-                fragment = new WalkingModeFragment();
-                tag = "WalkingMode";
-                break;
-            case R.id.runningMode:
-                tag = "RunningMode";
-                fragment=new RunningModeFragment();
-                break;
-            case R.id.drivingMode:
-                fragment = new DrivingModeFragment();
-                tag = "DrivingMode";
-                break;
-            case R.id.statistics:
-                fragment = new StatisticsFragment();
-                tag = "Statistics";
-                break;
-            case R.id.settings:
-                fragment = new SettingsFragment();
-                tag = "SettingsFragment";
-                break;
-            case R.id.action_settings:
-                fragment = new SettingsFragment();
-                tag = "SettingsFragment";
-                break;
-            case R.id.logout:
-                tag= "Logout";
-                break;
-        }
 
-        if (fragment != null) {
+        try {
 
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment, tag);
-            if (tag != "WalkingMode" && tag !="RunningMode"  && tag !="DrivingMode") {
-
-                transaction.addToBackStack(null);
+            Fragment fragment = null;
+            String tag = null;
+            switch (itemId) {
+                case R.id.walkingMode:
+                    fragment = new WalkingModeFragment();
+                    tag = "WalkingMode";
+                    break;
+                case R.id.runningMode:
+                    tag = "RunningMode";
+                    fragment = new RunningModeFragment();
+                    break;
+                case R.id.drivingMode:
+                    fragment = new DrivingModeFragment();
+                    tag = "DrivingMode";
+                    break;
+                case R.id.statistics:
+                    fragment = new StatisticsFragment();
+                    tag = "Statistics";
+                    break;
+                case R.id.settings:
+                    fragment = new SettingsFragment();
+                    tag = "SettingsFragment";
+                    break;
+                case R.id.action_settings:
+                    fragment = new SettingsFragment();
+                    tag = "SettingsFragment";
+                    break;
+                case R.id.logout:
+                    tag = "Logout";
+                    break;
             }
 
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.commit();
+            if (fragment != null) {
 
-        }
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment, tag);
+                if (tag != "WalkingMode" && tag != "RunningMode" && tag != "DrivingMode") {
 
-        if(tag == "Logout") {
-            new AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_Dialog)
-                    .setMessage("Are you sure you want to log out?")
-                    .setCancelable(false)
-                    .setTitle("Log out?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                            Intent intent = new Intent(getApplicationContext(), LogIn.class);
-                            startActivity(intent);
-                            SharedPreferences settings = getSharedPreferences("user", 0);
-                            SharedPreferences.Editor editor = settings.edit().clear();
-                            editor.commit();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
-                    .create()
-                    .show();
+                    transaction.addToBackStack(null);
+                }
+
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.commit();
+
+            }
+
+            if (tag == "Logout") {
+                new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                        .setMessage("Are you sure you want to log out?")
+                        .setCancelable(false)
+                        .setTitle("Log out?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                                Intent intent = new Intent(getApplicationContext(), LogIn.class);
+                                startActivity(intent);
+                                SharedPreferences settings = getSharedPreferences("user", 0);
+                                SharedPreferences.Editor editor = settings.edit().clear();
+                                editor.commit();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 
     @Override

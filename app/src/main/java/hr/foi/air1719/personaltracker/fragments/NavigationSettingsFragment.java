@@ -55,7 +55,7 @@ public class NavigationSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_navigation_settings, container, false);
-
+        korisnik = new User("","","","");
         lblOutputRefreshRate = (TextView) view.findViewById(R.id.lblOutputRefreshRate);
         lblOutputMinimalDistance = (TextView) view.findViewById(R.id.lblOutputMinimalDistance);
         sbRefreshRate = (SeekBar) view.findViewById(R.id.sbRefreshRate);
