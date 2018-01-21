@@ -5,6 +5,7 @@ package hr.foi.air1719.database.entities;
  */
 
 public enum ActivityMode {
+    WALKING_A,
     WALKING,
     DRIVING,
     RUNNING

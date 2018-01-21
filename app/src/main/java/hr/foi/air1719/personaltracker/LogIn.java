@@ -110,7 +110,16 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
                 SharedPreferences settings = getSharedPreferences("user", 0);
                 SharedPreferences.Editor editor = settings.edit();
+                editor.putString("fullName", user.getFullname().toString());
                 editor.putString("username", UserName.getText().toString());
+                editor.putString("password", user.getPassword().toString());
+                editor.putString("email", user.getEmail().toString());
+                editor.putFloat("fuelConsumption", user.getAvgFuel());
+                editor.putFloat("weight", user.getWeight());
+                editor.putInt("refreshRate", 1500);
+                editor.putInt("minimalDistance", 20);
+                editor.putBoolean("localOnlyData", false);
+                editor.putBoolean("manualSaving", false);
                 editor.putBoolean("isSynced", false);
                 editor.commit();
 

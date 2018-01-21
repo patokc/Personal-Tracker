@@ -1,8 +1,13 @@
 package hr.foi.air1719.personaltracker;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +17,48 @@ import java.util.regex.Pattern;
 
 
 public class Helper {
+
+    public static void PushNotificationGPS(Context context) {
+        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "M_CH_ID");
+
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ikona)
+                .setTicker("PersonalTracker")
+                .setSound(notificationSound)
+                .setVibrate(new long[] { 1000, 1000})
+
+                .setContentTitle("GPS is off")
+                .setContentText("Please turn on GPS!")
+                .setContentInfo("Info");
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
+
+    public static void PushNotificationInternet(Context context) {
+        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "M_CH_ID");
+
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ikona)
+                .setTicker("PersonalTracker")
+                .setSound(notificationSound)
+                .setVibrate(new long[] { 1000, 1000})
+
+                .setContentTitle("No internet connection")
+                .setContentText("Turn on your network connection.")
+                .setContentInfo("Info");
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
 
 
     public static final Pattern letters_only_check =
