@@ -74,7 +74,7 @@ public class AccountSettingsFragment extends Fragment  {
         inputUserName.setEnabled(false);
         inputEmail.setText(settings.getString("email", ""));
 
-        korisnik = new User("","","","");
+        korisnik = new User(settings.getString("username", ""),"","","");
         return view;
     }
 
@@ -134,11 +134,18 @@ public class AccountSettingsFragment extends Fragment  {
 
                     korisnik = (User) result;
 
+
                 }
             };
 
             RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
-            restServiceCaller.getUser(settings.getString("username", ""));
+
+            if(!settings.getString("username", "").equals("")){
+                restServiceCaller.getUser(settings.getString("username", ""));
+            } else {
+                Toast.makeText(this.getActivity(), "Unknown user!", Toast.LENGTH_SHORT).show();
+            }
+
 
             korisnik.setFullname(inputFullName.getText().toString());
             korisnik.setEmail(inputEmail.getText().toString());
@@ -147,8 +154,7 @@ public class AccountSettingsFragment extends Fragment  {
                 korisnik.setPassword(Helper.md5(inputPassword.getText().toString()));
             }
 
-            if(korisnik!=null){
-
+            if(!korisnik.getUsername().equals("")){
                 restServiceCaller.createUser(korisnik);
 
                 SharedPreferences.Editor editor = settings.edit();
@@ -159,7 +165,6 @@ public class AccountSettingsFragment extends Fragment  {
 
                 Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
             }
-
             else {
                 Toast.makeText(this.getActivity(), "Problem with saving data!",Toast.LENGTH_LONG).show();
                 return;
