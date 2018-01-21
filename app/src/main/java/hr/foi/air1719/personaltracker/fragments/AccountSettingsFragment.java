@@ -74,7 +74,7 @@ public class AccountSettingsFragment extends Fragment  {
         inputUserName.setEnabled(false);
         inputEmail.setText(settings.getString("email", ""));
 
-        korisnik = new User(settings.getString("username", ""),"","","");
+        korisnik = new User(settings.getString("username", ""), settings.getString("password", ""),"","");
         return view;
     }
 
@@ -109,7 +109,7 @@ public class AccountSettingsFragment extends Fragment  {
 
                 String password = settings.getString("password", "");
 
-                if(!password.equals(Helper.md5(inputOldPassword.getText().toString()))) {
+                if(!password.equals(Helper.md5(inputOldPassword.getText().toString())) || password.equals("")) {
                     Toast.makeText(this.getActivity(), "Your current password is incorrect!",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -131,10 +131,7 @@ public class AccountSettingsFragment extends Fragment  {
             RestServiceHandler restServiceHandler =  new RestServiceHandler() {
                 @Override
                 public void onDataArrived(Object result, boolean ok) {
-
                     korisnik = (User) result;
-
-
                 }
             };
 
@@ -150,17 +147,17 @@ public class AccountSettingsFragment extends Fragment  {
             korisnik.setFullname(inputFullName.getText().toString());
             korisnik.setEmail(inputEmail.getText().toString());
 
-            if(check){
+            if(check && !inputPassword.getText().toString().equals("")){
                 korisnik.setPassword(Helper.md5(inputPassword.getText().toString()));
             }
 
-            if(!korisnik.getUsername().equals("")){
+            if(!korisnik.getUsername().equals("") && !korisnik.getPassword().equals("")){
                 restServiceCaller.createUser(korisnik);
 
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("fullName", korisnik.getFullname().toString());
-                editor.putString("email", korisnik.getEmail().toString());
-                editor.putString("password", korisnik.getPassword().toString());
+                editor.putString("fullName", korisnik.getFullname());
+                editor.putString("email", korisnik.getEmail());
+                editor.putString("password", korisnik.getPassword());
                 editor.commit();
 
                 Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
