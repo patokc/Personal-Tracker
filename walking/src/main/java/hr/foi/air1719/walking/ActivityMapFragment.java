@@ -1,13 +1,11 @@
 package hr.foi.air1719.walking;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
-import hr.foi.air1719.core.facade.SharingManager;
+import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.database.entities.GpsLocation;
 
 

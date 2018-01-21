@@ -1,4 +1,4 @@
-package hr.foi.air1719.core.facade;
+package hr.foi.air1719.core;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 

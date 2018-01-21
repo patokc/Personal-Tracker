@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
-import hr.foi.air1719.core.facade.SharingManager;
+import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
 
