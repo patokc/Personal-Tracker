@@ -51,7 +51,7 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
     SharedPreferences userSP = null;
     DatabaseFacade dbCurrentFacade = null;
     Activity currentActivity = null;
-    float weight = 70;
+    float weight = 70.0f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +105,7 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
         if(myLocation ==null)
         {
             totalDistance = 0;
+            lastPoint=null;
             startDate = null;
 
             currentActivity.setActivityId(currentActivity.getActivityId());
@@ -127,6 +128,7 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
                     currentActivity.setAverageSpeed((float)CalculateAvgSpeed(startDate, new Date(), (double)totalDistance));
                     currentActivity.setFinish(new Timestamp(new Date().getTime()));
                     currentActivity.setUser(userSP.getString("username", ""));
+                    currentActivity.setAvgCal(CalculateCalories(weight, totalDistance));
                     dbCurrentFacade.saveActivity(currentActivity);
                 }
             }).start();
@@ -203,7 +205,7 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
 
             txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            txtBurnedCalories.setText(String.format("%.2f", CalculateCalories(weight, totalDistance)));
+            txtBurnedCalories.setText(String.format("%.2f", CalculateCalories(weight, totalDistance))+ " kcal");
 
             if(lokacija.size()>0)
                 txtAddress.setText(lokacija.get(0).getAddressLine(0));

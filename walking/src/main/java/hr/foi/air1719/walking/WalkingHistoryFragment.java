@@ -181,6 +181,11 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
         }
     }
 
+    public float CalculateCalories(float w, float d)
+    {
+        return ((float)1.036)*w*d;
+    }
+
     final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
@@ -202,7 +207,7 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
             tbrow0.addView(tv0);
 
             TextView tv2 = new TextView(getActivity());
-            tv2.setText(" AVG speed ");
+            tv2.setText(" Kcal ");
             tv2.setTextColor(Color.BLACK);
             tv2.setBackgroundColor(Color.LTGRAY);
             tv2.setHeight(100);
@@ -254,7 +259,7 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
                 tbrow.addView(t1v);
 
                 TextView t3v = new TextView(getActivity());
-                t3v.setText(String.valueOf(String.format("%.1f", a.getAverageSpeed())));
+                t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal()==0?CalculateCalories(77.0f,a.getDistance()):a.getAvgCal())));
                 t3v.setTextColor(Color.BLACK);
                 t3v.setGravity(Gravity.CENTER);
                 if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
