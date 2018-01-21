@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,11 @@ public class NavigationSettingsFragment extends Fragment {
     Button actionSaveNavigation = null;
     User korisnik = null;
 
+    Switch localDataOnly = null;
+    Boolean stateLocalDataOnly = false;
+    Switch manualSavingData = null;
+    Boolean stateManualSavingData = false;
+
     public NavigationSettingsFragment(){
 
     }
@@ -56,6 +63,9 @@ public class NavigationSettingsFragment extends Fragment {
 
         inputFuelConsumption = (EditText) view.findViewById(R.id.inputFuelConsumption);
         inputWeight = (EditText) view.findViewById(R.id.inputWeight);
+
+        localDataOnly = (Switch) view.findViewById(R.id.switchLocalData);
+        manualSavingData = (Switch) view.findViewById(R.id.switchManualSaving);
 
         actionSaveNavigation = (Button) view.findViewById(R.id.actionSaveNavigation);
         actionSaveNavigation.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +84,9 @@ public class NavigationSettingsFragment extends Fragment {
 
         lblOutputRefreshRate.setText(sbRefreshRate.getProgress() + "/" + sbRefreshRate.getMax());
         lblOutputMinimalDistance.setText(sbMinimalDistance.getProgress()+ "/" + sbMinimalDistance.getMax());
+
+        localDataOnly.setChecked(settings.getBoolean("localOnlyData", false));
+        manualSavingData.setChecked(settings.getBoolean("manualSaving", false));
 
         sbRefreshRate.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
@@ -117,6 +130,7 @@ public class NavigationSettingsFragment extends Fragment {
                         lblOutputMinimalDistance.setText(progress + "/" + seekBar.getMax());
                     }
                 });
+
 
 
         return view;
@@ -204,6 +218,9 @@ public class NavigationSettingsFragment extends Fragment {
             korisnik.setAvgFuel(Float.parseFloat(inputFuelConsumption.getText().toString()));
             korisnik.setWeight(Float.parseFloat(inputWeight.getText().toString()));
 
+            stateLocalDataOnly = localDataOnly.isChecked();
+            stateManualSavingData = manualSavingData.isChecked();
+
             if(korisnik!=null){
 
                 restServiceCaller.createUser(korisnik);
@@ -213,6 +230,8 @@ public class NavigationSettingsFragment extends Fragment {
                 editor.putInt("minimalDistance", sbMinimalDistance.getProgress());
                 editor.putFloat("fuelConsumption", korisnik.getAvgFuel());
                 editor.putFloat("weight", korisnik.getWeight());
+                editor.putBoolean("localOnlyData", stateLocalDataOnly);
+                editor.putBoolean("manualSaving", stateManualSavingData);
                 editor.commit();
 
                 Toast.makeText(this.getActivity(), "Saved", Toast.LENGTH_SHORT).show();
