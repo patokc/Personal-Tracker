@@ -91,6 +91,8 @@ public class AccountSettingsFragment extends Fragment  {
         RestServiceCaller restServiceCaller = new RestServiceCaller(restServiceHandler);
         restServiceCaller.getUser(logInUser.toString());
 
+        inputUserName.setEnabled(false);
+
         return view;
     }
 

@@ -82,21 +82,13 @@
                 android:hint="Current Password"
                 android:inputType="textPassword"
                 android:singleLine="false"
-
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lblOldPassword" />
-
-            <TextView
-                android:id="@+id/lblOldPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current Password"
                 android:layout_marginTop="5dp"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lblChangePassword" />
+
+
 
             <EditText
                 android:id="@+id/inputPassword"
@@ -107,30 +99,15 @@
                 android:hint="New Password"
                 android:inputType="textPassword"
                 android:singleLine="false"
-
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lblPassword" />
-
-            <TextView
-                android:id="@+id/lblPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Password"
+                android:layout_marginTop="2dp"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/inputOldPassword" />
 
-            <TextView
-                android:id="@+id/lblRepeatPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Repeat new password"
 
-                app:layout_constraintLeft_toLeftOf="@+id/lblPassword"
-                app:layout_constraintStart_toStartOf="@+id/lblPassword"
-                app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+
+
 
             <EditText
                 android:id="@+id/inputRepeatPassword"
@@ -139,10 +116,11 @@
                 android:ems="5"
                 android:hint="Repeat new password"
                 android:inputType="textPassword"
+                android:layout_marginTop="2dp"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lblRepeatPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
 
 
 
@@ -178,8 +156,8 @@
                 android:layout_height="wrap_content"
                 android:text="E-mail"
 
-                app:layout_constraintLeft_toLeftOf="@+id/lblRepeatPassword"
-                app:layout_constraintStart_toStartOf="@+id/lblRepeatPassword"
+                app:layout_constraintLeft_toLeftOf="@+id/lblUserName"
+                app:layout_constraintStart_toStartOf="@+id/lblUserName"
                 app:layout_constraintTop_toBottomOf="@+id/inputUserName" />
 
             <EditText
@@ -200,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change password"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="15dp"
                 android:textSize="17dp"
                 android:textStyle="bold|italic"
 
