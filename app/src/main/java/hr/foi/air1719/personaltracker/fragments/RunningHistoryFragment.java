@@ -127,6 +127,12 @@ public class RunningHistoryFragment extends android.app.Fragment {
         }
     }
 
+    public float CalculateCalories(float w, float d)
+    {
+        return ((float)1.036)*w*d;
+    }
+
+    
     final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
@@ -157,13 +163,23 @@ public class RunningHistoryFragment extends android.app.Fragment {
             firstrow.addView(tv2);
 
             TextView tv3 = new TextView(getActivity());
-            tv3.setText("Map View");
+            tv3.setText("Calories");
             tv3.setTextColor(Color.BLACK);
             tv3.setBackgroundColor(Color.LTGRAY);
             tv3.setHeight(100);
             tv3.setTypeface(null, Typeface.BOLD);
             tv3.setGravity(Gravity.CENTER);
             firstrow.addView(tv3);
+            tableRunningHistory.addView(firstrow);
+
+            TextView tv4 = new TextView(getActivity());
+            tv4.setText("Map View");
+            tv4.setTextColor(Color.BLACK);
+            tv4.setBackgroundColor(Color.LTGRAY);
+            tv4.setHeight(100);
+            tv4.setTypeface(null, Typeface.BOLD);
+            tv4.setGravity(Gravity.CENTER);
+            firstrow.addView(tv4);
             tableRunningHistory.addView(firstrow);
 
 
@@ -186,19 +202,27 @@ public class RunningHistoryFragment extends android.app.Fragment {
                 tablerow.addView(t2v);
 
                 TextView t3v = new TextView(getActivity());
-                t3v.setText("Map View");
-                t3v.setTextColor(Color.BLUE);
+                t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal()==0?CalculateCalories(77.0f,a.getDistance()):a.getAvgCal())));
+                t3v.setTextColor(Color.BLACK);
                 t3v.setGravity(Gravity.CENTER);
-                if (i % 2 == 0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
+                if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
+                tablerow.addView(t3v);
+
+
+                TextView t4v = new TextView(getActivity());
+                t4v.setText("Map View");
+                t4v.setTextColor(Color.BLUE);
+                t4v.setGravity(Gravity.CENTER);
+                if (i % 2 == 0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
 
                 final String activityId = a.getActivityId();
-                t3v.setOnClickListener(new View.OnClickListener() {
+                t4v.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         onClick_ShowActivity(v, activityId);
 
                     }
                 });
-                tablerow.addView(t3v);
+                tablerow.addView(t4v);
 
                 tableRunningHistory.addView(tablerow);
                 i++;
