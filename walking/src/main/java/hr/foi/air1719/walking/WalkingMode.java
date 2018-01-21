@@ -1,7 +1,6 @@
 package hr.foi.air1719.walking;
 
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
-import hr.foi.air1719.core.facade.SharingManager;
+import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;

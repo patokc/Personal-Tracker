@@ -238,7 +238,8 @@ public class DatabaseFacade extends Database implements DataHandler {
         if(!isSyncChecked){
             SharedPreferences settings = context.getSharedPreferences("user", 0);
             SharedPreferences.Editor editor = settings.edit();
-            if(!settings.getBoolean("isSynced", false)){
+            this.isLocalOnly = settings.getBoolean("localOnlyData", false);
+            if(!settings.getBoolean("isSynced", false)&&!isLocalOnly){
                 this.syncData();
                 editor.putBoolean("isSynced", true);
                 editor.apply();
