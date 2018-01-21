@@ -17,7 +17,7 @@ import hr.foi.air1719.personaltracker.R;
  * Created by Timotea on 13.1.2018..
  */
 
-public class NavigationSettingsFragment extends Fragment implements View.OnClickListener{
+public class NavigationSettingsFragment extends Fragment {
 
     public NavigationSettingsFragment(){
 
@@ -27,8 +27,7 @@ public class NavigationSettingsFragment extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_navigation_settings, container, false);
-        Button button = (Button) view.findViewById(R.id.actionCancelNavigation);
-        button.setOnClickListener(this);
+
         return view;
 
     }
@@ -38,17 +37,5 @@ public class NavigationSettingsFragment extends Fragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @Override
-    public void onClick(View view) {
 
-        Fragment fragment = new NavigationSettingsFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.frame_container_settings, fragment);
-        fragmentTransaction
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-    }
 }
