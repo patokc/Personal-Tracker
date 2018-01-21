@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -41,6 +42,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,6 +62,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         toolbar.setNavigationOnClickListener(navigationClick);
 
         navigationView.setCheckedItem(R.id.walkingMode);
+
+        //TODO
+        //Fragment fragment = getFragmentManager().findFragmentByTag("Walking mode");
+        ///if(fragment == null) fragment =  new WalkingModeFragment();
 
 
         FragmentManager fragmentManager = getFragmentManager();

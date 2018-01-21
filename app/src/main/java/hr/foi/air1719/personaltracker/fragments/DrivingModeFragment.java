@@ -54,9 +54,10 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
     Geocoder geocoder = null;
     Location lastPoint = null;
     float totalDistance = 0;
+    float avgFuel=6.6f;
     Date startDate = null;
     SharedPreferences userSP = null;
-            DatabaseFacade dbCurrentFacade = null;
+    DatabaseFacade dbCurrentFacade = null;
     Activity currentActivity = null;
 
     @Override
@@ -77,7 +78,6 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         txtFuel = (TextView) getView().findViewById(R.id.txtFuelConsum);
         txtAddress = (TextView) getView().findViewById(R.id.txtAddressDM);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
-        currentActivity = new Activity(ActivityMode.DRIVING);
 
         btnDrivingStart = (Button) getView().findViewById(R.id.btnDrivingStart);
         btnDrivingStart.setOnClickListener(new View.OnClickListener() {
@@ -102,8 +102,9 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
 
         btnShowTrip.setVisibility(View.INVISIBLE);
-
+        avgFuel=userSP.getFloat("fuelConsumption",6.6f);
         txtAddress.setText("Waiting for GPS fix...");
+        if(avgFuel<1)avgFuel=6.6f;
     }
 
     public void onClick_Start(View v) {
@@ -112,7 +113,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
         {
             totalDistance = 0;
             startDate = null;
-
+            currentActivity = new Activity(ActivityMode.DRIVING);
             currentActivity.setActivityId(currentActivity.getActivityId());
             currentActivity.setStart(new Timestamp(new Date().getTime()));
 
@@ -209,7 +210,7 @@ public class DrivingModeFragment extends Fragment implements IGPSActivity {
 
             txtTodayTotalKm.setText(String.format("%.2f", totalDistance) + " km");
 
-            txtFuel.setText(String.format("%.2f", ((totalDistance*6.6f)/(float)100)) + " L");
+            txtFuel.setText(String.format("%.2f", ((totalDistance*avgFuel)/(float)100)) + " L");
 
             if(lokacija.size()>0)
                 txtAddress.setText(lokacija.get(0).getAddressLine(0));

@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.RingtoneManager;
@@ -79,9 +80,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
 
                     Fragment fragment;
 
-
-                    //TODO, depends about settings
-                    if(1<0)
+                    SharedPreferences sp = getActivity().getSharedPreferences("user", 0);
+                    if(sp.getBoolean("manualSaving", false))
                     {
                         fragment = new LocationManualFragment();
                         mFragmentManager = getFragmentManager();

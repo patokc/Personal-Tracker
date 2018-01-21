@@ -72,7 +72,6 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
         txtTodayTotalKm = (TextView) getView().findViewById(R.id.txtTodayTotalKm);
         txtAddress = (TextView) getView().findViewById(R.id.txtAddressDM);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
-        currentActivity = new Activity(ActivityMode.WALKING_A);
 
         btnDrivingStart = (Button) getView().findViewById(R.id.btnDrivingStart);
         btnDrivingStart.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +98,8 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
         btnShowTrip.setVisibility(View.INVISIBLE);
 
         txtAddress.setText("Waiting for GPS fix...");
+        weight=userSP.getFloat("weight",70.0f);
+        if(weight<5)weight=70.0f;
     }
 
     public void onClick_Start(View v) {
@@ -108,7 +109,7 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
             totalDistance = 0;
             lastPoint=null;
             startDate = null;
-
+            currentActivity = new Activity(ActivityMode.WALKING_A);
             currentActivity.setActivityId(currentActivity.getActivityId());
             currentActivity.setStart(new Timestamp(new Date().getTime()));
 

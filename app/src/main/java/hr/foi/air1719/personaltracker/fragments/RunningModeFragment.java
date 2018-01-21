@@ -62,11 +62,11 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         super.onViewCreated(view, savedInstanceState);
 
 
-        SharedPreferences userSP= getActivity().getSharedPreferences("user",0);
+        userSP= getActivity().getSharedPreferences("user",0);
         txtTotalDistance=(TextView) getView().findViewById(R.id.txtTotalDistance);
         txtCalories=(TextView) getView().findViewById(R.id.txtCalories);
         dbCurrentFacade = new DatabaseFacade(getView().getContext());
-        currentActivity = new Activity(ActivityMode.RUNNING);
+
 
         btnRunningModeStart = (Button) getView().findViewById(R.id.btnRunningModeStart);
         btnRunningModeStart.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +96,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         });
         btnShowRoute.setVisibility(View.INVISIBLE);
 
+        weight=userSP.getFloat("weight",70.0f);
+        if(weight<5)weight=70.0f;
     }
 
 
@@ -108,6 +110,7 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
         {
             totalDistance = 0;
             startDate = null;
+            currentActivity = new Activity(ActivityMode.RUNNING);
             currentActivity.setActivityId(currentActivity.getActivityId());
             currentActivity.setStart(new Timestamp(new Date().getTime()));
             Toast.makeText(this.getActivity(), "Running mode started", Toast.LENGTH_SHORT).show();
@@ -137,10 +140,8 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
             btnRunningModeStart.setText("Start");
             btnShowRoute.setVisibility(View.VISIBLE);
 
-
         }
     }
-
 
     private void onClick_ShowLastRoute(View v)
     {
@@ -165,10 +166,11 @@ public class RunningModeFragment extends Fragment implements IGPSActivity
 
         Fragment fragment = new RunningHistoryFragment();
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack("Running History", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, "Running History");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack("Running History");
         transaction.commit();
     }
 

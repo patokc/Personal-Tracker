@@ -170,7 +170,7 @@ public class RunningHistoryFragment extends android.app.Fragment {
             tv3.setTypeface(null, Typeface.BOLD);
             tv3.setGravity(Gravity.CENTER);
             firstrow.addView(tv3);
-            tableRunningHistory.addView(firstrow);
+            //tableRunningHistory.addView(firstrow);
 
             TextView tv4 = new TextView(getActivity());
             tv4.setText("Map View");
