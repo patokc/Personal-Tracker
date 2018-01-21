@@ -58,6 +58,10 @@ public class MileageFragment extends Fragment {
         BarData barData = new BarData(date,dataSet);
         barChart.setData(barData);
 
+        barChart.setTouchEnabled(true);
+        barChart.setScaleEnabled(true);
+        barChart.setDragEnabled(true);
+
     }
 
     final Handler mHandler = new Handler(Looper.getMainLooper()) {

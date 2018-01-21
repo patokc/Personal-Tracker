@@ -16,7 +16,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="8dp">
-            <com.jjoe64.graphview.GraphView
+            <com.github.mikephil.charting.charts.BarChart
                 android:layout_width="match_parent"
                 android:layout_height="350dip"
                 android:id="@+id/graph" />
