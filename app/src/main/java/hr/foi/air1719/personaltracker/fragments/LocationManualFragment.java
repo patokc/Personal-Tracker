@@ -120,27 +120,19 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
 
     private void Save () {
         if(outputBitmap !=null && note.length() !=0) {
-            Thread thread = new Thread(new Runnable(){
+            new Thread(new Runnable(){
                 @Override
                 public void run(){
                     Activity ac = new Activity(ActivityMode.WALKING);
-                    DatabaseFacade db = new DatabaseFacade(getView().getContext());
-                    ac.setImage(outputBitmapPath);
+                    DatabaseFacade db = new DatabaseFacade(getActivity().getApplicationContext());
+                    ac.setImage(db.uploadImage(outputBitmap));
                     ac.setDescription(note.toString());
                     db.saveActivity(ac);
                     db.saveLocation(new GpsLocation(ac.getActivityId(),
                             location.getLongitude(), location.getLatitude(), location.getAccuracy()));
 
-                    //ac.setImage(encode(outputBitmap, Bitmap.CompressFormat.JPEG, 100));
                 }
-            });
-            thread.start();
-          /*  MapFragment mapFragment = new MapFragment();
-            mFragmentManager = getFragmentManager();
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, mapFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();*/
+            }).start();
             mFragmentManager = getFragmentManager();
             mFragmentManager.popBackStack();
         }else {
@@ -170,19 +162,6 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
         }
     }
 
-    public static String encode(Bitmap image, Bitmap.CompressFormat compressFormat, int quality) {
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(compressFormat, quality, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-    }
-
-  /*  public static Bitmap decode(String input) {
-        byte[] decodedBytes = Base64.decode(input, Base64.NO_WRAP);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-    }
-*/
     @Override
     public void locationChanged(Location location) {
 

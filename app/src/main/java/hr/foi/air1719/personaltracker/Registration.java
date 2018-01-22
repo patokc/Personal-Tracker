@@ -33,8 +33,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     boolean doublePressedToExit = false;
 
-    public static final Pattern letters_only_check =
-            Pattern.compile("^[a-zA-Z]+$", Pattern.CASE_INSENSITIVE);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
 
         try {
 
-            if(FullName.getText().toString().equals("")|| !validate_letters(FullName.getText().toString())) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
+            if(FullName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong name! Must contain only letters!",Toast.LENGTH_LONG).show(); return;}
             if(UserName.getText().toString().equals("")) {Toast.makeText(getBaseContext(), "Wrong user name!",Toast.LENGTH_LONG).show(); return;}
             if(Password.getText().toString().equals("") || (Password.getText().toString().length()) < 6) {Toast.makeText(getBaseContext(), "Wrong password! Password must contain at least 6 characters!",Toast.LENGTH_LONG).show();  return;}
             if(!Password.getText().toString().equals(RepeatPassword.getText().toString())) {Toast.makeText(getBaseContext(), "Password is not equal!",Toast.LENGTH_LONG).show();  return;}
@@ -108,10 +107,6 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
         }
     }
 
-    public static boolean validate_letters(String letters) {
-        Matcher matcher = letters_only_check.matcher(letters);
-        return matcher.find();
-    }
 
     public void onClick_Cancel(View v) {
         finish();
@@ -156,7 +151,7 @@ public class Registration extends AppCompatActivity implements RestServiceHandle
                 }
             };
 
-            User u = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString());
+            User u = new User(UserName.getText().toString(), Helper.md5(Password.getText().toString()), FullName.getText().toString(), Email.getText().toString());
 
             RestServiceCaller restServiceCaller = new RestServiceCaller(regHandler);
             restServiceCaller.createUser(u);

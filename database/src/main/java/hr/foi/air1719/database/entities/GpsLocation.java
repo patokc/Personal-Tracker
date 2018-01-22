@@ -55,6 +55,10 @@ public class GpsLocation {
         this.gpsType=gpsType;
 
     }
+    @Ignore
+    public GpsLocation() {
+
+    }
 
     @Ignore
     public GpsLocation(@NonNull String activityId, double longitude, double latitude, float accuracy) {

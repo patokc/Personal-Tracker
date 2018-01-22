@@ -18,18 +18,27 @@
             android:paddingTop="8dp">
             <ImageButton
                 android:id="@+id/img_location_photo"
-                android:layout_width="130dp"
-                android:layout_height="160dp"
-                android:scaleType="centerInside"
+                android:layout_width="140dp"
+                android:layout_height="200dp"
+                android:scaleType = "centerInside"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
+                android:background="@color/background"
                 android:padding="5dp"
                 />
+            <TextView
+                android:id="@+id/label_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/img_location_photo"
+                android:layout_marginTop="3dp"
+                android:text="Photo"/>
             <TextView
                 android:id="@+id/label_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_location_photo"
+                android:layout_below="@+id/label_image"
                 android:layout_marginLeft="7dp"
                 android:layout_marginTop="10dp"
                 android:text="Address"/>
@@ -49,7 +58,7 @@
                 android:layout_below="@+id/txt_address"
                 android:layout_marginLeft="7dp"
                 android:layout_marginTop="10dp"
-                android:text="Description"/>
+                android:text="Description (max. 40 characters)"/>
             <EditText
                 android:id="@+id/txt_note"
                 android:layout_width="match_parent"
@@ -60,7 +69,8 @@
                 android:ems="14"
                 android:inputType="textMultiLine"
                 android:maxLines="3"
-                 />
+                android:maxLength="40"
+                />
 
             <Button
                 android:id="@+id/btn_save_location_data"

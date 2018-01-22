@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "hr.foi.air1719.personaltracker"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -18,6 +18,9 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -33,4 +36,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.6.0'
     implementation project(':restservice')
     implementation project(':core')
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    implementation project(':walking')
 }

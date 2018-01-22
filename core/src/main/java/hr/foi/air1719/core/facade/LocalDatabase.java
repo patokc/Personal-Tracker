@@ -2,6 +2,7 @@ package hr.foi.air1719.core.facade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class LocalDatabase extends Database {
 
     @Override
     public Activity getActivity(ActivityMode mode, String activityId) {
-        return this.db.activityDao().findById(activityId);
+        return this.db.activityDao().findById(activityId, user);
     }
 
     @Override
@@ -47,18 +48,23 @@ public class LocalDatabase extends Database {
 
     @Override
     public List<Activity> getActivityByDateRangeAndMode(ActivityMode mode, Timestamp start, Timestamp end) {
-        return this.db.activityDao().findByDateRangeAndMode(start, end, mode);
+        return this.db.activityDao().findByDateRangeAndMode(start, end, mode, user);
     }
 
     @Override
     public List<Activity> getActivityByMode(ActivityMode mode) {
-        return this.db.activityDao().findByMode(mode);
+        return this.db.activityDao().findByMode(mode, user);
+    }
+
+    @Override
+    public List<Activity> getActivityByModeOrderByStartDESC(ActivityMode mode) {
+        return this.db.activityDao().findByModeOrderByStartDESC(mode, user);
     }
 
     @Override
     public Map<String, Activity> getAllActivities() {
         Map<String, Activity> map = new HashMap<>();
-        for(Activity activity: this.db.activityDao().findAll()){
+        for(Activity activity: this.db.activityDao().findAll(user)){
             map.put(activity.getActivityId(), activity);
         }
 
@@ -69,6 +75,11 @@ public class LocalDatabase extends Database {
     public void saveLocation(GpsLocation location) {
         location.setUsername(this.user);
         this.db.gpsLocationDao().save(location);
+    }
+
+    @Override
+    public void deleteByActivity(Activity activity) {
+        this.db.activityDao().deleteByActivity(activity);
     }
 
     @Override
@@ -88,5 +99,10 @@ public class LocalDatabase extends Database {
             map.put(gps.getLocationId(), gps);
         }
         return map;
+    }
+
+    @Override
+    public String uploadImage(Bitmap image) {
+        return "Not Implemented Yet";
     }
 }

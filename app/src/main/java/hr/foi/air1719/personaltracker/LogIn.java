@@ -68,6 +68,13 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
         {
             E.printStackTrace();
         }
+
+        SharedPreferences sp = getSharedPreferences("user", 0);
+        if(sp.contains("username")) {
+            finish();
+            Intent intent = new Intent(getApplicationContext(), Main.class);
+            startActivity(intent);
+        }
     }
 
     public void onClick_LogIn(View v) {
@@ -103,31 +110,19 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
 
                 SharedPreferences settings = getSharedPreferences("user", 0);
                 SharedPreferences.Editor editor = settings.edit();
+                editor.putString("fullName", user.getFullname().toString());
                 editor.putString("username", UserName.getText().toString());
+                editor.putString("password", user.getPassword().toString());
+                editor.putString("email", user.getEmail().toString());
+                editor.putFloat("fuelConsumption", user.getAvgFuel());
+                editor.putFloat("weight", user.getWeight());
+                editor.putInt("refreshRate", 1500);
+                editor.putInt("minimalDistance", 20);
+                editor.putBoolean("localOnlyData", false);
+                editor.putBoolean("manualSaving", false);
+                editor.putBoolean("isSynced", false);
                 editor.commit();
 
-                Thread thread = new Thread(new Runnable(){
-
-                    @Override
-                    public void run(){
-                        //Activity act = new Activity(ActivityMode.DRIVING);
-                        DatabaseFacade dbfacade = new DatabaseFacade(getApplicationContext());
-                        //dbfacade.saveActivity(act);
-
-
-                        /*for(Activity a: dbfacade.getAllActivities().values()){
-                            System.out.println(a.getActivityId());
-                        }
-
-                        GpsLocation loc = new GpsLocation("1274e380-5f2e-407c-b0cc-a1785ee47b43",12.3243243,21.556345, 1);
-                        dbfacade.saveLocation(loc);
-
-                        dbfacade.getLocations("1274e380-5f2e-407c-b0cc-a1785ee47b43");*/
-
-                        dbfacade.syncData();
-                    }
-                });
-                thread.start();
 
             } else {
                 Toast.makeText(getBaseContext(), "Username or password is incorrect", Toast.LENGTH_LONG).show();

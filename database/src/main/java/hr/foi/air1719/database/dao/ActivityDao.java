@@ -18,26 +18,29 @@ import hr.foi.air1719.database.entities.ActivityMode;
 
 @Dao
 public interface ActivityDao {
-    @Query("SELECT * FROM activity WHERE activityId = :activityId ")
-    Activity findById(String activityId);
+    @Query("SELECT * FROM activity WHERE activityId = :activityId AND user = :user")
+    Activity findById(String activityId, String user);
 
-    @Query("SELECT * FROM activity")
-    List<Activity> findAll();
+    @Query("SELECT * FROM activity WHERE user = :user")
+    List<Activity> findAll(String user);
 
-    @Query("SELECT * FROM activity WHERE mode = :mode")
-    List<Activity> findByMode(ActivityMode mode);
+    @Query("SELECT * FROM activity WHERE mode = :mode AND user = :user")
+    List<Activity> findByMode(ActivityMode mode, String user);
 
-    @Query("SELECT * FROM activity WHERE start >= :date")
-    List<Activity> findByDate(Timestamp date);
+    @Query("SELECT * FROM activity WHERE mode = :mode AND user = :user ORDER BY start DESC LIMIT 50")
+    List<Activity> findByModeOrderByStartDESC(ActivityMode mode, String user);
 
-    @Query("SELECT * FROM activity WHERE start >= :date AND mode = :mode")
-    List<Activity> findByDateAndMode(Timestamp date, ActivityMode mode);
+    @Query("SELECT * FROM activity WHERE start >= :date AND user = :user")
+    List<Activity> findByDate(Timestamp date, String user);
 
-    @Query("SELECT * FROM activity WHERE start BETWEEN :start AND :end")
-    List<Activity> findByDateRange(Timestamp start, Timestamp end);
+    @Query("SELECT * FROM activity WHERE start >= :date AND mode = :mode AND user = :user")
+    List<Activity> findByDateAndMode(Timestamp date, ActivityMode mode, String user);
 
-    @Query("SELECT * FROM activity WHERE mode=:mode AND start BETWEEN :start AND :end")
-    List<Activity> findByDateRangeAndMode(Timestamp start, Timestamp end, ActivityMode mode);
+    @Query("SELECT * FROM activity WHERE start BETWEEN :start AND :end AND user = :user")
+    List<Activity> findByDateRange(Timestamp start, Timestamp end, String user);
+
+    @Query("SELECT * FROM activity WHERE mode=:mode AND start BETWEEN :start AND :end AND user = :user")
+    List<Activity> findByDateRangeAndMode(Timestamp start, Timestamp end, ActivityMode mode, String user);
 
     @Insert
     void create(Activity activity);
@@ -47,4 +50,7 @@ public interface ActivityDao {
 
     @Delete
     void delete(Activity activity);
+
+    @Delete
+    void deleteByActivity(Activity activity);
 }

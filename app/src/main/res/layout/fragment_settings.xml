@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,25 +9,17 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/settings_tabs"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
 
-        <android.support.design.widget.TabItem
-            android:id="@+id/navigation_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Navigation" />
 
-        <android.support.design.widget.TabItem
-            android:id="@+id/account_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account" />
 
 
     </android.support.design.widget.TabLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/tab_view_pager"
+    <FrameLayout
+        android:id="@+id/frame_container_settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"

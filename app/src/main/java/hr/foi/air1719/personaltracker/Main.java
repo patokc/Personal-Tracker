@@ -1,7 +1,12 @@
 package hr.foi.air1719.personaltracker;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -17,9 +22,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import hr.foi.air1719.personaltracker.fragments.DrivingModeFragment;
-
+import hr.foi.air1719.personaltracker.fragments.RunningModeFragment;
 import hr.foi.air1719.personaltracker.fragments.MapFragment;
-import hr.foi.air1719.personaltracker.fragments.Settings;
+
+import hr.foi.air1719.personaltracker.fragments.SettingsFragment;
+import hr.foi.air1719.personaltracker.fragments.StatisticsFragment;
+import hr.foi.air1719.personaltracker.fragments.WalkingModeFragment;
+import hr.foi.air1719.walking.WalkingMode;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
@@ -33,6 +42,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,9 +63,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         navigationView.setCheckedItem(R.id.walkingMode);
 
+        //TODO
+        //Fragment fragment = getFragmentManager().findFragmentByTag("Walking mode");
+        ///if(fragment == null) fragment =  new WalkingModeFragment();
+
+
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new hr.foi.air1719.personaltracker.fragments.MapFragment())
+                .replace(R.id.fragment_container, new WalkingModeFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
@@ -82,47 +99,88 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void selectedFragment(int itemId) {
-        Fragment fragment = null;
-        String tag = null;
-        switch (itemId) {
-            case R.id.walkingMode:
-                fragment = new MapFragment();
-                tag = "WalkingMode";
-                break;
-            case R.id.runningMode:
-                tag = "RunningMode";
-                break;
-            case R.id.drivingMode:
-                fragment = new DrivingModeFragment();
-                tag = "DrivingMode";
-                break;
-            case R.id.settings:
-                fragment = new Settings();
-                tag = "Settings";
-                break;
-            case R.id.action_settings:
-                fragment = new Settings();
-                tag = "Settings";
-                break;
-        }
 
-        if (fragment != null) {
+        try {
 
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment, tag);
-            if (tag != "WalkingMode") {
-                transaction.addToBackStack(null);
+            Fragment fragment = null;
+            String tag = null;
+            switch (itemId) {
+                case R.id.walkingMode:
+                    fragment = new WalkingModeFragment();
+                    tag = "WalkingMode";
+                    break;
+                case R.id.runningMode:
+                    tag = "RunningMode";
+                    fragment = new RunningModeFragment();
+                    break;
+                case R.id.drivingMode:
+                    fragment = new DrivingModeFragment();
+                    tag = "DrivingMode";
+                    break;
+                case R.id.statistics:
+                    fragment = new StatisticsFragment();
+                    tag = "Statistics";
+                    break;
+                case R.id.settings:
+                    fragment = new SettingsFragment();
+                    tag = "SettingsFragment";
+                    break;
+                case R.id.action_settings:
+                    fragment = new SettingsFragment();
+                    tag = "SettingsFragment";
+                    break;
+                case R.id.logout:
+                    tag = "Logout";
+                    break;
             }
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.commit();
 
+            if (fragment != null) {
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment, tag);
+                if (tag != "WalkingMode" && tag != "RunningMode" && tag != "DrivingMode") {
+
+                    transaction.addToBackStack(null);
+                }
+
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.commit();
+
+            }
+
+            if (tag == "Logout") {
+                new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                        .setMessage("Are you sure you want to log out?")
+                        .setCancelable(false)
+                        .setTitle("Log out?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                                Intent intent = new Intent(getApplicationContext(), LogIn.class);
+                                startActivity(intent);
+                                SharedPreferences settings = getSharedPreferences("user", 0);
+                                SharedPreferences.Editor editor = settings.edit().clear();
+                                editor.commit();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 
     @Override
@@ -137,7 +195,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         int id = item.getItemId();
         selectedFragment(id);
+        if (id == R.id.logout) {
+            return false;
+        }
+        else {
         return true;
+        }
     }
 
     @Override
@@ -159,8 +222,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 drawer.closeDrawer(GravityCompat.START);
             } else {
                 fragmentManager.popBackStack();
-                navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setCheckedItem(R.id.walkingMode);
+              /*  navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.walkingMode);*/
             }
         } else {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
