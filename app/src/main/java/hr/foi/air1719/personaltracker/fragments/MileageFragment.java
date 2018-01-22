@@ -30,38 +30,24 @@ import hr.foi.air1719.personaltracker.R;
 
 public class MileageFragment extends Fragment {
 
-    Float zbrojDrive = 0f;
-    Float zbrojRun = 0f;
-    Float zbrojWalk = 0f;
-    List<Activity> listActivity= new ArrayList();
+    Float sumRun =0f;
+    Float sumDrive = 0f;
+    Float sumWalk = 0f;
+    List<Activity> listActivity = null;
+    ArrayList<BarEntry> entries = null;
+    BarDataSet dataSet = null;
+    BarChart barChart = null;
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.mileage_fragment, container, false);
+        view = inflater.inflate(R.layout.mileage_fragment, container, false);
+        fillListView();
+        return view;
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fillListView();
-        BarChart barChart = (BarChart) getView().findViewById(R.id.graph);
-
-        ArrayList<BarEntry> entrie = new ArrayList<>();
-        entrie.add(new BarEntry(zbrojRun,0));
-        entrie.add(new BarEntry(zbrojDrive,1));
-        BarDataSet dataSet = new BarDataSet(entrie,"Modes");
-
-
-        ArrayList<String> date = new ArrayList<>();
-        date.add("RUNNING MODE");
-        date.add("DRIVING MODE");
-        BarData barData = new BarData(date,dataSet);
-        barChart.setData(barData);
-
-        barChart.setTouchEnabled(true);
-        barChart.setScaleEnabled(true);
-        barChart.setDragEnabled(true);
-
     }
 
     final Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -70,32 +56,51 @@ public class MileageFragment extends Fragment {
             System.out.println(message.toString());
 
             Map<String, Activity> mapList = (Map<String, Activity>)message.obj;
+            sumRun =0f;
+            sumDrive = 0f;
+            sumWalk = 0f;
             listActivity = new ArrayList();
             listActivity.addAll(mapList.values());
             for (Activity a : listActivity) {
-                if (a.getMode().equals("RUNNING")) {
-                    zbrojRun += a.getDistance();
+                if (a.getMode().toString() == "RUNNING") {
+                    sumRun += a.getDistance();
                 }
-                else if(a.getMode().equals("DRIVING")){
-                    zbrojDrive +=a.getDistance();
+                else if(a.getMode().toString() == "DRIVING"){
+                    sumDrive +=a.getDistance();
                 }
                 else {
-                    zbrojWalk+=a.getDistance();
+                    sumWalk+=a.getDistance();
                 }
-
             }
+            fillGraph();
         }
     };
 
     private void fillListView() {
         new Thread(new Runnable() {
             public void run() {
-                DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                DatabaseFacade dbfacade = new DatabaseFacade(getActivity().getApplicationContext());
                 Message message = mHandler.obtainMessage(1, dbfacade.getAllActivities());
                 message.sendToTarget();
             }
         }).start();
     }
 
+    public void fillGraph () {
+        barChart = (BarChart) view.findViewById(R.id.graph);
+        entries = new ArrayList<>();
+        entries.add(new BarEntry(sumRun, 0));
+        entries.add(new BarEntry(sumDrive, 1));
+        entries.add(new BarEntry(sumWalk, 2));
+        dataSet = new BarDataSet(entries, "Modes");
 
+        ArrayList<String> date = new ArrayList<>();
+        date.add("Running mode");
+        date.add("Driving mode");
+        date.add("Walking mode");
+        BarData barData = new BarData(date, dataSet);
+        barChart.setData(barData);
+        barChart.invalidate();
+
+    }
 }

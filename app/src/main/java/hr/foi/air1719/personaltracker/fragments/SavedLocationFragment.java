@@ -71,7 +71,7 @@ public class SavedLocationFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("ID",activity.getActivityId());
                         fragment.setArguments(bundle);
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment_container, fragment, "Details");
                         transaction.addToBackStack(null);
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -89,7 +89,7 @@ public class SavedLocationFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new Thread(new Runnable() {
                                             public void run() {
-                                                DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                                                DatabaseFacade dbfacade = new DatabaseFacade(getActivity().getApplicationContext());
                                                 dbfacade.deleteByActivity(activity);
                                             }
                                         }).start();
@@ -112,14 +112,11 @@ public class SavedLocationFragment extends Fragment {
 
     private void initViews() {
 
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getView().getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
         SavedLocationsAdapter adapter = new SavedLocationsAdapter(getActivity().getApplicationContext(), savedLocations, locationCoordinates);
         recyclerView.setAdapter(adapter);
-
-
 
     }
 
@@ -132,11 +129,10 @@ public class SavedLocationFragment extends Fragment {
             savedLocations.clear();
             for (Activity a : ac) {
                 Activity loadImageWalkingMode = new Activity(ActivityMode.WALKING);
-                fillView(a.getActivityId());
-                loadImageWalkingMode.setActivityId(a.getActivityId());
-                loadImageWalkingMode.setDescription(a.getDescription());
-                loadImageWalkingMode.setImage("https://benkovic.net/air/img/" + a.getImage());
-
+                fillView(a.getActivityId().toString());
+                loadImageWalkingMode.setActivityId(a.getActivityId().toString());
+                loadImageWalkingMode.setDescription(a.getDescription().toString());
+                loadImageWalkingMode.setImage("https://benkovic.net/air/img/" + a.getImage().toString());
 
                 savedLocations.add(loadImageWalkingMode);
             }
@@ -152,7 +148,7 @@ public class SavedLocationFragment extends Fragment {
             gpsLocations.addAll(gpsLoc.values());
            for ( GpsLocation a : gpsLocations) {
                 GpsLocation loadCoordinates = new GpsLocation();
-                loadCoordinates.setActivityId(a.getActivityId());
+                loadCoordinates.setActivityId(a.getActivityId().toString());
                 loadCoordinates.setLatitude(a.getLatitude());
                 loadCoordinates.setLongitude(a.getLongitude());
                 loadCoordinates.setTimestamp(a.getTimestamp());
@@ -165,7 +161,7 @@ public class SavedLocationFragment extends Fragment {
     private void fillListView() {
         new Thread(new Runnable() {
             public void run() {
-                DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                DatabaseFacade dbfacade = new DatabaseFacade(getActivity().getApplicationContext());
                 Message message = mHandler.obtainMessage(1, dbfacade.getActivityByModeOrderByStartDESC(ActivityMode.WALKING));
                 message.sendToTarget();
             }
@@ -174,7 +170,7 @@ public class SavedLocationFragment extends Fragment {
     private void fillView(final String activityID) {
         new Thread(new Runnable() {
             public void run() {
-                DatabaseFacade dbfacade = new DatabaseFacade(getView().getContext());
+                DatabaseFacade dbfacade = new DatabaseFacade(getActivity().getApplicationContext());
                 Message message = handler.obtainMessage(1, dbfacade.getLocations(activityID));
                 message.sendToTarget();
             }

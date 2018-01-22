@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                     if(sp.getBoolean("manualSaving", false))
                     {
                         fragment = new LocationManualFragment();
-                        mFragmentManager = getFragmentManager();
+                        mFragmentManager = getActivity().getFragmentManager();
                         mFragmentManager.beginTransaction()
                                 .replace(R.id.fragment_container, fragment)
                                 .addToBackStack(null)
@@ -99,9 +99,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                         fragment1.share(getActivity(), getFragmentManager().beginTransaction(), R.id.fragment_container);
                         fragment = fragment1;
                         tag = "Walking mode";
-                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentManager fragmentManager = getActivity().getFragmentManager();
                         fragmentManager.popBackStack("Walking mode", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment_container, fragment, tag);
                         transaction.addToBackStack("Walking mode");
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

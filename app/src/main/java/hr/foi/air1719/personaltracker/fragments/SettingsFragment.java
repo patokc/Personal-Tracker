@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        allTabs = (TabLayout) getActivity().findViewById(R.id.settings_tabs);
+        allTabs = (TabLayout) getView().findViewById(R.id.settings_tabs);
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()

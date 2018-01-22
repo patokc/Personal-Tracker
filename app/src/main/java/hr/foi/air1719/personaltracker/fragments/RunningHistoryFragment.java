@@ -145,7 +145,7 @@ public class RunningHistoryFragment extends android.app.Fragment {
             TableRow firstrow = new TableRow(getActivity());
 
             TextView tv1 = new TextView(getActivity());
-            tv1.setText(" Date and Time ");
+            tv1.setText("Date");
             tv1.setBackgroundColor(Color.LTGRAY);
             tv1.setHeight(100);
             tv1.setTypeface(null, Typeface.BOLD);
@@ -187,7 +187,7 @@ public class RunningHistoryFragment extends android.app.Fragment {
 
                 TableRow tablerow = new TableRow(getActivity());
                 TextView t1v = new TextView(getActivity());
-                t1v.setText(a.getStart().toString());
+                t1v.setText(a.getStart().toString().substring(0, 11));
                 t1v.setTextColor(Color.BLACK);
                 t1v.setGravity(Gravity.CENTER);
                 if (i % 2 == 0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));

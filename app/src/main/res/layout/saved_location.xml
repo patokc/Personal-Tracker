@@ -16,12 +16,15 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="220dp"
-            android:scaleType = "centerInside"
+            android:layout_width="130dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType = "fitXY"
             android:adjustViewBounds="true"
             android:id="@+id/img"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="7dp"/>
 
         <TextView
             android:id="@+id/description"

@@ -36,7 +36,7 @@ public class StatisticsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        allTabs = (TabLayout) getActivity().findViewById(R.id.statistics_tabs);
+        allTabs = (TabLayout) getView().findViewById(R.id.statistics_tabs);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container_statistics, new MileageFragment())
@@ -50,7 +50,7 @@ public class StatisticsFragment extends Fragment {
         mileageFragment = new MileageFragment();
         caloriesFragment = new CaloriesFragment();
         allTabs.addTab(allTabs.newTab().setText("Mileage"), true);
-        allTabs.addTab(allTabs.newTab().setText("Calories"));
+        allTabs.addTab(allTabs.newTab().setText("Calories/Fuel"));
     }
 
     private void replaceFragment (Fragment fragment) {

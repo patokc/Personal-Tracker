@@ -124,7 +124,7 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
                 @Override
                 public void run(){
                     Activity ac = new Activity(ActivityMode.WALKING);
-                    DatabaseFacade db = new DatabaseFacade(getView().getContext());
+                    DatabaseFacade db = new DatabaseFacade(getActivity().getApplicationContext());
                     ac.setImage(db.uploadImage(outputBitmap));
                     ac.setDescription(note.toString());
                     db.saveActivity(ac);
@@ -162,19 +162,6 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
         }
     }
 
-    public static String encode(Bitmap image, Bitmap.CompressFormat compressFormat, int quality) {
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(compressFormat, quality, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-    }
-
-  /*  public static Bitmap decode(String input) {
-        byte[] decodedBytes = Base64.decode(input, Base64.NO_WRAP);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-    }
-*/
     @Override
     public void locationChanged(Location location) {
 

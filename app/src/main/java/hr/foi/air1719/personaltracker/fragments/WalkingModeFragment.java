@@ -39,8 +39,9 @@ public class WalkingModeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        allTabs = (TabLayout) getActivity().findViewById(R.id.walkingMode_tabs);
-        FragmentManager fragmentManager = getFragmentManager();
+        allTabs = (TabLayout) getView().findViewById(R.id.walkingMode_tabs);
+        FragmentManager fragmentManager = getChildFragmentManager();
+       // fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container_walking_mode, new MapFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -57,7 +58,7 @@ public class WalkingModeFragment extends Fragment {
     }
 
     private void replaceFragment (Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container_walking_mode, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -83,12 +84,12 @@ public class WalkingModeFragment extends Fragment {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {changeTabFragment(tab.getPosition());
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {changeTabFragment(tab.getPosition());
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
