@@ -186,6 +186,7 @@ public class RunningHistoryFragment extends android.app.Fragment {
             for (Activity a : ac) {
 
                 TableRow tablerow = new TableRow(getActivity());
+                tablerow.setPadding(0,13,0,13);
                 TextView t1v = new TextView(getActivity());
                 t1v.setText(a.getStart().toString().substring(0, 11));
                 t1v.setTextColor(Color.BLACK);

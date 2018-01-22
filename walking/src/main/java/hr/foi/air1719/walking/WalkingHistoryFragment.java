@@ -252,6 +252,7 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
 
                 TableRow tbrow = new TableRow(getActivity());
                 TextView t1v = new TextView(getActivity());
+                tbrow.setPadding(0,13,0,13);
                 t1v.setText(a.getStart().toString().substring(0, 11));
                 t1v.setTextColor(Color.BLACK);
                 t1v.setGravity(Gravity.CENTER);

@@ -252,6 +252,7 @@ public class DrivingHistoryFragment extends android.app.Fragment{
             for (Activity a : ac) {
 
                 TableRow tbrow = new TableRow(getActivity());
+                tbrow.setPadding(0,13,0,13);
                 TextView t1v = new TextView(getActivity());
                 t1v.setText(a.getStart().toString().substring(0, 11));
                 t1v.setTextColor(Color.BLACK);

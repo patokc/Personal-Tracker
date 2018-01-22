@@ -61,7 +61,7 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
         }
         viewHolder.description.setText(savedLocations.get(i).getDescription());
 
-        Picasso.with(context).load(savedLocations.get(i).getImage().toString()).resize(130, 200).into(viewHolder.img);
+        Picasso.with(context).load(savedLocations.get(i).getImage().toString()).resize(130, 190).into(viewHolder.img);
 
     }
     private void lokacija (double longitude, double latitude) {
