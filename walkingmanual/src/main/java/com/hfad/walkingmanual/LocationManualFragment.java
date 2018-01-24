@@ -2,6 +2,7 @@ package com.hfad.walkingmanual;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.core.facade.DatabaseFacade;
 import hr.foi.air1719.database.entities.Activity;
 import hr.foi.air1719.database.entities.ActivityMode;
@@ -37,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Patricija on 11/22/2017.
  */
 
-public class LocationManualFragment extends Fragment implements IGPSActivity {
+public class LocationManualFragment extends Fragment implements IGPSActivity, SharingManager {
 
     Geocoder geocoder ;
     List<Address> lokacija;
@@ -154,5 +156,15 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
     @Override
     public void locationChanged(Location location) {
 
+    }
+
+    @Override
+    public void share(android.app.Activity activity, int fragment_container) {
+
+        FragmentTransaction fragmentTransaction=activity.getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(fragment_container,new LocationManualFragment());
+        fragmentTransaction.addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 }

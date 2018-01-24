@@ -75,19 +75,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                 CheckLocationService();
                 if (gps_enabled) {
 
-                    Fragment fragment;
-
                     SharedPreferences sp = getActivity().getSharedPreferences("user", 0);
+
                     if(sp.getBoolean("manualSaving", false))
                     {
-                        fragment = new LocationManualFragment();
-                        mFragmentManager = getActivity().getFragmentManager();
-                        mFragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, fragment)
-                                .addToBackStack(null)
-                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                .commit();
+                        sharingManager=new LocationManualFragment();
                     }
+
                     else
                     {
                         sharingManager = new WalkingMode();
