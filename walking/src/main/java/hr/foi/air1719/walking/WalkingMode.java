@@ -32,7 +32,7 @@ import hr.foi.air1719.location.MyLocation;
 /**
  * Created by DrazenVuk on 12/27/2017.
  */
-public class WalkingMode extends android.app.Fragment  implements IGPSActivity, SharingManager {
+public class WalkingMode extends android.app.Fragment  implements IGPSActivity, SharingManager{
 
     MyLocation myLocation = null;
     TextView txtSpeed=null;
@@ -146,7 +146,6 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
     public void onClick_ShowTrip(View v) {
 
         ActivityMapFragment fragment = new ActivityMapFragment();
-        fragment.share(activity,fragmentTransaction, fragment_container);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack("Walking Map", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -164,11 +163,11 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
     public void onClick_ShowHistory(View v) {
 
         WalkingHistoryFragment fragment = new WalkingHistoryFragment();
-        fragment.share(activity,fragmentTransaction, fragment_container);
+        fragment.share(activity, fragment_container);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack("Walking History", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(fragment_container, fragment, "Walking History");
+        transaction.replace(fragment_container, fragment);
         transaction.addToBackStack("Walking History");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
@@ -233,15 +232,10 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
     }
 
 
-    FragmentTransaction fragmentTransaction;
+
     android.app.Activity activity;
     int fragment_container;
-    @Override
-    public void share(android.app.Activity activity, FragmentTransaction fragmentTransaction, int fragment_container) {
-        this.fragmentTransaction=fragmentTransaction;
-        this.activity=activity;
-        this.fragment_container=fragment_container;
-    }
+
 
     public static float CalculateDistance(Location startPoint, Location endPoint)
     {
@@ -263,5 +257,20 @@ public class WalkingMode extends android.app.Fragment  implements IGPSActivity, 
             E.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public void share(android.app.Activity activity, int fragment_container) {
+
+        this.activity=activity;
+        this.fragment_container=fragment_container;
+        FragmentManager fragmentManager = activity.getFragmentManager();
+
+        fragmentManager.popBackStack("Walking mode", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction fragmentTransactio =  activity.getFragmentManager().beginTransaction();
+        fragmentTransactio.replace(fragment_container, this,"Walking mode");
+        fragmentTransactio.addToBackStack("Walking mode");
+        fragmentTransactio.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransactio.commit();
     }
 }

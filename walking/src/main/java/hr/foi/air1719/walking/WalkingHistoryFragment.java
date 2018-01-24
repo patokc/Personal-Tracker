@@ -29,7 +29,7 @@ import hr.foi.air1719.database.entities.ActivityMode;
 /**
  * Created by DrazenVuk on 12/27/2017.
  */
-public class WalkingHistoryFragment extends android.app.Fragment implements SharingManager {
+public class WalkingHistoryFragment extends android.app.Fragment implements SharingManager{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,15 +68,10 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
         }
     }
 
-    FragmentTransaction fragmentTransaction;
+
     android.app.Activity activity;
     int fragment_container;
-    @Override
-    public void share(android.app.Activity activity, FragmentTransaction fragmentTransaction, int fragment_container) {
-        this.fragmentTransaction=fragmentTransaction;
-        this.activity=activity;
-        this.fragment_container=fragment_container;
-    }
+
 
     static WalkingHistoryFragment myFrame;
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -247,69 +242,75 @@ public class WalkingHistoryFragment extends android.app.Fragment implements Shar
 
             tableHistory.addView(tbrow0);
 
+            if(ac != null) {
+                for (Activity a : ac) {
 
-            for (Activity a : ac) {
+                    TableRow tbrow = new TableRow(getActivity());
+                    TextView t1v = new TextView(getActivity());
+                    tbrow.setPadding(0, 13, 0, 13);
+                    t1v.setText(a.getStart().toString().substring(0, 11));
+                    t1v.setTextColor(Color.BLACK);
+                    t1v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tbrow.addView(t1v);
 
-                TableRow tbrow = new TableRow(getActivity());
-                TextView t1v = new TextView(getActivity());
-                tbrow.setPadding(0,13,0,13);
-                t1v.setText(a.getStart().toString().substring(0, 11));
-                t1v.setTextColor(Color.BLACK);
-                t1v.setGravity(Gravity.CENTER);
-                if(i%2==0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t1v);
+                    TextView t3v = new TextView(getActivity());
+                    t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal() == 0 ? CalculateCalories(77.0f, a.getDistance()) : a.getAvgCal())));
+                    t3v.setTextColor(Color.BLACK);
+                    t3v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tbrow.addView(t3v);
 
-                TextView t3v = new TextView(getActivity());
-                t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal()==0?CalculateCalories(77.0f,a.getDistance()):a.getAvgCal())));
-                t3v.setTextColor(Color.BLACK);
-                t3v.setGravity(Gravity.CENTER);
-                if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t3v);
+                    TextView t4v = new TextView(getActivity());
+                    t4v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
+                    t4v.setTextColor(Color.BLACK);
+                    t4v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tbrow.addView(t4v);
 
-                TextView t4v = new TextView(getActivity());
-                t4v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
-                t4v.setTextColor(Color.BLACK);
-                t4v.setGravity(Gravity.CENTER);
-                if(i%2==0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t4v);
+                    TextView t4_1v = new TextView(getActivity());
+                    t4_1v.setText("Delete");
+                    t4_1v.setGravity(Gravity.CENTER);
+                    t4_1v.setTextColor(Color.RED);
+                    if (i % 2 == 0) t4_1v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tbrow.addView(t4_1v);
 
-                TextView t4_1v = new TextView(getActivity());
-                t4_1v.setText("Delete");
-                t4_1v.setGravity(Gravity.CENTER);
-                t4_1v.setTextColor(Color.RED);
-                if(i%2==0) t4_1v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tbrow.addView(t4_1v);
-
-                TextView t5v = new TextView(getActivity());
-                t5v.setText("Show");
-                t5v.setGravity(Gravity.CENTER);
-                t5v.setTextColor(Color.BLUE);
-                if(i%2==0) t5v.setBackgroundColor(Color.rgb(236, 236, 236));
-
-
-                final String activityId = a.getActivityId();
-                t5v.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        onClick_ShowActivity(v, activityId);
-                    }
-                });
-                tbrow.addView(t5v);
+                    TextView t5v = new TextView(getActivity());
+                    t5v.setText("Show");
+                    t5v.setGravity(Gravity.CENTER);
+                    t5v.setTextColor(Color.BLUE);
+                    if (i % 2 == 0) t5v.setBackgroundColor(Color.rgb(236, 236, 236));
 
 
-                final Activity activity = a;
-                t4_1v.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        onClick_DeleteActivity(v, activity);
-                    }
-                });
+                    final String activityId = a.getActivityId();
+                    t5v.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            onClick_ShowActivity(v, activityId);
+                        }
+                    });
+                    tbrow.addView(t5v);
 
 
+                    final Activity activity = a;
+                    t4_1v.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            onClick_DeleteActivity(v, activity);
+                        }
+                    });
 
-                tableHistory.addView(tbrow);
-                i++;
+
+                    tableHistory.addView(tbrow);
+                    i++;
+                }
             }
         }
     };
+
+    @Override
+    public void share(android.app.Activity activity, int fragment_container) {
+        this.activity=activity;
+        this.fragment_container=fragment_container;
+    }
 
 
     public interface OnFragmentInteractionListener {

@@ -23,7 +23,6 @@
                 android:scaleType = "centerInside"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@color/background"
                 android:padding="5dp"
                 />
             <TextView

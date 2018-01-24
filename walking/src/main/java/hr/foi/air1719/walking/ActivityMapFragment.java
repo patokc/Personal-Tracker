@@ -1,6 +1,5 @@
 package hr.foi.air1719.walking;
 
-import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,14 +25,13 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import hr.foi.air1719.core.facade.DatabaseFacade;
-import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.database.entities.GpsLocation;
 
 
 /**
  * Created by DrazenVuk on 12/27/2017.
  */
-public class ActivityMapFragment extends android.app.Fragment implements OnMapReadyCallback, SharingManager {
+public class ActivityMapFragment extends android.app.Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMap = null;
     private Polyline line;
@@ -62,17 +60,6 @@ public class ActivityMapFragment extends android.app.Fragment implements OnMapRe
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    FragmentTransaction fragmentTransaction;
-    android.app.Activity activity;
-    int fragment_container;
-    @Override
-    public void share(android.app.Activity activity, FragmentTransaction fragmentTransaction, int fragment_container) {
-        this.fragmentTransaction=fragmentTransaction;
-        this.activity=activity;
-        this.fragment_container=fragment_container;
     }
 
 
@@ -176,6 +163,7 @@ public class ActivityMapFragment extends android.app.Fragment implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap=googleMap;
     }
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

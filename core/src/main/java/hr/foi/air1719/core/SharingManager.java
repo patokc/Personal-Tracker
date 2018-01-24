@@ -7,5 +7,5 @@ import android.app.FragmentTransaction;
  */
 
 public interface SharingManager {
-    void share(Activity activity, FragmentTransaction fragmentTransaction, int fragment_container);
+    void share(Activity activity, int fragment_container);
 }

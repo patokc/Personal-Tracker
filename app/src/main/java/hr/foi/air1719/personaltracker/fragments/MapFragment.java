@@ -3,18 +3,13 @@ package hr.foi.air1719.personaltracker.fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +22,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.hfad.walkingmanual.LocationManualFragment;
 
+import hr.foi.air1719.core.SharingManager;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
 import hr.foi.air1719.personaltracker.Helper;
 import hr.foi.air1719.personaltracker.Main;
 import hr.foi.air1719.personaltracker.R;
 import hr.foi.air1719.walking.WalkingMode;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by Patricija on 11/21/2017.
@@ -47,6 +42,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
     Marker mMarker = null;
     FloatingActionButton floatingActionButton;
     boolean  gps_enabled = false;
+    SharingManager sharingManager;
 
 
     @Override
@@ -57,6 +53,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
+        sharingManager = new WalkingMode();
 
         floatingActionButton = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
 
@@ -93,21 +90,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, IGPSAct
                     }
                     else
                     {
-                        //TODO
-                        String tag = null;
-                        WalkingMode fragment1 = new WalkingMode();
-                        fragment1.share(getActivity(), getFragmentManager().beginTransaction(), R.id.fragment_container);
-                        fragment = fragment1;
-                        tag = "Walking mode";
-                        FragmentManager fragmentManager = getActivity().getFragmentManager();
-                        fragmentManager.popBackStack("Walking mode", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_container, fragment, tag);
-                        transaction.addToBackStack("Walking mode");
-                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        transaction.commit();
-                        return;
+                        sharingManager = new WalkingMode();
+
                     }
+                    sharingManager.share(getActivity(),R.id.fragment_container);
                 }
                 else {
                     Helper.PushNotificationGPS(getActivity().getWindow().getContext());

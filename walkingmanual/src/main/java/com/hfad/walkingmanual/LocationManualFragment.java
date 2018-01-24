@@ -1,11 +1,9 @@
-package hr.foi.air1719.personaltracker.fragments;
+package com.hfad.walkingmanual;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -34,8 +30,6 @@ import hr.foi.air1719.database.entities.ActivityMode;
 import hr.foi.air1719.database.entities.GpsLocation;
 import hr.foi.air1719.location.IGPSActivity;
 import hr.foi.air1719.location.MyLocation;
-import hr.foi.air1719.personaltracker.Main;
-import hr.foi.air1719.personaltracker.R;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -112,11 +106,6 @@ public class LocationManualFragment extends Fragment implements IGPSActivity {
 
     }
 
-    public void onResume(){
-        super.onResume();
-        ((Main) getActivity())
-                .setActionBarTitle("Save location");
-    }
 
     private void Save () {
         if(outputBitmap !=null && note.length() !=0) {
