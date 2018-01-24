@@ -132,7 +132,7 @@ public class RunningHistoryFragment extends android.app.Fragment {
         return ((float)1.036)*w*d;
     }
 
-    
+
     final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
@@ -183,52 +183,56 @@ public class RunningHistoryFragment extends android.app.Fragment {
             tableRunningHistory.addView(firstrow);
 
 
-            for (Activity a : ac) {
+            if(ac != null){
+                for (Activity a : ac) {
 
-                TableRow tablerow = new TableRow(getActivity());
-                tablerow.setPadding(0,13,0,13);
-                TextView t1v = new TextView(getActivity());
-                t1v.setText(a.getStart().toString().substring(0, 11));
-                t1v.setTextColor(Color.BLACK);
-                t1v.setGravity(Gravity.CENTER);
-                if (i % 2 == 0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tablerow.addView(t1v);
-
-
-                TextView t2v = new TextView(getActivity());
-                t2v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
-                t2v.setTextColor(Color.BLACK);
-                t2v.setGravity(Gravity.CENTER);
-                if (i % 2 == 0) t2v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tablerow.addView(t2v);
-
-                TextView t3v = new TextView(getActivity());
-                t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal()==0?CalculateCalories(77.0f,a.getDistance()):a.getAvgCal())));
-                t3v.setTextColor(Color.BLACK);
-                t3v.setGravity(Gravity.CENTER);
-                if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
-                tablerow.addView(t3v);
+                    TableRow tablerow = new TableRow(getActivity());
+                    tablerow.setPadding(0,13,0,13);
+                    TextView t1v = new TextView(getActivity());
+                    t1v.setText(a.getStart().toString().substring(0, 11));
+                    t1v.setTextColor(Color.BLACK);
+                    t1v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t1v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tablerow.addView(t1v);
 
 
-                TextView t4v = new TextView(getActivity());
-                t4v.setText("Map View");
-                t4v.setTextColor(Color.BLUE);
-                t4v.setGravity(Gravity.CENTER);
-                if (i % 2 == 0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    TextView t2v = new TextView(getActivity());
+                    t2v.setText(String.valueOf(String.format("%.1f", a.getDistance())));
+                    t2v.setTextColor(Color.BLACK);
+                    t2v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t2v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tablerow.addView(t2v);
 
-                final String activityId = a.getActivityId();
-                t4v.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        onClick_ShowActivity(v, activityId);
+                    TextView t3v = new TextView(getActivity());
+                    t3v.setText(String.valueOf(String.format("%.1f", a.getAvgCal()==0?CalculateCalories(77.0f,a.getDistance()):a.getAvgCal())));
+                    t3v.setTextColor(Color.BLACK);
+                    t3v.setGravity(Gravity.CENTER);
+                    if(i%2==0) t3v.setBackgroundColor(Color.rgb(236, 236, 236));
+                    tablerow.addView(t3v);
 
-                    }
-                });
-                tablerow.addView(t4v);
 
-                tableRunningHistory.addView(tablerow);
-                i++;
+                    TextView t4v = new TextView(getActivity());
+                    t4v.setText("Map View");
+                    t4v.setTextColor(Color.BLUE);
+                    t4v.setGravity(Gravity.CENTER);
+                    if (i % 2 == 0) t4v.setBackgroundColor(Color.rgb(236, 236, 236));
+
+                    final String activityId = a.getActivityId();
+                    t4v.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            onClick_ShowActivity(v, activityId);
+
+                        }
+                    });
+                    tablerow.addView(t4v);
+
+                    tableRunningHistory.addView(tablerow);
+                    i++;
+
+                }
 
             }
+
         }
     };
 

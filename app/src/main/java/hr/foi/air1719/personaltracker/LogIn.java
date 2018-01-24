@@ -118,7 +118,7 @@ public class LogIn extends AppCompatActivity implements RestServiceHandler {
                 editor.putFloat("weight", user.getWeight());
                 editor.putInt("refreshRate", 1500);
                 editor.putInt("minimalDistance", 20);
-                editor.putBoolean("localOnlyData", false);
+                editor.putBoolean("localOnlyData", true);
                 editor.putBoolean("manualSaving", false);
                 editor.putBoolean("isSynced", false);
                 editor.commit();

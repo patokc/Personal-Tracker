@@ -64,13 +64,17 @@ public class CaloriesFragment extends Fragment {
             sumFuel = 0f;
 
             listActivity = new ArrayList();
-            listActivity.addAll(mapList.values());
-            for (Activity a : listActivity) {
+            if(mapList != null){
+                listActivity.addAll(mapList.values());
+                for (Activity a : listActivity) {
 
-                sumCalories += a.getAvgCal();
-                sumFuel +=a.getAvgFuel();
+                    sumCalories += a.getAvgCal();
+                    sumFuel +=a.getAvgFuel();
+                }
+                fillGraph();
+
             }
-            fillGraph();
+
         }
     };
 

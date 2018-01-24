@@ -60,19 +60,22 @@ public class MileageFragment extends Fragment {
             sumDrive = 0f;
             sumWalk = 0f;
             listActivity = new ArrayList();
-            listActivity.addAll(mapList.values());
-            for (Activity a : listActivity) {
-                if (a.getMode().toString() == "RUNNING") {
-                    sumRun += a.getDistance();
+            if(mapList != null){
+                listActivity.addAll(mapList.values());
+                for (Activity a : listActivity) {
+                    if (a.getMode().toString() == "RUNNING") {
+                        sumRun += a.getDistance();
+                    }
+                    else if(a.getMode().toString() == "DRIVING"){
+                        sumDrive +=a.getDistance();
+                    }
+                    else {
+                        sumWalk+=a.getDistance();
+                    }
                 }
-                else if(a.getMode().toString() == "DRIVING"){
-                    sumDrive +=a.getDistance();
-                }
-                else {
-                    sumWalk+=a.getDistance();
-                }
+                fillGraph();
             }
-            fillGraph();
+
         }
     };
 

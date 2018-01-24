@@ -93,7 +93,7 @@ public class SavedLocationFragment extends Fragment {
                                                 dbfacade.deleteByActivity(activity);
                                             }
                                         }).start();
-                                       fillListView();
+                                        fillListView();
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -127,15 +127,18 @@ public class SavedLocationFragment extends Fragment {
             List<Activity> ac = (List<Activity>) message.obj;
             locationCoordinates.clear();
             savedLocations.clear();
-            for (Activity a : ac) {
-                Activity loadImageWalkingMode = new Activity(ActivityMode.WALKING);
-                fillView(a.getActivityId().toString());
-                loadImageWalkingMode.setActivityId(a.getActivityId().toString());
-                loadImageWalkingMode.setDescription(a.getDescription().toString());
-                loadImageWalkingMode.setImage("https://benkovic.net/air/img/" + a.getImage().toString());
+            if(ac != null){
+                for (Activity a : ac) {
+                    Activity loadImageWalkingMode = new Activity(ActivityMode.WALKING);
+                    fillView(a.getActivityId().toString());
+                    loadImageWalkingMode.setActivityId(a.getActivityId().toString());
+                    loadImageWalkingMode.setDescription(a.getDescription().toString());
+                    loadImageWalkingMode.setImage("https://benkovic.net/air/img/" + a.getImage().toString());
 
-                savedLocations.add(loadImageWalkingMode);
+                    savedLocations.add(loadImageWalkingMode);
+                }
             }
+
         }
     };
     final Handler handler = new Handler(Looper.getMainLooper()) {
@@ -146,7 +149,7 @@ public class SavedLocationFragment extends Fragment {
 
             gpsLocations = new ArrayList();
             gpsLocations.addAll(gpsLoc.values());
-           for ( GpsLocation a : gpsLocations) {
+            for ( GpsLocation a : gpsLocations) {
                 GpsLocation loadCoordinates = new GpsLocation();
                 loadCoordinates.setActivityId(a.getActivityId().toString());
                 loadCoordinates.setLatitude(a.getLatitude());
@@ -157,7 +160,7 @@ public class SavedLocationFragment extends Fragment {
 
             initViews();
         }
-};
+    };
     private void fillListView() {
         new Thread(new Runnable() {
             public void run() {
@@ -178,7 +181,6 @@ public class SavedLocationFragment extends Fragment {
 
     }
 }
-
 
 
 
